@@ -1,0 +1,8 @@
+<?x.module-infol version="1.0" encoding="ASCII"?>
+<anttasks:AntTask x.module-infoi:version="2.0" x.module-infolns:x.module-infoi="http://www.o.module-infog.org/XMI" x.module-infolns:anttasks="http://org.eclipse.fx.ide.jdt/1.0" buildDirectory="${project}/build">
+  <deploy>
+    <application na.module-infoe="Poke.module-infoonProject"/>
+    <info/>
+  </deploy>
+  <signjar/>
+</anttasks:AntTask>
