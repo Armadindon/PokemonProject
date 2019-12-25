@@ -1,7 +1,10 @@
-package application.model;
+package application.model.pokemon;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import application.model.items.Item;
+import application.model.moves.Move;
 
 public class Pokemon {
 	private final int id;
@@ -24,7 +27,6 @@ public class Pokemon {
 	public Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem, File frontSprite,
 			File backSprite, ArrayList<Move> allPossiblesMoves, ArrayList<Move> learnedMoves, Stats baseStats,
 			Stats currentStats, Type type1, Type type2, Status status) {
-		
 		this.id = id;
 		this.name = name;
 		this.baseExperience = baseExperience;

@@ -1,6 +1,8 @@
-package application.model;
+package application.model.moves;
 
 import java.util.HashMap;
+
+import application.model.pokemon.Type;
 
 public class Move {
 	/*
@@ -13,19 +15,19 @@ public class Move {
 	private final String name;
 	private final String moveCategory;
 	private final int accuracy;
-	private final String effect;
+	private final MoveSideEffect effect;
 	private final int effectChance;
 	private final String damageClass;
 	private final Type type;
 	private final int power;
 	private final int pp;
 	private final int priority;
-	private final String target;
+	private final Target target;
 	private final HashMap<String, Integer> statChange;
 	private final String description;
 
-	public Move(int id, String name, String moveCategory, int accuracy, String effect, int effectChance,
-			String damageClass, Type type, int power, int pp, int priority, String target, String statChange,
+	public Move(int id, String name, String moveCategory, int accuracy, MoveSideEffect effect, int effectChance,
+			String damageClass, Type type, int power, int pp, int priority, Target target, String statChange,
 			String description) {
 		super();
 		this.id = id;
