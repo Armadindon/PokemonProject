@@ -39,10 +39,8 @@ if __name__ == "__main__":
             else:
                 stat_changes = ""
                 for i in range(0, len(jsonMove["stat_changes"])):
-                    if i > 0:
-                        stat_changes += ", "
                     stat_changes += jsonMove["stat_changes"][i]["stat"]["name"] + ": " + str(
-                        jsonMove["stat_changes"][i]["change"])
+                        jsonMove["stat_changes"][i]["change"]) + ";"
 
             rowMove = {"id": jsonMove["id"], "name": jsonMove["name"],
                        "move_category": jsonMove["meta"]["category"]["name"], "accuracy": jsonMove["accuracy"],

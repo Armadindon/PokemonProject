@@ -32,7 +32,7 @@ if __name__ == "__main__":
             for moves in jsonPokemon[
                 "moves"]:  # Permet de rajouter l'id de tous les attaques que le pokémon peut apprendre
                 Infos["learnableMove"] += moves["move"]["url"].replace("https://pokeapi.co/api/v2/move/", "").replace(
-                    "/", "") + ","
+                    "/", "") + ";"
 
             if len(jsonPokemon["types"]) != 2:
                 Infos["type2"] = "NULL"
