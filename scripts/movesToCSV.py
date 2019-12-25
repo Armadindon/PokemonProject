@@ -8,8 +8,10 @@ if __name__ == "__main__":
 
     with open("moves.csv", "w", newline="") as csvfile:
         csvWriter = csv.DictWriter(csvfile,
-                                   fieldnames=["id", "name", "accuracy", "effect_chance", "damage_class", "type",
-                                               "power", "pp", "priority", "target", "stat_changes", "effect"])
+                                   fieldnames=["id", "name", "move_category", "accuracy", "effect_ailment",
+                                               "effect_chance",
+                                               "damage_class", "type", "power", "pp", "priority", "target",
+                                               "stat_changes", "description"])
 
         csvWriter.writeheader()
 
@@ -32,7 +34,7 @@ if __name__ == "__main__":
                 power = 0
 
             # Pour les changements de stats, on les formates
-            if 0 == len(stat_changes ):
+            if 0 == len(stat_changes):
                 stat_changes = "No stat change"
             else:
                 stat_changes = ""
@@ -42,12 +44,13 @@ if __name__ == "__main__":
                     stat_changes += jsonMove["stat_changes"][i]["stat"]["name"] + ": " + str(
                         jsonMove["stat_changes"][i]["change"])
 
-
-            rowMove = {"id": jsonMove["id"], "name": jsonMove["name"], "accuracy": jsonMove["accuracy"],
-                       "effect_chance": effectChance, "damage_class": jsonMove["damage_class"]["name"],
-                       "type": jsonMove["type"]["name"], "power": power, "pp": jsonMove["pp"],
-                       "priority": jsonMove["priority"], "target": jsonMove["target"]["name"],
-                       "stat_changes": stat_changes, "effect": jsonMove["effect_entries"][0]["effect"]}
+            rowMove = {"id": jsonMove["id"], "name": jsonMove["name"],
+                       "move_category": jsonMove["meta"]["category"]["name"], "accuracy": jsonMove["accuracy"],
+                       "effect_ailment": jsonMove["meta"]["ailment"]["name"], "effect_chance": effectChance,
+                       "damage_class": jsonMove["damage_class"]["name"], "type": jsonMove["type"]["name"],
+                       "power": power, "pp": jsonMove["pp"], "priority": jsonMove["priority"],
+                       "target": jsonMove["target"]["name"], "stat_changes": stat_changes,
+                       "description": jsonMove["effect_entries"][0]["effect"]}
 
             print(rowMove)
 
