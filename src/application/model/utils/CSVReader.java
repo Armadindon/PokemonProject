@@ -17,8 +17,8 @@ public class CSVReader {
 		String line;
 		List<Map<String, List<String>>> records = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new FileReader(path));
-		
-		//La première ligne correspond au nom des champs
+
+		// The first line matches field's names
 		line =  reader.readLine();
 		
 		String[] champs = line.split(",");
