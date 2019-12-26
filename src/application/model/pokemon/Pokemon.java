@@ -48,6 +48,7 @@ public class Pokemon {
 		this.status = status;
 	}
 	
+	
 	public static Pokemon generateFromMap(Map<String, List<String>> data) {
 		int id = Integer.parseInt(data.get("id").get(0));
 		String name  = data.get("name").get(0);
@@ -62,8 +63,30 @@ public class Pokemon {
 		
 		return null;
 	}
-	
-	
-	
 
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public Stats getBaseStats() {
+		return baseStats;
+	}
+
+	@Override
+	public String toString() {
+		return id + " - " + name;
+	}
+	
 }
