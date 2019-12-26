@@ -1,6 +1,8 @@
 package application.model.moves;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import application.model.pokemon.Type;
 
@@ -17,7 +19,7 @@ public class Move {
 	private final int accuracy;
 	private final MoveSideEffect effect;
 	private final int effectChance;
-	private final String damageClass;
+	private final AttackType damageClass;
 	private final Type type;
 	private final int power;
 	private final int pp;
@@ -27,7 +29,7 @@ public class Move {
 	private final String description;
 
 	public Move(int id, String name, String moveCategory, int accuracy, MoveSideEffect effect, int effectChance,
-			String damageClass, Type type, int power, int pp, int priority, Target target, String statChange,
+			AttackType damageClass, Type type, int power, int pp, int priority, Target target, String statChange,
 			String description) {
 		super();
 		this.id = id;
@@ -44,6 +46,28 @@ public class Move {
 		this.target = target;
 		this.statChange = parseStatChange(statChange);
 		this.description = description;
+	}
+	
+	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gère juste les atatques pour l'instant (classe damage)
+		
+		if(data.get("move_category").get(0).equals("damage")) {
+			int id = Integer.parseInt(data.get("id").get(0));
+			String name = data.get("name").get(0);
+			String moveCategory = data.get("move_category").get(0);
+			int accuracy = Integer.parseInt(data.get("accuracy").get(0));
+			MoveSideEffect effect = null;
+			int effectChance = 0;
+			AttackType damageClass = AttackType.getType(data.get("damage_class").get(0));
+			Type type = Type.getTypeFromString(data.get("type").get(0));
+			int power = Integer.parseInt(data.get("power").get(0));
+			int pp = Integer.parseInt(data.get("pp").get(0));
+			int priority = Integer.parseInt(data.get("priority").get(0));
+			Target target = Target.getTargetFromString(data.get("target").get(0).replace("-", "")); // on remplace les "-" car ils ne sont pas autorisés dans les noms de constantes (Caractère spécial)
+			String statChange = data.get("stat_changes").get(0);
+			String description = data.get("description").get(0);
+			return new Move(id, name, moveCategory, accuracy, effect, effectChance, damageClass, type, power, pp, priority, target, statChange, description);
+		}
+		return null;
 	}
 
 	/**

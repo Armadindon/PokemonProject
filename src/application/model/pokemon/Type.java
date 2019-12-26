@@ -36,6 +36,13 @@ public enum Type {
 		}
 	}
 	
+	public static Type getTypeFromString(String typeString) {
+		for(Type type : Type.class.getEnumConstants()){
+			if(type.name().equals(typeString.toUpperCase())) return type;
+		}
+		return null;
+	}
+	
 
 
 }

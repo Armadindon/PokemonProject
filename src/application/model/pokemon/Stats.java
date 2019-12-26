@@ -43,9 +43,6 @@ public class Stats {
 		return hp;
 	}
 	
-	
-	
-	
-	
+		
 
 }
