@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.PokeMoveController">
+  <children>
+    <VBox prefHeight="524.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="176.0">
+      <children>
+        <ListView fx:id="listPokemon" onMouseClicked="#showMoves" prefHeight="517.0" prefWidth="269.0" VBox.vgrow="ALWAYS" />
+      </children>
+    </VBox>
+    <Rectangle id="imgPokemon" arcHeight="5.0" arcWidth="5.0" fill="#1e90ff00" height="96.0" layoutX="820.0" layoutY="11.0" stroke="#00000023" strokeType="INSIDE" width="96.0" />
+    <Line endX="898.0" endY="10.0" layoutX="102.0" layoutY="102.0" startX="-100.0" startY="10.0" stroke="GREY" strokeWidth="3.3">
+      <rotationAxis>
+        <Point3D />
+      </rotationAxis>
+    </Line>
+    <ImageView fx:id="imgPokemon" fitHeight="96.0" fitWidth="96.0" layoutX="819.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
+    <Button id="btnConfirmTeam" fx:id="btnAddPokemon" layoutX="480.0" layoutY="612.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="215.0" text="Confirm">
+      <font>
+        <Font size="24.0" fx:id="x2" />
+      </font>
+    </Button>
+    <HBox id="listPokemon" alignment="CENTER" layoutX="731.0" layoutY="114.0" prefHeight="61.0" prefWidth="269.0" spacing="10.0" style="-fx-border-style: solid solid none solid;&#10;&#10;">
+      <children>
+        <Label text="Moves" />
+        <TextField id="textFPokemon" fx:id="textFSearch" prefWidth="145.0" promptText="Search move" />
+      </children>
+      <padding>
+        <Insets />
+      </padding>
+    </HBox>
+    <Label layoutX="43.0" layoutY="34.0" prefHeight="49.0" prefWidth="457.0" text="Choose 4 moves for :">
+      <font>
+        <Font size="42.0" fx:id="x1" />
+      </font>
+    </Label>
+    <Label fx:id="labelPokemonName" font="$x1" layoutX="545.0" layoutY="34.0" text="Pokemon" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bfbfbf3b" height="183.0" layoutX="60.0" layoutY="417.0" stroke="BLACK" strokeType="INSIDE" width="635.0" />
+    <Button id="btnConfirmTeam" font="$x2" layoutX="60.0" layoutY="612.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="215.0" text="Cancel" />
+    <Label id="labelPokemonName" fx:id="labelMoveName" font="$x1" layoutX="43.0" layoutY="114.0" text="Move" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9f9f9f18" height="190.0" layoutX="60.0" layoutY="176.0" stroke="BLACK" strokeType="INSIDE" width="201.0" />
+    <VBox layoutX="61.0" layoutY="176.0" prefHeight="190.0" prefWidth="201.0">
+      <children>
+        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="201.0" spacing="10.0">
+          <children>
+            <Label prefWidth="102.0" text="Type:">
+              <font>
+                <Font size="16.0" fx:id="x3" />
+              </font>
+            </Label>
+            <Label id="labelHP" fx:id="labelType" font="$x3" text="Label" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="201.0" spacing="10.0">
+          <children>
+            <Label font="$x3" prefWidth="102.0" text="Accuracy:" />
+            <Label id="labelAttack" fx:id="labelAccuracy" font="$x3" text="Label" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="201.0" spacing="10.0">
+          <children>
+            <Label font="$x3" prefWidth="102.0" text="PP:" />
+            <Label id="labelAttackSpe" fx:id="labelPP" font="$x3" text="Label" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="201.0" spacing="10.0">
+          <children>
+            <Label font="$x3" prefWidth="102.0" text="Side Effect:" />
+            <Label id="labelDefense" fx:id="labelEffect" font="$x3" text="Label" />
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+    <TextArea id="textADescription" fx:id="textADescriptionMove" layoutX="300.0" layoutY="176.0" prefHeight="190.0" prefWidth="395.0" wrapText="true" />
+    <Button font="$x3" layoutX="582.0" layoutY="379.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="113.0" text="Add move" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" height="72.0" layoutX="70.0" layoutY="427.0" stroke="BLACK" strokeType="INSIDE" width="286.0">
+      <fill>
+        <Color blue="0.749" green="0.749" opacity="0.231" red="0.749" fx:id="x4" />
+      </fill>
+    </Rectangle>
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x4" height="72.0" layoutX="399.0" layoutY="427.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x4" height="72.0" layoutX="70.0" layoutY="518.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x4" height="72.0" layoutX="399.0" layoutY="518.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
+    <Label fx:id="labelError" layoutX="61.0" layoutY="395.0" prefWidth="474.0" text="LabelError" visible="true" />
+    <VBox alignment="CENTER" layoutX="70.0" layoutY="427.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0">
+      <children>
+        <Label fx:id="labelMoveName1" text="??">
+          <font>
+            <Font size="18.0" fx:id="x5" />
+          </font>
+        </Label>
+        <Label fx:id="labelPP1" text="??" />
+      </children>
+    </VBox>
+    <VBox alignment="CENTER" layoutX="399.0" layoutY="427.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0">
+      <children>
+        <Label id="labelMoveName1" fx:id="labelMoveName2" font="$x5" text="??" />
+        <Label fx:id="labelPP2" text="??" />
+      </children>
+    </VBox>
+    <VBox alignment="CENTER" layoutX="70.0" layoutY="518.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0">
+      <children>
+        <Label id="labelMoveName1" fx:id="labelMoveName3" font="$x5" text="??" />
+        <Label fx:id="labelPP3" text="??" />
+      </children>
+    </VBox>
+    <VBox alignment="CENTER" layoutX="399.0" layoutY="518.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0">
+      <children>
+        <Label id="labelMoveName1" fx:id="labelMoveName4" font="$x5" text="??" />
+        <Label id="labelMoveName4" fx:id="labelPP4" prefWidth="13.9998779296875" text="??" />
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

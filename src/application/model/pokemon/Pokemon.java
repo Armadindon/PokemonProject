@@ -9,6 +9,7 @@ import java.util.Map;
 
 import application.model.items.Item;
 import application.model.moves.Move;
+import javafx.scene.image.Image;
 
 public class Pokemon {
 	private final int id;
@@ -17,8 +18,8 @@ public class Pokemon {
 	private final int height;
 	private final int weight;
 	private final Item carriedItem;
-	private final Path frontSprite;
-	private final Path backSprite;
+	private final Image frontSprite;
+	private final Image backSprite;
 	private final ArrayList<Move> allPossiblesMoves;
 	private ArrayList<Move> learnedMoves;
 	private Stats baseStats;
@@ -28,8 +29,8 @@ public class Pokemon {
 	private Status status;
 	
 	//Constructeur Temporaire
-	public Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem, Path frontSprite,
-			Path backSprite, ArrayList<Move> allPossiblesMoves, ArrayList<Move> learnedMoves, Stats baseStats,
+	public Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem, Image frontSprite,
+			Image backSprite, ArrayList<Move> allPossiblesMoves, ArrayList<Move> learnedMoves, Stats baseStats,
 			Stats currentStats, Type type1, Type type2, Status status) {
 		this.id = id;
 		this.name = name;
@@ -48,7 +49,6 @@ public class Pokemon {
 		this.status = status;
 	}
 	
-	
 	public static Pokemon generateFromMap(Map<String, List<String>> data) {
 		int id = Integer.parseInt(data.get("id").get(0));
 		String name  = data.get("name").get(0);
@@ -56,8 +56,8 @@ public class Pokemon {
 		int height = Integer.parseInt(data.get("height").get(0));
 		int weight = Integer.parseInt(data.get("weight").get(0));
 		Item carriedItem = null;
-		Path frontSprite = Paths.get(data.get("spriteFront").get(0));
-		Path backSprite = Paths.get(data.get("spriteBack").get(0));
+		Image frontSprite = new Image("file:" + System.getProperty("user.dir") + data.get("spriteFront").get(0));
+		Image backSprite = new Image("file:" + System.getProperty("user.dir") + data.get("spriteBack").get(0));
 		
 		//Rajouter les Moves
 		
@@ -83,6 +83,11 @@ public class Pokemon {
 	public Stats getBaseStats() {
 		return baseStats;
 	}
+
+	public Image getFrontSprite() {
+		return frontSprite;
+	}
+
 
 	@Override
 	public String toString() {

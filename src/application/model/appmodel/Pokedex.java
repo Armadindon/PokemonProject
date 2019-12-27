@@ -4,6 +4,7 @@ import application.model.pokemon.Pokemon;
 import application.model.pokemon.Stats;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Pokedex {
@@ -44,6 +45,8 @@ public class Pokedex {
 		def.setText(pokeStats.getDefense() + "");
 		defSpe.setText(pokeStats.getSpecialDefense() + "");
 		speed.setText(pokeStats.getSpeed() + "");
+		
+		img.setImage((Image) pokemon.getFrontSprite());
 
 	}
 

@@ -1,9 +1,10 @@
 package application;
 
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.model.appmodel.Pokedex;
+import application.model.appmodel.*;
 import application.model.pokemon.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -125,9 +127,10 @@ public class SampleController {
 	@FXML
 	private Label labelWeight;
 
-	Pokemon p1 = new Pokemon(1, "Bulbizar", 0, 200, 300, null, null, null, null, null, new Stats(2, 3, 3, 4, 5, 6),
+	
+	Pokemon p1 = new Pokemon(1, "Bulbizar", 0, 200, 300, null, new Image("file:" + System.getProperty("user.dir") + "/scripts/sprites/1.png"), null, null, null, new Stats(2, 3, 3, 4, 5, 6),
 			null, null, null, null);
-	Pokemon p2 = new Pokemon(2, "Salamèche", 0, 800, 150, null, null, null, null, null, new Stats(6, 8, 4, 5, 6, 8),
+	Pokemon p2 = new Pokemon(2, "Salamèche", 0, 800, 150, null, new Image("file:" + System.getProperty("user.dir") + "/scripts/sprites/100.png"), null, null, null, new Stats(6, 8, 4, 5, 6, 8),
 			null, null, null, null);
 
 	@FXML
@@ -155,6 +158,7 @@ public class SampleController {
 
 		listPokemon.setItems(items);
 		listPokemon.getSelectionModel().select(0);
+	
 
 		appModel.showPokemon(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
 				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
