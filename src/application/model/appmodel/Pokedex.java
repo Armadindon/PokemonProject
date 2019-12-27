@@ -33,11 +33,15 @@ public class Pokedex {
 
 		name.setText(pokemon.getName());
 		type1.setText(pokemon.getType1().name());
-		type2.setText(pokemon.getType2().name());
+		if(pokemon.getType2() == null) {
+			type2.setText("");
+		}else {
+			type1.setText(pokemon.getType2().name());
+		}
 		height.setText(pokemon.getHeight() + "");
 		weight.setText(pokemon.getWeight() + "");
 
-		Stats pokeStats = pokemon.getBaseStats();
+		Stats pokeStats = pokemon.getBaseStats(); 
 
 		hp.setText(pokeStats.getHp() + "");
 		atk.setText(pokeStats.getAttack() + "");

@@ -3,10 +3,15 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import application.model.appmodel.*;
+import application.model.moves.Move;
 import application.model.pokemon.*;
+import application.model.utils.CSVReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -134,15 +139,10 @@ public class SampleController {
 	@FXML
 	private Label labelWeight;
 
-	
-	Pokemon p1 = new Pokemon(1, "Bulbizar", 0, 200, 300, null, new Image("file:" + System.getProperty("user.dir") + "/scripts/sprites/1.png"), null, null, null, new Stats(2, 3, 3, 4, 5, 6),
-			null, null, null, null);
-	Pokemon p2 = new Pokemon(2, "Salamèche", 0, 800, 150, null, new Image("file:" + System.getProperty("user.dir") + "/scripts/sprites/100.png"), null, null, null, new Stats(6, 8, 4, 5, 6, 8),
-			null, null, null, null);
 
 	@FXML
 	private ListView<Pokemon> listPokemon = new ListView<>();
-	ObservableList<Pokemon> items = FXCollections.observableArrayList(p1, p2);
+	ObservableList<Pokemon> items = null;
 
 	@FXML
 	private AnchorPane root;
@@ -182,7 +182,26 @@ public class SampleController {
     }
 
 	@FXML
-	void initialize() {
+	void initialize() throws IOException {
+				
+		List<Map<String, List<String>>> dataPokemon = CSVReader.readCSV("scripts/pokemons.csv");
+		List<Map<String, List<String>>> dataMoves = CSVReader.readCSV("scripts/moves.csv");
+		
+		ArrayList<Move> existingMoves = new ArrayList<>();
+		for(Map<String, List<String>> data : dataMoves) {
+			Move mv = Move.generateFromMap(data);
+			if(mv != null) existingMoves.add(mv);
+		}
+		
+		
+		ArrayList<Pokemon> Pokedex = new ArrayList<>();
+		for(Map<String, List<String>> data : dataPokemon) {
+			Pokemon pk = Pokemon.generateFromMap(data, existingMoves);
+			if(pk != null) Pokedex.add(pk);
+		}
+		
+		
+		items = FXCollections.observableArrayList(Pokedex);
 
 		listPokemon.setItems(items);
 		listPokemon.getSelectionModel().select(0);

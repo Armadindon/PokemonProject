@@ -24,7 +24,7 @@ public class CSVReader {
 		String[] champs = line.split(",");
 		
 		while((line = reader.readLine()) != null) {
-			String[] values = line.split(",",champs.length); // On définit une limite au cas ou ou il y aurais des , a la fin des champs
+			String[] values = line.split(",",champs.length); // On dÃ©finit une limite au cas ou ou il y aurais des , a la fin des champs
 			Map<String, List<String>> dico = new HashMap<>();
 			
 			for (int i = 0; i < champs.length; i++) {

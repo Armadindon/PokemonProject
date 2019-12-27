@@ -48,10 +48,9 @@ public class Move {
 		this.description = description;
 	}
 	
-	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gère juste les atatques pour l'instant (classe damage)
+	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gï¿½re juste les atatques pour l'instant (classe damage)
 		if(data.get("move_category").get(0).equals("damage")) {
 			int id = Integer.parseInt(data.get("id").get(0));
-			System.out.println(id);
 			String name = data.get("name").get(0);
 			String moveCategory = data.get("move_category").get(0);
 			int accuracy = 100;
@@ -67,7 +66,7 @@ public class Move {
 			int power = Integer.parseInt(data.get("power").get(0));
 			int pp = Integer.parseInt(data.get("pp").get(0));
 			int priority = Integer.parseInt(data.get("priority").get(0));
-			Target target = Target.valueOf(data.get("target").get(0).replace("-", "").toUpperCase()); // on remplace les "-" car ils ne sont pas autorisés dans les noms de constantes (Caractère spécial)
+			Target target = Target.valueOf(data.get("target").get(0).replace("-", "").toUpperCase()); // on remplace les "-" car ils ne sont pas autorisï¿½s dans les noms de constantes (Caractï¿½re spï¿½cial)
 			String statChange = data.get("stat_changes").get(0);
 			String description = data.get("description").get(0);
 			return new Move(id, name, moveCategory, accuracy, effect, effectChance, damageClass, type, power, pp, priority, target, statChange, description);

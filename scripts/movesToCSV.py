@@ -48,7 +48,7 @@ if __name__ == "__main__":
                        "damage_class": jsonMove["damage_class"]["name"], "type": jsonMove["type"]["name"],
                        "power": power, "pp": jsonMove["pp"], "priority": jsonMove["priority"],
                        "target": jsonMove["target"]["name"], "stat_changes": stat_changes,
-                       "description": jsonMove["effect_entries"][0]["effect"]}
+                       "description": jsonMove["effect_entries"][0]["effect"].replace("\n","")}
 
             print(rowMove)
 
