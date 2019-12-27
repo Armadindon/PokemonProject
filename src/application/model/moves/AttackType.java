@@ -5,16 +5,8 @@ import java.util.EnumSet;
 public enum AttackType {
 	
 	PHYSICAL,
-	SPECIAL;
+	SPECIAL,
+	STATUS;
 	
-	
-	public static AttackType getType(String typeString) {
-		
-		for(AttackType type : AttackType.class.getEnumConstants()) {
-			if(type.name().equals(typeString.toUpperCase())) return type;
-		}
-		
-		return null;
-	}
 
 }

@@ -49,20 +49,25 @@ public class Move {
 	}
 	
 	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gère juste les atatques pour l'instant (classe damage)
-		
 		if(data.get("move_category").get(0).equals("damage")) {
 			int id = Integer.parseInt(data.get("id").get(0));
+			System.out.println(id);
 			String name = data.get("name").get(0);
 			String moveCategory = data.get("move_category").get(0);
-			int accuracy = Integer.parseInt(data.get("accuracy").get(0));
+			int accuracy = 100;
+			try {
+				accuracy = Integer.parseInt(data.get("accuracy").get(0)); //peut renvoyer un string vide
+			}catch(Exception e) {
+		
+			}
 			MoveSideEffect effect = null;
 			int effectChance = 0;
-			AttackType damageClass = AttackType.getType(data.get("damage_class").get(0));
-			Type type = Type.getTypeFromString(data.get("type").get(0));
+			AttackType damageClass = AttackType.valueOf(data.get("damage_class").get(0).toUpperCase());
+			Type type = Type.valueOf(data.get("type").get(0).toUpperCase());
 			int power = Integer.parseInt(data.get("power").get(0));
 			int pp = Integer.parseInt(data.get("pp").get(0));
 			int priority = Integer.parseInt(data.get("priority").get(0));
-			Target target = Target.getTargetFromString(data.get("target").get(0).replace("-", "")); // on remplace les "-" car ils ne sont pas autorisés dans les noms de constantes (Caractère spécial)
+			Target target = Target.valueOf(data.get("target").get(0).replace("-", "").toUpperCase()); // on remplace les "-" car ils ne sont pas autorisés dans les noms de constantes (Caractère spécial)
 			String statChange = data.get("stat_changes").get(0);
 			String description = data.get("description").get(0);
 			return new Move(id, name, moveCategory, accuracy, effect, effectChance, damageClass, type, power, pp, priority, target, statChange, description);
@@ -93,6 +98,15 @@ public class Move {
 		}
 
 		return res;
+	}
+	
+	@Override
+	public String toString() {
+		return id+" - "+name;
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 }

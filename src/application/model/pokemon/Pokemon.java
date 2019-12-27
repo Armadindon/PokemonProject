@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import application.model.items.Item;
 import application.model.moves.Move;
@@ -49,19 +50,36 @@ public class Pokemon {
 		this.status = status;
 	}
 	
-	public static Pokemon generateFromMap(Map<String, List<String>> data) {
+	public static Pokemon generateFromMap(Map<String, List<String>> data, ArrayList<Move> existingMoves) {
 		int id = Integer.parseInt(data.get("id").get(0));
 		String name  = data.get("name").get(0);
 		int baseExperience = Integer.parseInt(data.get("base_experience").get(0));
 		int height = Integer.parseInt(data.get("height").get(0));
 		int weight = Integer.parseInt(data.get("weight").get(0));
 		Item carriedItem = null;
-		Image frontSprite = new Image("file:" + System.getProperty("user.dir") + data.get("spriteFront").get(0));
-		Image backSprite = new Image("file:" + System.getProperty("user.dir") + data.get("spriteBack").get(0));
+		Image frontSprite = new Image("file:" + System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteFront").get(0).replace("/", File.separator));
+		Image backSprite = new Image("file:" + System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteBack").get(0).replace("/", File.separator));
 		
-		//Rajouter les Moves
+		ArrayList<Move> allPossiblesMoves = new ArrayList<>();
 		
-		return null;
+		for (String moveId : data.get("learnableMove")) {
+			Optional<Move> optMove = existingMoves.stream().filter(move -> move.getId() == Integer.parseInt(moveId)).findAny();
+			if(optMove.isPresent()) allPossiblesMoves.add(optMove.get());
+		}
+		
+		ArrayList<Move> learnedMoves = new ArrayList<>(4); // On apprend que 4 moves
+		Stats baseStats = new Stats(Integer.parseInt(data.get("speed").get(0)), Integer.parseInt(data.get("attack").get(0)), Integer.parseInt(data.get("spAttack").get(0)), Integer.parseInt(data.get("defense").get(0)), Integer.parseInt(data.get("spDefense").get(0)), Integer.parseInt(data.get("hp").get(0)));
+		Stats currentStats = new Stats(Integer.parseInt(data.get("speed").get(0)), Integer.parseInt(data.get("attack").get(0)), Integer.parseInt(data.get("spAttack").get(0)), Integer.parseInt(data.get("defense").get(0)), Integer.parseInt(data.get("spDefense").get(0)), Integer.parseInt(data.get("hp").get(0)));
+		Type type1 = Type.valueOf(data.get("type1").get(0).toUpperCase());
+		Type type2 = null;
+		if(!data.get("type2").get(0).equals("NULL")) {
+			type2 = Type.valueOf(data.get("type2").get(0).toUpperCase());
+		}
+		
+		Status status = null;
+		
+		
+		return new Pokemon(id, name, baseExperience, height, weight, carriedItem, frontSprite, backSprite, allPossiblesMoves, learnedMoves, baseStats, currentStats, type1, type2, status);
 	}
 
 	public int getId() {
@@ -86,6 +104,14 @@ public class Pokemon {
 
 	public Image getFrontSprite() {
 		return frontSprite;
+	}
+	
+	public Type getType1() {
+		return type1;
+	}
+	
+	public Type getType2() {
+		return type2;
 	}
 
 

@@ -4,14 +4,11 @@ public enum Target {
 	
 	USER,
 	SELECTEDPOKEMON,
-	ALLOPONENTS;
+	ALLOPPONENTS,
+	RANDOMOPPONENT,
+	ALLOTHERPOKEMON,
+	SPECIFICMOVE,
+	SELECTEDPOKEMONMEFIRST;
 	
-	
-	public static Target getTargetFromString(String targetString) {
-		for(Target t : Target.class.getEnumConstants()) {
-			if(t.name().equals(targetString.toUpperCase())) return t;
-		}
-		return null;
-	}
 
 }

@@ -1,7 +1,5 @@
 package application.model.pokemon;
 
-import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.HashMap;
 
 public enum Type {
@@ -25,24 +23,19 @@ public enum Type {
 	DARK(1,2,1,1,1,2,1,1,2,1,1,1,0,1,1,0.5,0.5,1),
 	FLYING(1,0.5,1,1,2,1,1,2,0.5,1,0.5,1,1,2,0,1,1,1);
 	
-	private EnumMap<Type, Double> multiplicator;
+	private static final class StaticList{ //Pour contourner l'erreur "Cannot refer to the static enum field within an initializer"
+		//on fait une liste pour conserver l'ordre
+		private static final String[] typeList = {"STEEL","FIGHTING","DRAGON","WATER","ELECTRIC","FAIRY","FIRE","ICE","BUG","NORMAL","GRASS","POISON","PSYCHIC","ROCK","GROUND","GHOST","DARK","FLYING"};
+	}
+	private final HashMap<String, Double> multiplicator;
 
 	private Type(double... powerAgainst) {
-		multiplicator = new EnumMap<>(Type.class);
+		multiplicator = new HashMap<>();
 		
-		Object[] types = EnumSet.allOf(Type.class).toArray();
-		for(int i = 0; i < types.length; i++) {
-			multiplicator.put((Type) types[i] , powerAgainst[i]);
+		for (int i = 0; i < StaticList.typeList.length; i++) {
+			multiplicator.put(StaticList.typeList[i],powerAgainst[i]);
 		}
 	}
 	
-	public static Type getTypeFromString(String typeString) {
-		for(Type type : Type.class.getEnumConstants()){
-			if(type.name().equals(typeString.toUpperCase())) return type;
-		}
-		return null;
-	}
-	
-
 
 }

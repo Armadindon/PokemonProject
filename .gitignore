@@ -2,3 +2,4 @@
 .metadata/
 build.fxbuild
 .classpath
+bin/*
