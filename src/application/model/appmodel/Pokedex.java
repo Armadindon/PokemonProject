@@ -32,8 +32,8 @@ public class Pokedex {
 
 
 		name.setText(pokemon.getName());
-		type1.setText("EAU");
-		type2.setText("PLANTE");
+		type1.setText(pokemon.getType1().name());
+		type2.setText(pokemon.getType2().name());
 		height.setText(pokemon.getHeight() + "");
 		weight.setText(pokemon.getWeight() + "");
 
