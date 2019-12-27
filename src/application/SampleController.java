@@ -1,6 +1,7 @@
 package application;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -8,7 +9,12 @@ import application.model.appmodel.*;
 import application.model.pokemon.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class SampleController {
 
@@ -152,6 +159,27 @@ public class SampleController {
 				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
 				labelSpeed, imgPokemon, textADescription);
 	}
+	
+	@FXML
+    void changeToPokeMove(ActionEvent event) throws IOException {
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("pokeMove.fxml"));
+		
+		Parent root = loader.load();
+		Scene moveScene = new Scene(root);
+		
+		// Acces to the controller of pokemove
+		
+		PokeMoveController controller = loader.getController();
+		
+		controller.initPokemonMove(listPokemon.getSelectionModel().getSelectedItem());
+		
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		
+		window.setScene(moveScene);
+		window.show();
+    }
 
 	@FXML
 	void initialize() {

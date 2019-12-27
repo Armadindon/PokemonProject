@@ -49,7 +49,7 @@
     </Label>
     <Label fx:id="labelPokemonName" font="$x1" layoutX="545.0" layoutY="34.0" text="Pokemon" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bfbfbf3b" height="183.0" layoutX="60.0" layoutY="417.0" stroke="BLACK" strokeType="INSIDE" width="635.0" />
-    <Button id="btnConfirmTeam" font="$x2" layoutX="60.0" layoutY="612.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="215.0" text="Cancel" />
+    <Button id="btnConfirmTeam" fx:id="btnCancel" font="$x2" layoutX="60.0" layoutY="612.0" mnemonicParsing="false" onAction="#changeToPokedexCancel" prefHeight="64.0" prefWidth="215.0" text="Cancel" />
     <Label id="labelPokemonName" fx:id="labelMoveName" font="$x1" layoutX="43.0" layoutY="114.0" text="Move" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9f9f9f18" height="190.0" layoutX="60.0" layoutY="176.0" stroke="BLACK" strokeType="INSIDE" width="201.0" />
     <VBox layoutX="61.0" layoutY="176.0" prefHeight="190.0" prefWidth="201.0">

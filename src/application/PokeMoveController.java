@@ -1,8 +1,16 @@
 package application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import application.model.pokemon.Pokemon;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -11,9 +19,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 
 public class PokeMoveController {
+	
+	private Pokemon selectedPokemon;
+	
+	public void initPokemonMove(Pokemon pokemon) {
+		selectedPokemon = pokemon;
+		
+		// changement des labels et infos de la page
+		
+		labelPokemonName.setText(pokemon.getName());
+		imgPokemon.setImage(pokemon.getFrontSprite());
+	}
 
     @FXML
     private ResourceBundle resources;
@@ -23,6 +43,9 @@ public class PokeMoveController {
 
     @FXML
     private Button btnAddPokemon;
+    
+    @FXML
+    private Button btnCancel;
 
     @FXML
     private ImageView imgPokemon;
@@ -84,6 +107,18 @@ public class PokeMoveController {
     @FXML
     private TextField textFSearch;
 
+    
+    @FXML
+    void changeToPokedexCancel(ActionEvent event) throws IOException {
+		
+		Parent root = FXMLLoader.load(getClass().getResource("interface.fxml"));
+		Scene moveScene = new Scene(root);
+		
+		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		
+		window.setScene(moveScene);
+		window.show();
+    }
 
     @FXML
     void showMoves(MouseEvent event) {

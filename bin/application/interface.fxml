@@ -157,7 +157,7 @@
       </children>
     </VBox>
     <ImageView fx:id="imgPokemon" fitHeight="144.0" fitWidth="144.0" layoutX="24.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true" />
-    <Button id="btnConfirmTeam" fx:id="btnAddPokemon" layoutX="284.0" layoutY="568.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="215.0" text="ADD POKEMON TO THE TEAM" />
+    <Button id="btnConfirmTeam" fx:id="btnAddPokemon" layoutX="284.0" layoutY="568.0" mnemonicParsing="false" onAction="#changeToPokeMove" prefHeight="64.0" prefWidth="215.0" text="ADD POKEMON TO THE TEAM" />
     <HBox id="listPokemon" alignment="CENTER" layoutX="732.0" layoutY="93.0" prefHeight="42.0" prefWidth="269.0" spacing="10.0" style="-fx-border-style: solid solid none solid;&#10;&#10;">
       <children>
         <Label text="Pokemons" />
