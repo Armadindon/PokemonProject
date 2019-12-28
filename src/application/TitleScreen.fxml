@@ -14,7 +14,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" onKeyPressed="#changeToGame" onMouseClicked="#changeToGame" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.TitleScreenController">
+<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" onKeyPressed="#changeToGameK" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.TitleScreenController">
   <children>
     <Label fx:id="labelTitle" alignment="CENTER" layoutX="341.0" layoutY="242.0" prefHeight="66.0" prefWidth="299.0" text="Projet java DUT INFO 2 UPEM">
       <font>
@@ -23,17 +23,17 @@
     </Label>
     <ImageView id="imgKwaaac" fx:id="imgPokemon" fitHeight="179.8854320919678" fitWidth="488.0000457763672" layoutX="256.0" layoutY="41.0" onMouseClicked="#changeToGame" pickOnBounds="true" preserveRatio="true" smooth="false" visible="true">
       <image>
-        <Image url="@Images/titleScreen/pokeScreen.png" />
+        <Image url="@Misc/Image/titleScreen/pokeScreen.png" />
       </image>
       <rotationAxis>
         <Point3D z="1.0" />
       </rotationAxis>
     </ImageView>
-    <AnchorPane fx:id="anchorPFade" layoutX="0.0" layoutY="294.0" onMouseClicked="#changeToGame" opacity="1.0" prefHeight="406.0" prefWidth="1000.0">
+    <AnchorPane fx:id="anchorPFade" layoutX="0.0" layoutY="294.0" opacity="1.0" prefHeight="406.0" prefWidth="1000.0">
       <children>
         <ImageView fx:id="imgKwaaac" fitHeight="122.0" fitWidth="94.6865658331774" layoutX="0.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@Images/titleScreen/Kwaaac.png" />
+            <Image url="@Misc/Image/titleScreen/Kwaaac.png" />
           </image>
         </ImageView>
         <Label id="labelKwaac" fx:id="labelKwaaac" alignment="CENTER" layoutX="0.0" layoutY="186.0" prefHeight="66.0" prefWidth="249.0" text="RODRIGUEZ Maxime">
@@ -44,7 +44,7 @@
         <Label fx:id="labelArmadindon" alignment="CENTER" font="$x1" layoutX="805.0" layoutY="186.0" prefHeight="66.0" prefWidth="194.6865234375" text="PERRIN Baptiste" />
         <ImageView id="imgKwaaac" fx:id="imgArmadindon" fitHeight="122.0" fitWidth="94.6865658331774" layoutX="903.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@Images/titleScreen/Kwaaac.png" />
+            <Image url="@Misc/Image/titleScreen/Kwaaac.png" />
           </image>
           <rotationAxis>
             <Point3D z="1.0" />

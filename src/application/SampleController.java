@@ -44,7 +44,6 @@ public class SampleController {
 	}
 
 	private void displayUpdate() {
-		System.out.println(imgPokemon.getId());
 		
 		pokedex.modelPokedexUpdate(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
 				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
