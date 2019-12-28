@@ -46,17 +46,23 @@ public class PokeMoveController {
 		selectedPokemon = pokedex.getPokemon();
 
 		// changement des labels et infos de la page
+		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 24));
 		textFPokemonName.setText(selectedPokemon.getName());
 		imgPokemon.setImage(selectedPokemon.getFrontSprite());
 
 		ArrayList<Move> allPossibleMoves = selectedPokemon.getAllPossiblesMoves();
-		System.out.println(allPossibleMoves);
 
 		items = FXCollections.observableArrayList(allPossibleMoves);
 
 		listMove.setItems(items);
 		listMove.getSelectionModel().select(0);
-		
+
+		for (Pokemon p : pokedex.getTeam()) {
+			for (Move m : p.getlearnedMoves()) {
+				System.out.println(m);
+			}
+		}
+
 		displayUpdate();
 	}
 
@@ -71,9 +77,24 @@ public class PokeMoveController {
 
 	@FXML
 	private Button btnCancel;
-	
-	@FXML 
+
+	@FXML
 	private Button btnChangeName;
+
+	@FXML
+	private Button btnMove0;
+
+	@FXML
+	private Button btnMove1;
+
+	@FXML
+	private Button btnMove2;
+
+	@FXML
+	private Button btnMove3;
+
+	@FXML
+	private Button btnAddMove;
 
 	@FXML
 	private ImageView imgPokemon;
@@ -89,9 +110,12 @@ public class PokeMoveController {
 
 	@FXML
 	private Label labelChangeName;
-	
+
 	@FXML
 	private Label labelMoveName;
+
+	@FXML
+	private Label labelMoveName0;
 
 	@FXML
 	private Label labelMoveName1;
@@ -103,10 +127,10 @@ public class PokeMoveController {
 	private Label labelMoveName3;
 
 	@FXML
-	private Label labelMoveName4;
+	private Label labelPP;
 
 	@FXML
-	private Label labelPP;
+	private Label labelPP0;
 
 	@FXML
 	private Label labelPP1;
@@ -118,13 +142,13 @@ public class PokeMoveController {
 	private Label labelPP3;
 
 	@FXML
-	private Label labelPP4;
-
-	@FXML
 	private TextField textFPokemonName = new TextField();
 
 	@FXML
 	private Label labelType;
+
+	@FXML
+	private VBox vboxMove0;
 
 	@FXML
 	private VBox vboxMove1;
@@ -134,9 +158,6 @@ public class PokeMoveController {
 
 	@FXML
 	private VBox vboxMove3;
-
-	@FXML
-	private VBox vboxMove4;
 
 	@FXML
 	private ListView<Move> listMove = new ListView<>();
@@ -150,11 +171,11 @@ public class PokeMoveController {
 
 	@FXML
 	private TextField textFSearch;
-	
+
 	@FXML
-    void changeName(ActionEvent event) {
+	void changeName(ActionEvent event) {
 		pokedex.updateName(textFPokemonName.getText(), labelChangeName);
-    }
+	}
 
 	@FXML
 	void changeToPokedexCancel(ActionEvent event) throws IOException {
@@ -207,12 +228,21 @@ public class PokeMoveController {
 	private void displayUpdate() {
 		pokedex.modelMovesUpdate(listMove.getSelectionModel().getSelectedItem(), labelMoveName, labelType,
 				labelAccuracy, labelPP, labelEffect, textADescriptionMove,
-				new ArrayList<VBox>(Arrays.asList(vboxMove1, vboxMove2, vboxMove3, vboxMove4)), btnConfirm);
+				new ArrayList<VBox>(Arrays.asList(vboxMove0, vboxMove1, vboxMove2, vboxMove3)),
+				new ArrayList<Button>(Arrays.asList(btnMove0, btnMove1, btnMove2, btnMove3)), btnConfirm);
 	}
-	
+
 	@FXML
-	public void initialise() {
-		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 42));
+	private void addMove(ActionEvent event) {
+		pokedex.addMovePokedex(listMove.getSelectionModel().getSelectedItem(), labelError);
+		displayUpdate();
+	}
+
+	@FXML
+	private void removeMove(ActionEvent event) {
+		Button button = (Button) event.getSource();
+		pokedex.removeMovePokedex(Integer.parseInt(button.getId().replace("btnMove", "")));
+		displayUpdate();
 	}
 
 }

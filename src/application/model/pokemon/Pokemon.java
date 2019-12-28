@@ -158,6 +158,21 @@ public class Pokemon {
 		this.status = status;
 	}
 	
+	public boolean addMoveToLearnedMoves(Move move) {
+		if(learnedMoves.size() < 4) {
+			if(learnedMoves.contains(move)) {
+				return false;
+			}
+			learnedMoves.add(move);
+			
+		}
+		return false;
+	}
+	
+	public void removeMoveFromLearnedMoves(int moveIndex) {
+		learnedMoves.remove(moveIndex);
+	}
+	
 	
 	
 }

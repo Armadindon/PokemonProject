@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class Pokedex {
-
+	
 	private Pokemon pokemon;
 	private ArrayList<Pokemon> team = new ArrayList<>(6); // Only 6 pokemons
 
@@ -45,16 +45,26 @@ public class Pokedex {
 	public int getTeamSize() {
 		return team.size();
 	}
-	
+
 	public void updateName(String name, Label labelChangeName) {
-		pokemon.setName(name);
-		
-		FadeTransition ft = new FadeTransition(new Duration(4_000), labelChangeName);
+		if (name.length() > 15) {
+			labelChangeName.setText("Name too long");
+
+		} else if (name.contains(":")) {
+			// TODO Mettre une vrai vérification sur les ponctuations
+			labelChangeName.setText("Wrong name");
+
+		} else {
+			labelChangeName.setText("Name changed !");
+			pokemon.setName(name);
+		}
+
+		FadeTransition ft = new FadeTransition(new Duration(3_000), labelChangeName);
 		ft.setFromValue(1.0);
 		ft.setToValue(0.0);
-		
+
 		ft.play();
-		
+
 	}
 
 	/**
@@ -122,8 +132,9 @@ public class Pokedex {
 	}
 
 	public void modelMovesUpdate(Move move, Label name, Label type, Label accuracy, Label pp, Label effect,
-			TextArea description, ArrayList<VBox> moves, Button confirmButton) {
-
+			TextArea description, ArrayList<VBox> moves, ArrayList<Button> delButtons, Button confirmButton) {
+		
+		ArrayList<Move> learnedMoves = pokemon.getlearnedMoves();
 		name.setText(move.getName());
 		type.setText(move.getType().name());
 		accuracy.setText(Integer.toString(move.getAccuracy()));
@@ -131,24 +142,43 @@ public class Pokedex {
 		effect.setText(move.getEffectToString());
 		description.setText(move.getDescription());
 
-		if (0 != pokemon.getlearnedMoves().size()) {
+		if (0 != learnedMoves.size()) {
 			confirmButton.setDisable(false);
 
 			int i;
-			for (i = 0; i < team.size(); i++) {
-				((Label) moves.get(i).getChildren().get(0)).setText(team.get(i).getName());
+			for (i = 0; i < learnedMoves.size(); i++) {
+				((Label) moves.get(i).getChildren().get(0)).setText(learnedMoves.get(i).getName());
+				((Label) moves.get(i).getChildren().get(1)).setText(Integer.toString((learnedMoves.get(i).getPp())));
 				moves.get(i).setVisible(true);
+				delButtons.get(i).setVisible(true);
 			}
 
-			for (i = team.size(); i < 6; i++) {
+			for (i = learnedMoves.size(); i < 4; i++) {
 				moves.get(i).setVisible(false);
+				delButtons.get(i).setVisible(false);
 			}
 
 		} else {
-			//TODO retirer le com, pour des tests
+			// TODO retirer le com pour desactiver le boutton, retire pour des tests
 			// confirmButton.setDisable(true);
 			moves.get(0).setVisible(false);
+			delButtons.get(0).setVisible(false);
 		}
 	}
+	
+	public void addMovePokedex(Move move, Label labelError) {
+		if(!pokemon.addMoveToLearnedMoves(move)){
+			labelError.setText("Oops you cannot add this move");
+			
+			FadeTransition ft = new FadeTransition(new Duration(3_000), labelError);
+			ft.setFromValue(1.0);
+			ft.setToValue(0.0);
 
+			ft.play();
+		}
+	}
+	
+	public void removeMovePokedex(int moveIndex) {
+		pokemon.removeMoveFromLearnedMoves(moveIndex);
+	}
 }

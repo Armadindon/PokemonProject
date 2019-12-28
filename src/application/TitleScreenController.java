@@ -20,7 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -116,11 +115,10 @@ public class TitleScreenController {
 
 	@FXML
 	void initialize() {
-		
 		String path = System.getProperty("user.dir") + "/src/application/Misc/Music/Pokemon_Red_&_Blue_OST/01 - Opening.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mp = new MediaPlayer(media);
-        mp.setAutoPlay(true);
+        // mp.setAutoPlay(true);
         mp.setCycleCount(MediaPlayer.INDEFINITE);
 
 		// Duration time while the sreen display void

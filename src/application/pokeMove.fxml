@@ -83,7 +83,7 @@
       </children>
     </VBox>
     <TextArea id="textADescription" fx:id="textADescriptionMove" layoutX="300.0" layoutY="176.0" prefHeight="190.0" prefWidth="395.0" wrapText="true" />
-    <Button font="$x3" layoutX="582.0" layoutY="379.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="113.0" text="Add move" />
+    <Button fx:id="btnAddMove" font="$x3" layoutX="582.0" layoutY="379.0" mnemonicParsing="false" onAction="#addMove" prefHeight="33.0" prefWidth="113.0" text="Add move" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" height="72.0" layoutX="70.0" layoutY="427.0" stroke="BLACK" strokeType="INSIDE" width="286.0">
       <fill>
         <Color blue="0.749" green="0.749" opacity="0.231" red="0.749" fx:id="x4" />
@@ -92,38 +92,42 @@
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x4" height="72.0" layoutX="399.0" layoutY="427.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x4" height="72.0" layoutX="70.0" layoutY="518.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x4" height="72.0" layoutX="399.0" layoutY="518.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
-    <Label fx:id="labelError" layoutX="61.0" layoutY="395.0" prefWidth="474.0" text="LabelError" visible="true" />
-    <VBox fx:id="vboxMove1" alignment="CENTER" layoutX="70.0" layoutY="427.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
+    <Label fx:id="labelError" layoutX="61.0" layoutY="395.0" prefWidth="474.0" text="LabelError" visible="false" />
+    <VBox id="vboxMove1" fx:id="vboxMove0" alignment="CENTER" layoutX="70.0" layoutY="427.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
       <children>
-        <Label fx:id="labelMoveName1" text="??">
+        <Label id="labelMoveName1" fx:id="labelMoveName0" text="??">
           <font>
             <Font size="18.0" fx:id="x5" />
           </font>
         </Label>
-        <Label fx:id="labelPP1" text="??" />
+        <Label id="labelPP1" fx:id="labelPP0" text="??" />
       </children>
     </VBox>
-    <VBox fx:id="vboxMove2" alignment="CENTER" layoutX="399.0" layoutY="427.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
+    <VBox id="vboxMove2" fx:id="vboxMove1" alignment="CENTER" layoutX="399.0" layoutY="427.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
+      <children>
+        <Label fx:id="labelMoveName1" font="$x5" text="??" />
+        <Label id="labelPP2" fx:id="labelPP1" text="??" />
+      </children>
+    </VBox>
+    <VBox id="vboxMove3" fx:id="vboxMove2" alignment="CENTER" layoutX="70.0" layoutY="518.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
       <children>
         <Label id="labelMoveName1" fx:id="labelMoveName2" font="$x5" text="??" />
-        <Label fx:id="labelPP2" text="??" />
+        <Label id="labelPP3" fx:id="labelPP2" text="??" />
       </children>
     </VBox>
-    <VBox fx:id="vboxMove3" alignment="CENTER" layoutX="70.0" layoutY="518.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
+    <VBox id="vboxMove4" fx:id="vboxMove3" alignment="CENTER" layoutX="399.0" layoutY="518.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
       <children>
         <Label id="labelMoveName1" fx:id="labelMoveName3" font="$x5" text="??" />
-        <Label fx:id="labelPP3" text="??" />
-      </children>
-    </VBox>
-    <VBox fx:id="vboxMove4" alignment="CENTER" layoutX="399.0" layoutY="518.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="false">
-      <children>
-        <Label id="labelMoveName1" fx:id="labelMoveName4" font="$x5" text="??" />
-        <Label id="labelMoveName4" fx:id="labelPP4" prefWidth="13.9998779296875" text="??" />
+        <Label id="labelMoveName4" fx:id="labelPP3" prefWidth="19.0" text="??" />
       </children>
     </VBox>
     <Label id="labelPokemonName" fx:id="labelMoveName" font="$x1" layoutX="61.0" layoutY="120.0" text="Move" />
-    <TextField fx:id="textFPokemonName" editable="true" layoutX="496.0" layoutY="24.0" prefHeight="49.0" prefWidth="286.0" text="" />
+    <TextField fx:id="textFPokemonName" editable="true" layoutX="496.0" layoutY="24.0" maxHeight="286.0" prefHeight="49.0" prefWidth="286.0" text="" />
     <Button fx:id="btnChangeName" cancelButton="false" defaultButton="false" font="$x3" layoutX="496.0" layoutY="77.0" minHeight="22.0" mnemonicParsing="false" onAction="#changeName" prefHeight="30.0" prefWidth="145.0" text="Change name" visible="true" />
-    <Label fx:id="labelChangeName" layoutX="657.0" layoutY="84.0" prefWidth="125.0" text="Name Changed !" visible="true" />
+    <Label fx:id="labelChangeName" layoutX="657.0" layoutY="84.0" prefWidth="125.0" text="Name Changed !" visible="false" />
+    <Button fx:id="btnMove0" layoutX="276.0" layoutY="466.0" mnemonicParsing="false" onAction="#removeMove" text="Remove" visible="false" />
+    <Button fx:id="btnMove1" layoutX="603.0" layoutY="466.0" mnemonicParsing="false" onAction="#removeMove" text="Remove" visible="false" />
+    <Button fx:id="btnMove2" layoutX="276.0" layoutY="562.0" mnemonicParsing="false" onAction="#removeMove" text="Remove" visible="false" />
+    <Button fx:id="btnMove3" layoutX="603.0" layoutY="562.0" mnemonicParsing="false" onAction="#removeMove" text="Remove" visible="false" />
   </children>
 </AnchorPane>
