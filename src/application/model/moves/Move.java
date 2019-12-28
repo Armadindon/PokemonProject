@@ -47,17 +47,18 @@ public class Move {
 		this.statChange = parseStatChange(statChange);
 		this.description = description;
 	}
-	
-	public static Move generateFromMap(Map<String, List<String>> data) { // on ne g�re juste les atatques pour l'instant (classe damage)
-		if(data.get("move_category").get(0).equals("damage")) {
+
+	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gere juste les atatques pour l'instant
+																			// (classe damage)
+		if (data.get("move_category").get(0).equals("damage")) {
 			int id = Integer.parseInt(data.get("id").get(0));
 			String name = data.get("name").get(0);
 			String moveCategory = data.get("move_category").get(0);
 			int accuracy = 100;
 			try {
-				accuracy = Integer.parseInt(data.get("accuracy").get(0)); //peut renvoyer un string vide
-			}catch(Exception e) {
-		
+				accuracy = Integer.parseInt(data.get("accuracy").get(0)); // peut renvoyer un string vide
+			} catch (Exception e) {
+
 			}
 			MoveSideEffect effect = null;
 			int effectChance = 0;
@@ -66,12 +67,45 @@ public class Move {
 			int power = Integer.parseInt(data.get("power").get(0));
 			int pp = Integer.parseInt(data.get("pp").get(0));
 			int priority = Integer.parseInt(data.get("priority").get(0));
-			Target target = Target.valueOf(data.get("target").get(0).replace("-", "").toUpperCase()); // on remplace les "-" car ils ne sont pas autoris�s dans les noms de constantes (Caract�re sp�cial)
+
+			// on remplace les "-" car ils ne sont pas autoris�s dans les noms de constantes
+			// (Caract�re sp�cial)
+			Target target = Target.valueOf(data.get("target").get(0).replace("-", "").toUpperCase());
 			String statChange = data.get("stat_changes").get(0);
 			String description = data.get("description").get(0);
-			return new Move(id, name, moveCategory, accuracy, effect, effectChance, damageClass, type, power, pp, priority, target, statChange, description);
+			return new Move(id, name, moveCategory, accuracy, effect, effectChance, damageClass, type, power, pp,
+					priority, target, statChange, description);
 		}
 		return null;
+	}
+	
+
+	public int getId() {
+		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public int getAccuracy() {
+		return accuracy;
+	}
+
+	public String getEffectToString() {
+		return "none";
+	}
+
+	public int getPp() {
+		return pp;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+	
+	public Type getType() {
+		return type;
 	}
 
 	/**
@@ -98,14 +132,9 @@ public class Move {
 
 		return res;
 	}
-	
+
 	@Override
 	public String toString() {
-		return id+" - "+name;
+		return id + " - " + name;
 	}
-	
-	public int getId() {
-		return id;
-	}
-
 }

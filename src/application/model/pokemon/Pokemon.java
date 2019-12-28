@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import application.model.items.Item;
@@ -113,11 +114,42 @@ public class Pokemon {
 	public Type getType2() {
 		return type2;
 	}
-
+	
+	public ArrayList<Move> getAllPossiblesMoves(){
+		return allPossiblesMoves;
+	}
+	
+	public ArrayList<Move> getlearnedMoves(){
+		return learnedMoves;
+	}
 
 	@Override
 	public String toString() {
 		return id + " - " + name;
 	}
+
+	
+	// TODO: Mettre à jour le equals et hashcode quant le eq&hash des items et stats seront fait
+	@Override
+	public int hashCode() {
+		return Objects.hash(allPossiblesMoves, backSprite, baseExperience, baseStats, carriedItem, currentStats,
+				frontSprite, height, id, learnedMoves, name, status, type1, type2, weight);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Pokemon))
+			return false;
+		Pokemon other = (Pokemon) obj;
+		return Objects.equals(allPossiblesMoves, other.allPossiblesMoves)
+				&& Objects.equals(backSprite, other.backSprite) && baseExperience == other.baseExperience
+				&& Objects.equals(baseStats, other.baseStats) && Objects.equals(carriedItem, other.carriedItem)
+				&& Objects.equals(currentStats, other.currentStats) && Objects.equals(frontSprite, other.frontSprite)
+				&& height == other.height && id == other.id && Objects.equals(learnedMoves, other.learnedMoves)
+				&& Objects.equals(name, other.name) && status == other.status && type1 == other.type1
+				&& type2 == other.type2 && weight == other.weight;
+	}
+	
+	
 	
 }

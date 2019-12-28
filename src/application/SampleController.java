@@ -1,14 +1,14 @@
 package application;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import application.model.appmodel.*;
+import application.model.appmodel.Pokedex;
 import application.model.moves.Move;
 import application.model.pokemon.*;
 import application.model.utils.CSVReader;
@@ -20,6 +20,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -34,8 +36,21 @@ import javafx.stage.Stage;
 
 public class SampleController {
 
-	private Pokedex appModel = new Pokedex();
-	private Label lbPkmName;
+	private Pokedex pokedex = new Pokedex();
+
+	public void initSampleController(Pokedex pokedex) {
+		this.pokedex = pokedex;
+		listPokemon.getSelectionModel().select(pokedex.getPokemon().getId() - 1);
+		displayUpdate();
+	}
+
+	private void displayUpdate() {
+		pokedex.modelPokedexUpdate(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
+				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
+				labelSpeed, imgPokemon, textADescription,
+				new ArrayList<VBox>(Arrays.asList(VBoxTeam1, VBoxTeam2, VBoxTeam3, VBoxTeam4, VBoxTeam5, VBoxTeam6)),
+				btnConfirmTeam);
+	}
 
 	@FXML
 	private ResourceBundle resources;
@@ -139,7 +154,6 @@ public class SampleController {
 	@FXML
 	private Label labelWeight;
 
-
 	@FXML
 	private ListView<Pokemon> listPokemon = new ListView<>();
 	ObservableList<Pokemon> items = null;
@@ -154,62 +168,79 @@ public class SampleController {
 	private TextField textFSearch;
 
 	@FXML
-	void showPoke(MouseEvent event) {
-		appModel.showPokemon(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
-				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
-				labelSpeed, imgPokemon, textADescription);
+	void deletePokemon(ActionEvent event) {
+		Button button = (Button) event.getSource();
+		pokedex.removePokemon(Integer.parseInt(button.getId().replace("btnDelTeam", "")) - 1);
+		displayUpdate();
 	}
-	
+
 	@FXML
-    void changeToPokeMove(ActionEvent event) throws IOException {
-		
+	void showPoke(MouseEvent event) {
+		displayUpdate();
+	}
+
+	@FXML
+	void changeToPokeMove(ActionEvent event) throws IOException {
+		if (pokedex.getTeamSize() == 6) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Warning");
+			alert.setHeaderText(null);
+			alert.setContentText("Your team is full !");
+
+			alert.show();
+
+			return;
+		}
+
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("pokeMove.fxml"));
-		
+
 		Parent root = loader.load();
 		Scene moveScene = new Scene(root);
-		
+
 		// Acces to the controller of pokemove
-		
+
 		PokeMoveController controller = loader.getController();
 		
-		controller.initPokemonMove(listPokemon.getSelectionModel().getSelectedItem());
+		pokedex.setPokemon(listPokemon.getSelectionModel().getSelectedItem());
 		
-		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		controller.initPokemonMove(pokedex);
 		
+		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
 		window.setScene(moveScene);
 		window.show();
-    }
+	}
 
 	@FXML
 	void initialize() throws IOException {
-				
+		
+		
+
 		List<Map<String, List<String>>> dataPokemon = CSVReader.readCSV("scripts/pokemons.csv");
 		List<Map<String, List<String>>> dataMoves = CSVReader.readCSV("scripts/moves.csv");
-		
+
 		ArrayList<Move> existingMoves = new ArrayList<>();
-		for(Map<String, List<String>> data : dataMoves) {
+		for (Map<String, List<String>> data : dataMoves) {
 			Move mv = Move.generateFromMap(data);
-			if(mv != null) existingMoves.add(mv);
+			if (mv != null)
+				existingMoves.add(mv);
 		}
-		
-		
-		ArrayList<Pokemon> Pokedex = new ArrayList<>();
-		for(Map<String, List<String>> data : dataPokemon) {
+
+		ArrayList<Pokemon> pokeList = new ArrayList<>();
+		for (Map<String, List<String>> data : dataPokemon) {
 			Pokemon pk = Pokemon.generateFromMap(data, existingMoves);
-			if(pk != null) Pokedex.add(pk);
+			if (pk != null)
+				pokeList.add(pk);
 		}
 		
-		
-		items = FXCollections.observableArrayList(Pokedex);
+
+		items = FXCollections.observableArrayList(pokeList);
 
 		listPokemon.setItems(items);
 		listPokemon.getSelectionModel().select(0);
-	
 
-		appModel.showPokemon(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
-				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
-				labelSpeed, imgPokemon, textADescription);
+		displayUpdate();
 	}
 
 }

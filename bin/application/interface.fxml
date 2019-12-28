@@ -21,12 +21,12 @@
         <ListView fx:id="listPokemon" onMouseClicked="#showPoke" prefHeight="551.0" prefWidth="269.0" VBox.vgrow="ALWAYS" />
       </children>
     </VBox>
-    <HBox alignment="CENTER_LEFT" layoutX="0.0" prefHeight="104.35000610351562" prefWidth="1000.0" spacing="25.0" AnchorPane.topAnchor="0.0">
+    <HBox alignment="CENTER_LEFT" layoutX="0.0" prefHeight="86.64999389648438" prefWidth="1000.0" spacing="30.0" AnchorPane.topAnchor="0.0">
       <children>
-        <VBox fx:id="VBoxTeam1" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+        <VBox fx:id="VBoxTeam1" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" visible="false">
           <children>
             <Label fx:id="labelTeamName1" text="PokemonName" />
-            <Button fx:id="btnDelTeam1" mnemonicParsing="false" text="X" />
+            <Button fx:id="btnDelTeam1" mnemonicParsing="false" onAction="#deletePokemon" text="X" />
           </children>
           <padding>
             <Insets />
@@ -35,52 +35,52 @@
             <Insets left="10.0" />
           </HBox.margin>
         </VBox>
-        <VBox fx:id="VBoxTeam2" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+        <VBox fx:id="VBoxTeam2" alignment="CENTER" prefHeight="91.0" prefWidth="100.0" spacing="15.0" visible="false">
           <children>
             <Label fx:id="labelTeamName2" text="PokemonName" />
-            <Button fx:id="btnDelTeam2" mnemonicParsing="false" text="X" />
+            <Button fx:id="btnDelTeam2" mnemonicParsing="false" onAction="#deletePokemon" text="X" />
           </children>
           <padding>
             <Insets />
           </padding>
         </VBox>
-        <VBox fx:id="VBoxTeam3" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+        <VBox fx:id="VBoxTeam3" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" visible="false">
           <children>
             <Label fx:id="labelTeamName3" text="PokemonName" />
-            <Button fx:id="btnDelTeam3" mnemonicParsing="false" text="X" />
+            <Button fx:id="btnDelTeam3" mnemonicParsing="false" onAction="#deletePokemon" text="X" />
           </children>
           <padding>
             <Insets />
           </padding>
         </VBox>
-        <VBox fx:id="VBoxTeam4" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+        <VBox fx:id="VBoxTeam4" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" visible="false">
           <children>
             <Label fx:id="labelTeamName4" text="PokemonName" />
-            <Button fx:id="btnDelTeam4" mnemonicParsing="false" text="X" />
+            <Button fx:id="btnDelTeam4" mnemonicParsing="false" onAction="#deletePokemon" text="X" />
           </children>
           <padding>
             <Insets />
           </padding>
         </VBox>
-        <VBox fx:id="VBoxTeam5" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+        <VBox fx:id="VBoxTeam5" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" visible="false">
           <children>
             <Label fx:id="labelTeamName5" text="PokemonName" />
-            <Button fx:id="btnDelTeam5" mnemonicParsing="false" text="X" />
+            <Button fx:id="btnDelTeam5" mnemonicParsing="false" onAction="#deletePokemon" text="X" />
           </children>
           <padding>
             <Insets />
           </padding>
         </VBox>
-        <VBox fx:id="VBoxTeam6" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+        <VBox fx:id="VBoxTeam6" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" visible="false">
           <children>
             <Label fx:id="labelTeamName6" text="PokemonName" />
-            <Button fx:id="btnDelTeam6" mnemonicParsing="false" text="X" />
+            <Button fx:id="btnDelTeam6" mnemonicParsing="false" onAction="#deletePokemon" text="X" />
           </children>
           <padding>
             <Insets />
           </padding>
         </VBox>
-        <Button fx:id="btnConfirmTeam" mnemonicParsing="false" prefHeight="32.0" text="Confirm the team">
+        <Button fx:id="btnConfirmTeam" disable="true" mnemonicParsing="false" prefHeight="32.0" text="Confirm the team">
           <HBox.margin>
             <Insets left="70.0" />
           </HBox.margin>
@@ -114,7 +114,7 @@
     <Label fx:id="labelHeight" font="$x1" layoutX="291.0" layoutY="211.0" minHeight="14.0" prefHeight="32.0" prefWidth="67.0" text="xxx m" />
     <Label font="$x1" layoutX="206.0" layoutY="253.0" minHeight="14.0" prefHeight="32.0" prefWidth="67.0" text="Weight" />
     <Label fx:id="labelWeight" font="$x1" layoutX="291.0" layoutY="253.0" minHeight="14.0" prefHeight="32.0" prefWidth="67.0" text="xxx kg" />
-    <TextArea fx:id="textADescription" layoutX="24.0" layoutY="320.0" prefHeight="205.0" prefWidth="448.0" wrapText="true" />
+    <TextArea fx:id="textADescription" disable="false" layoutX="24.0" layoutY="320.0" prefHeight="205.0" prefWidth="448.0" wrapText="true" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x2" height="291.0" layoutX="500.0" layoutY="169.0" stroke="BLACK" strokeType="INSIDE" width="201.0" />
     <VBox layoutX="501.0" layoutY="169.0" prefHeight="291.0" prefWidth="201.0">
       <children>
