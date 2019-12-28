@@ -150,6 +150,10 @@ public class Pokemon {
 				&& type2 == other.type2 && weight == other.weight;
 	}
 	
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
 	
 	
 }

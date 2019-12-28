@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import application.model.pokemon.Status;
 import application.model.pokemon.Type;
 
 public class Move {
@@ -49,19 +50,33 @@ public class Move {
 	}
 
 	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gere juste les atatques pour l'instant
-																			// (classe damage)
-		if (data.get("move_category").get(0).equals("damage")) {
+		
+		String moveCategory = data.get("move_category").get(0);
+		if (moveCategory.equals("damage") || moveCategory.equals("damage+ailment") || moveCategory.equals("ailment")) {
 			int id = Integer.parseInt(data.get("id").get(0));
 			String name = data.get("name").get(0);
-			String moveCategory = data.get("move_category").get(0);
-			int accuracy = 100;
-			try {
-				accuracy = Integer.parseInt(data.get("accuracy").get(0)); // peut renvoyer un string vide
-			} catch (Exception e) {
+			int accuracy = 100;//si la prochaine instruction n'a pas de données
+			if(!data.get("accuracy").get(0).equals(""))accuracy = Integer.parseInt(data.get("accuracy").get(0)); // peut renvoyer un string vide
+			
+			MoveSideEffect effect;
+			int effectChance;
+			
+			if(moveCategory.equals("damage+ailment") || moveCategory.equals("ailment")) {
+				try {
+					effect = (p1,p2)->{
+						p1.setStatus(Status.valueOf(data.get("effect_ailment").get(0).toUpperCase()));
+					};
+					effectChance = Integer.parseInt(data.get("effect_chance").get(0));
+				}catch(Exception e) {
+					System.err.println(e);
+					return null; // Si le effect_ailment n'est pas connu ou pas encore programmé on ne rajoute pas le move (exemple : Trap, Confusion, etc.)
+				}
 
+			}else {
+				effect = null;
+				effectChance = 0;
 			}
-			MoveSideEffect effect = null;
-			int effectChance = 0;
+			
 			AttackType damageClass = AttackType.valueOf(data.get("damage_class").get(0).toUpperCase());
 			Type type = Type.valueOf(data.get("type").get(0).toUpperCase());
 			int power = Integer.parseInt(data.get("power").get(0));
