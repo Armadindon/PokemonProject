@@ -15,7 +15,7 @@ import javafx.scene.image.Image;
 
 public class Pokemon {
 	private final int id;
-	private String name;
+	private final String name;
 	private final int baseExperience;
 	private final int height;
 	private final int weight;
@@ -89,10 +89,6 @@ public class Pokemon {
 
 	public String getName() {
 		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public int getHeight() {
