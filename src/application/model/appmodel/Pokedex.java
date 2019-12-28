@@ -47,8 +47,13 @@ public class Pokedex {
 	}
 	
 	public void updateName(String name, Label labelChangeName) {
-		labelChangeName.setText("Name changed !");
+		pokemon.setName(name);
+		
 		FadeTransition ft = new FadeTransition(new Duration(4_000), labelChangeName);
+		ft.setFromValue(1.0);
+		ft.setToValue(0.0);
+		
+		ft.play();
 		
 	}
 

@@ -46,6 +46,7 @@ public class PokeMoveController {
 		selectedPokemon = pokedex.getPokemon();
 
 		// changement des labels et infos de la page
+		textFPokemonName.setText(selectedPokemon.getName());
 		imgPokemon.setImage(selectedPokemon.getFrontSprite());
 
 		ArrayList<Move> allPossibleMoves = selectedPokemon.getAllPossiblesMoves();
@@ -70,6 +71,9 @@ public class PokeMoveController {
 
 	@FXML
 	private Button btnCancel;
+	
+	@FXML 
+	private Button btnChangeName;
 
 	@FXML
 	private ImageView imgPokemon;
@@ -117,7 +121,7 @@ public class PokeMoveController {
 	private Label labelPP4;
 
 	@FXML
-	private TextField textFPokemonName;
+	private TextField textFPokemonName = new TextField();
 
 	@FXML
 	private Label labelType;
@@ -149,8 +153,7 @@ public class PokeMoveController {
 	
 	@FXML
     void changeName(ActionEvent event) {
-		
-		
+		pokedex.updateName(textFPokemonName.getText(), labelChangeName);
     }
 
 	@FXML
