@@ -73,8 +73,6 @@ public class TitleScreenController {
 
 	private void goToGame(Event event) throws IOException {
 		
-		mp.stop();
-		
 		Parent scene = FXMLLoader.load(getClass().getResource("interface.fxml"));
 		Scene moveScene = new Scene(scene);
 
@@ -122,7 +120,8 @@ public class TitleScreenController {
 		String path = System.getProperty("user.dir") + "/src/application/Misc/Music/Pokemon_Red_&_Blue_OST/01 - Opening.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mp = new MediaPlayer(media);
-        mp.play();
+        mp.setAutoPlay(true);
+        mp.setCycleCount(MediaPlayer.INDEFINITE);
 
 		// Duration time while the sreen display void
 

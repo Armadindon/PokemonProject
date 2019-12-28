@@ -29,6 +29,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class PokeMoveController {
@@ -44,8 +46,6 @@ public class PokeMoveController {
 		selectedPokemon = pokedex.getPokemon();
 
 		// changement des labels et infos de la page
-
-		labelPokemonName.setText(selectedPokemon.getName());
 		imgPokemon.setImage(selectedPokemon.getFrontSprite());
 
 		ArrayList<Move> allPossibleMoves = selectedPokemon.getAllPossiblesMoves();
@@ -84,6 +84,9 @@ public class PokeMoveController {
 	private Label labelError;
 
 	@FXML
+	private Label labelChangeName;
+	
+	@FXML
 	private Label labelMoveName;
 
 	@FXML
@@ -114,7 +117,7 @@ public class PokeMoveController {
 	private Label labelPP4;
 
 	@FXML
-	private Label labelPokemonName;
+	private TextField textFPokemonName;
 
 	@FXML
 	private Label labelType;
@@ -143,6 +146,12 @@ public class PokeMoveController {
 
 	@FXML
 	private TextField textFSearch;
+	
+	@FXML
+    void changeName(ActionEvent event) {
+		
+		
+    }
 
 	@FXML
 	void changeToPokedexCancel(ActionEvent event) throws IOException {
@@ -196,6 +205,11 @@ public class PokeMoveController {
 		pokedex.modelMovesUpdate(listMove.getSelectionModel().getSelectedItem(), labelMoveName, labelType,
 				labelAccuracy, labelPP, labelEffect, textADescriptionMove,
 				new ArrayList<VBox>(Arrays.asList(vboxMove1, vboxMove2, vboxMove3, vboxMove4)), btnConfirm);
+	}
+	
+	@FXML
+	public void initialise() {
+		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 42));
 	}
 
 }

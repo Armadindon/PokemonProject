@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 import application.model.pokemon.Stats;
+import javafx.animation.FadeTransition;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class Pokedex {
 
@@ -42,6 +44,12 @@ public class Pokedex {
 
 	public int getTeamSize() {
 		return team.size();
+	}
+	
+	public void updateName(String name, Label labelChangeName) {
+		labelChangeName.setText("Name changed !");
+		FadeTransition ft = new FadeTransition(new Duration(4_000), labelChangeName);
+		
 	}
 
 	/**
