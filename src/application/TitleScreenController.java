@@ -3,8 +3,15 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
+import application.model.appmodel.TeamBuilder;
+import application.model.moves.Move;
+import application.model.pokemon.Pokemon;
+import application.model.utils.CSVReader;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.Event;
@@ -23,9 +30,11 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class TitleScreenController {
+public class TitleScreenController extends AbstractTeamBuilderController {
 	
 	private MediaPlayer mp;
+	
+	private TeamBuilder tb;
 
 	@FXML
 	private ResourceBundle resources;
@@ -75,17 +84,13 @@ public class TitleScreenController {
 	}
 
 	private void goToGame(Event event) throws IOException {
+
+		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 		
-		Parent scene = FXMLLoader.load(getClass().getResource("interface.fxml"));
-		Scene moveScene = new Scene(scene);
-
-		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-		window.setScene(moveScene);
-		window.show();
 	}
 
-	private void pokeFade() {
+	@Override
+	public void displayUpdate() {
 		FadeTransition ft1 = new FadeTransition(new Duration(1_000), anchorPFade);
 		ft1.setFromValue(0.0);
 		ft1.setToValue(1.0);
@@ -118,19 +123,20 @@ public class TitleScreenController {
 	}
 
 	@FXML
-	void initialize() {
+	void initialize() throws IOException {
+		
 		String path = System.getProperty("user.dir") + "/src/application/Misc/Music/Pokemon_Red_&_Blue_OST/01 - Opening.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mp = new MediaPlayer(media);
-        // mp.setAutoPlay(true);
+        mp.setAutoPlay(true);
         mp.setCycleCount(MediaPlayer.INDEFINITE);
 
-		// Duration time while the sreen display void
+		// Duration time while the screen display void
 
 		FadeTransition ft = new FadeTransition(new Duration(4_000), anchorPFade);
 		ft.setFromValue(0.0);
 		ft.setToValue(0.0);
-		ft.setOnFinished(e -> pokeFade());
+		ft.setOnFinished(e -> displayUpdate());
 
 		ft.play();
 	}

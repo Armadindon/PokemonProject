@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import application.model.appmodel.Pokedex;
+import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.*;
 import application.model.utils.CSVReader;
@@ -35,26 +35,31 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class SampleController {
+public class SampleController extends AbstractTeamBuilderController implements InterfaceTeamBuilderController{
 
-	private Pokedex pokedex = new Pokedex();
+	private TeamBuilder teamBuilder;
 
-	public void initSampleController(Pokedex pokedex) {
-		this.pokedex = pokedex;
-		listPokemon.getSelectionModel().select(pokedex.getPokemon().getId() - 1);
+	@Override
+	public void initTeamBuilder(TeamBuilder teamBuilder) {
+		this.teamBuilder = teamBuilder;
+
+		items = FXCollections.observableArrayList(teamBuilder.getPokeList());
+
+		listPokemon.setItems(items);
+		listPokemon.getSelectionModel().select(teamBuilder.getPokemon().getId() - 1);
+
 		displayUpdate();
 	}
 
-	private void displayUpdate() {
-		
-		pokedex.modelPokedexUpdate(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
+	@Override
+	public void displayUpdate() {
+
+		teamBuilder.modelPokedexUpdate(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
 				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
 				labelSpeed, imgPokemon, textADescription,
 				new ArrayList<VBox>(Arrays.asList(VBoxTeam1, VBoxTeam2, VBoxTeam3, VBoxTeam4, VBoxTeam5, VBoxTeam6)),
 				btnConfirmTeam);
 	}
-	
-	private ArrayList<Pokemon> pokeList = new ArrayList<>();
 
 	@FXML
 	private ResourceBundle resources;
@@ -82,6 +87,9 @@ public class SampleController {
 
 	@FXML
 	private Button btnAddPokemon;
+	
+	@FXML
+	private Button btnReturn;
 
 	@FXML
 	private Button btnConfirmTeam;
@@ -174,7 +182,7 @@ public class SampleController {
 	@FXML
 	void deletePokemon(ActionEvent event) {
 		Button button = (Button) event.getSource();
-		pokedex.removePokemon(Integer.parseInt(button.getId().replace("btnDelTeam", "")) - 1);
+		teamBuilder.removePokemon(Integer.parseInt(button.getId().replace("btnDelTeam", "")) - 1);
 		displayUpdate();
 	}
 
@@ -185,7 +193,7 @@ public class SampleController {
 
 	@FXML
 	void changeToPokeMove(ActionEvent event) throws IOException {
-		if (pokedex.getTeamSize() == 6) {
+		if (teamBuilder.getTeamSize() == 6) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Warning");
 			alert.setHeaderText(null);
@@ -195,72 +203,33 @@ public class SampleController {
 
 			return;
 		}
+		
+		teamBuilder.setPokemon(listPokemon.getSelectionModel().getSelectedItem());
 
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("pokeMove.fxml"));
-
-		Parent root = loader.load();
-		Scene moveScene = new Scene(root);
-
-		// Acces to the controller of pokemove
-
-		PokeMoveController controller = loader.getController();
-		
-		pokedex.setPokemon(listPokemon.getSelectionModel().getSelectedItem());
-		
-		controller.initPokemonMove(pokedex);
-		
-		
-		
-		
-		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-		window.setScene(moveScene);
-		window.show();
+		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder);
+	}
+	
+	@FXML
+	void returnToMenu(ActionEvent event) throws IOException{
+		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 
 	@FXML
-	void initialize() throws IOException {
-		
-		
+	void searchPokemon(ActionEvent event) {
+		System.out.println(((TextField) event.getSource()).getText());
 
-		List<Map<String, List<String>>> dataPokemon = CSVReader.readCSV("scripts/pokemons.csv");
-		List<Map<String, List<String>>> dataMoves = CSVReader.readCSV("scripts/moves.csv");
-
-		ArrayList<Move> existingMoves = new ArrayList<>();
-		for (Map<String, List<String>> data : dataMoves) {
-			Move mv = Move.generateFromMap(data);
-			if (mv != null)
-				existingMoves.add(mv);
+		if (((TextField) event.getSource()).getText().contentEquals("")) {
+			items = FXCollections.observableArrayList(teamBuilder.getPokeList());
+			listPokemon.setItems(items);
+			return;
 		}
-
-		for (Map<String, List<String>> data : dataPokemon) {
-			Pokemon pk = Pokemon.generateFromMap(data, existingMoves);
-			if (pk != null)
-				pokeList.add(pk);
-		}
-		
-
-		items = FXCollections.observableArrayList(pokeList);
-
+		items = FXCollections.observableArrayList((List<Pokemon>) teamBuilder.getPokeList().stream()
+				.filter(p -> p.toString().contains(((TextField) event.getSource()).getText()))
+				.collect(Collectors.toList()));
 		listPokemon.setItems(items);
-		listPokemon.getSelectionModel().select(0);
 
-		displayUpdate();
 	}
 	
-    @FXML
-    void searchPokemon(ActionEvent event) {
-    	System.out.println(((TextField) event.getSource()).getText());
-    	
-    	if(((TextField) event.getSource()).getText().contentEquals("")) {
-    		items = FXCollections.observableArrayList(pokeList);
-    		listPokemon.setItems(items);
-    		return;
-    	}
-    	items = FXCollections.observableArrayList((List<Pokemon>) pokeList.stream().filter(p -> p.toString().contains(((TextField) event.getSource()).getText())).collect(Collectors.toList()));
-    	listPokemon.setItems(items);
-    	
-    }
+	
 
 }

@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import application.model.appmodel.Pokedex;
+import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 import application.model.utils.CSVReader;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,18 +34,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-public class PokeMoveController {
+public class PokeMoveController extends AbstractTeamBuilderController implements InterfaceTeamBuilderController {
 
-	private Pokedex pokedex;
+	private TeamBuilder teamBuilder;
 
 	private Pokemon selectedPokemon;
 
 	private ArrayList<Pokemon> team;
 
-	public void initPokemonMove(Pokedex pokedex) throws IOException {
-		this.pokedex = pokedex;
-		selectedPokemon = pokedex.getPokemon();
+	@Override
+	public void initTeamBuilder(TeamBuilder teamBuilder) throws IOException {
+		this.teamBuilder = teamBuilder;
+		selectedPokemon = teamBuilder.getPokemon();
 
 		// changement des labels et infos de la page
 		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 24));
@@ -58,7 +61,7 @@ public class PokeMoveController {
 		listMove.setItems(items);
 		listMove.getSelectionModel().select(0);
 
-		for (Pokemon p : pokedex.getTeam()) {
+		for (Pokemon p : teamBuilder.getTeam()) {
 			for (Move m : p.getlearnedMoves()) {
 				System.out.println(m);
 			}
@@ -175,56 +178,24 @@ public class PokeMoveController {
 
 	@FXML
 	void changeName(ActionEvent event) {
-		pokedex.updateName(textFPokemonName.getText(), labelChangeName);
+		teamBuilder.updateName(textFPokemonName.getText(), labelChangeName);
 	}
 
 	@FXML
 	void changeToPokedexCancel(ActionEvent event) throws IOException {
-
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("interface.fxml"));
-
-		Parent root = loader.load();
-		Scene moveScene = new Scene(root);
-
-		// Acces to the controller of pokemove
-
-		SampleController controller = loader.getController();
-
-		controller.initSampleController(pokedex);
-
-		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-		window.setScene(moveScene);
-		window.show();
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder);
 	}
 
 	@FXML
 	void changeToPokedexAddPokemon(ActionEvent event) throws IOException {
-		
-		if(pokedex.getPokemon().getlearnedMoves().size()==0) {
-			labelError.setText("Your Pokémon need at least 1 Move");
+
+		if (!teamBuilder.canAddPokemon(labelError)) {
 			return;
 		}
-		
-		pokedex.addPokemonToTeam(selectedPokemon);
 
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("interface.fxml"));
+		teamBuilder.addPokemonToTeam(selectedPokemon);
 
-		Parent root = loader.load();
-		Scene moveScene = new Scene(root);
-
-		// Acces to the controller of pokemove
-
-		SampleController controller = loader.getController();
-
-		controller.initSampleController(pokedex);
-
-		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-		window.setScene(moveScene);
-		window.show();
+		super.changeSceneTeamBuilder(event, "BuildTeam", teamBuilder);
 	}
 
 	@FXML
@@ -232,8 +203,9 @@ public class PokeMoveController {
 		displayUpdate();
 	}
 
-	private void displayUpdate() {
-		pokedex.modelMovesUpdate(listMove.getSelectionModel().getSelectedItem(), labelMoveName, labelType,
+	@Override
+	public void displayUpdate() {
+		teamBuilder.modelMovesUpdate(listMove.getSelectionModel().getSelectedItem(), labelMoveName, labelType,
 				labelAccuracy, labelPP, labelEffect, textADescriptionMove,
 				new ArrayList<VBox>(Arrays.asList(vboxMove0, vboxMove1, vboxMove2, vboxMove3)),
 				new ArrayList<Button>(Arrays.asList(btnMove0, btnMove1, btnMove2, btnMove3)), btnConfirm);
@@ -241,29 +213,31 @@ public class PokeMoveController {
 
 	@FXML
 	private void addMove(ActionEvent event) {
-		pokedex.addMovePokedex(listMove.getSelectionModel().getSelectedItem(), labelError);
+		teamBuilder.addMovePokedex(listMove.getSelectionModel().getSelectedItem(), labelError);
 		displayUpdate();
 	}
 
 	@FXML
 	private void removeMove(ActionEvent event) {
 		Button button = (Button) event.getSource();
-		pokedex.removeMovePokedex(Integer.parseInt(button.getId().replace("btnMove", "")));
+		teamBuilder.removeMovePokedex(Integer.parseInt(button.getId().replace("btnMove", "")));
 		displayUpdate();
 	}
-	
-    @FXML
-    void searchMove(ActionEvent event) {
-    	System.out.println(((TextField) event.getSource()).getText());
-    	
-    	if(((TextField) event.getSource()).getText().contentEquals("")) {
-    		items = FXCollections.observableArrayList(pokedex.getPokemon().getAllPossiblesMoves());
-    		listMove.setItems(items);
-    		return;
-    	}
-    	items = FXCollections.observableArrayList((List<Move>) pokedex.getPokemon().getAllPossiblesMoves().stream().filter(p -> p.toString().contains(((TextField) event.getSource()).getText())).collect(Collectors.toList()));
-    	listMove.setItems(items);
-    	
-    }
+
+	@FXML
+	void searchMove(ActionEvent event) {
+		System.out.println(((TextField) event.getSource()).getText());
+
+		if (((TextField) event.getSource()).getText().contentEquals("")) {
+			items = FXCollections.observableArrayList(teamBuilder.getPokemon().getAllPossiblesMoves());
+			listMove.setItems(items);
+			return;
+		}
+		items = FXCollections.observableArrayList((List<Move>) selectedPokemon.getAllPossiblesMoves().stream()
+				.filter(p -> p.toString().contains(((TextField) event.getSource()).getText()))
+				.collect(Collectors.toList()));
+		listMove.setItems(items);
+
+	}
 
 }

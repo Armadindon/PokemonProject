@@ -1,10 +1,14 @@
 package application.model.appmodel;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 import application.model.pokemon.Stats;
+import application.model.utils.CSVReader;
 import javafx.animation.FadeTransition;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,10 +18,40 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class Pokedex {
+public class TeamBuilder {
 	
 	private Pokemon pokemon;
 	private ArrayList<Pokemon> team = new ArrayList<>(6); // Only 6 pokemons
+	ArrayList<Move> existingMoves;
+	ArrayList<Pokemon> pokeList;
+	
+	private TeamBuilder(ArrayList<Move> existingMoves, ArrayList<Pokemon> pokeList) {
+		this.pokemon = pokeList.get(0);
+		this.existingMoves = existingMoves;
+		this.pokeList = pokeList;
+	}
+	
+
+	public static TeamBuilder createTeamBuilder() throws IOException {
+		
+		List<Map<String, List<String>>> dataPokemon = CSVReader.readCSV("scripts/pokemons.csv");
+		List<Map<String, List<String>>> dataMoves = CSVReader.readCSV("scripts/moves.csv");
+
+		ArrayList<Move> existingMoves = new ArrayList<>();
+		for (Map<String, List<String>> data : dataMoves) {
+			Move mv = Move.generateFromMap(data);
+			if (mv != null)
+				existingMoves.add(mv);
+		}
+		ArrayList<Pokemon> pokeList = new ArrayList<>();
+		for (Map<String, List<String>> data : dataPokemon) {
+			Pokemon pk = Pokemon.generateFromMap(data, existingMoves);
+			if (pk != null)
+				pokeList.add(pk);
+		}
+		
+		return new TeamBuilder(existingMoves, pokeList);
+	}
 
 	public Pokemon getPokemon() {
 		return pokemon;
@@ -29,6 +63,10 @@ public class Pokedex {
 
 	public ArrayList<Pokemon> getTeam() {
 		return team;
+	}
+	
+	public ArrayList<Pokemon> getPokeList(){
+		return pokeList;
 	}
 
 	public void addPokemonToTeam(Pokemon pokemon) {
@@ -65,6 +103,22 @@ public class Pokedex {
 
 		ft.play();
 
+	}
+	
+	public boolean canAddPokemon(Label labelError) {
+		
+		if(pokemon.getlearnedMoves().size()==0) {
+			labelError.setText("Your Pokémon need at least 1 Move");
+			FadeTransition ft = new FadeTransition(new Duration(5_000), labelError);
+			ft.setFromValue(1.0);
+			ft.setToValue(0.0);
+
+			ft.play();
+			return false;
+		}
+		
+		return true;
+		
 	}
 
 	/**
