@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import application.model.pokemon.Pokemon;
 import application.model.pokemon.Status;
 import application.model.pokemon.Type;
 
@@ -146,6 +147,36 @@ public class Move {
 		}
 
 		return res;
+	}
+	
+	
+	public AttackResult use(Pokemon p, Pokemon p2) {
+		if(p == null) throw new IllegalArgumentException("The pokemon can't be null");
+		if(p2 == null) return AttackResult.MISSED;
+		if(Math.random()*100 <= accuracy) {
+			int attack = (damageClass == AttackType.PHYSICAL)?p.getCurrentStats().getAttack():p.getCurrentStats().getSpecialAttack();
+			int defense = (damageClass == AttackType.PHYSICAL)?p2.getCurrentStats().getDefense():p2.getCurrentStats().getSpecialDefense();
+			double stab = (type==p.getType1() || type == p.getType2())?1.5:1; //Le STAB est selon si le pokémon est du même type que l'attaque, sela donnes des dégats bonus
+			double totalResistance = p2.getType1().resistanceAgain(type);
+			totalResistance *= (p2.getType2()!=null)?p2.getType2().resistanceAgain(type):1;
+			double randomMultiplicator = Math.random() * (1-0.85);
+			
+			int totalDamage = (int) ((((p.getLevel()*0.4+2)*power*attack)/(defense*50)+2)*stab*totalResistance*randomMultiplicator);
+			
+			System.out.println(totalDamage + " ont été infligé");
+			
+			
+			
+			if(Math.random()*100 <= effectChance) {
+				System.out.println("L'effet a eu lieu en prime");
+				effect.effect(p, p2);
+			}
+			
+			if(totalResistance==1) return AttackResult.SUCCEED;
+			if(totalResistance > 1) return AttackResult.EFFECTIVE;
+			if(totalResistance < 1) return AttackResult.NOTEFFECTIVE;
+		}
+		return AttackResult.MISSED;
 	}
 
 	@Override

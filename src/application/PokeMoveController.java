@@ -195,7 +195,7 @@ public class PokeMoveController extends AbstractTeamBuilderController implements
 
 		teamBuilder.addPokemonToTeam(selectedPokemon);
 
-		super.changeSceneTeamBuilder(event, "BuildTeam", teamBuilder);
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder);
 	}
 
 	@FXML

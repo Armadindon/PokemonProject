@@ -37,5 +37,9 @@ public enum Type {
 		}
 	}
 	
+	public double resistanceAgain(Type t) {
+		return multiplicator.get(t.name());
+	}
+	
 
 }

@@ -18,6 +18,10 @@ public class Stats {
 		this.specialDefense = specialDefense;
 		this.hp = hp;
 	}
+	
+	public void add(int hp) {
+		this.hp += hp;
+	}
 
 	public int getSpeed() {
 		return speed;

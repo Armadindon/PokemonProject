@@ -29,6 +29,9 @@ public class Pokemon {
 	private final Type type1;
 	private final Type type2;
 	private Status status;
+	private final int level = 1; // on considère que tout les pokémons sont niveau 1 pour l'instant 
+	private boolean alive = true;
+
 	
 	//Constructeur Temporaire
 	public Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem, Image frontSprite,
@@ -173,6 +176,22 @@ public class Pokemon {
 		learnedMoves.remove(moveIndex);
 	}
 	
+	public int getLevel() {
+		return level;
+	}
 	
+	public Stats getCurrentStats() {
+		return currentStats;
+	}
+	
+	public void hurt(int damage) {
+		currentStats.add(damage);
+		if(currentStats.getHp()<0);
+		alive = false;
+	}
+	
+	public boolean isAlive() {
+		return alive;
+	}
 	
 }
