@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import application.model.appmodel.Pokedex;
 import application.model.moves.Move;
@@ -200,6 +201,12 @@ public class PokeMoveController {
 
 	@FXML
 	void changeToPokedexAddPokemon(ActionEvent event) throws IOException {
+		
+		if(pokedex.getPokemon().getlearnedMoves().size()==0) {
+			labelError.setText("Your Pokémon need at least 1 Move");
+			return;
+		}
+		
 		pokedex.addPokemonToTeam(selectedPokemon);
 
 		FXMLLoader loader = new FXMLLoader();
@@ -244,5 +251,19 @@ public class PokeMoveController {
 		pokedex.removeMovePokedex(Integer.parseInt(button.getId().replace("btnMove", "")));
 		displayUpdate();
 	}
+	
+    @FXML
+    void searchMove(ActionEvent event) {
+    	System.out.println(((TextField) event.getSource()).getText());
+    	
+    	if(((TextField) event.getSource()).getText().contentEquals("")) {
+    		items = FXCollections.observableArrayList(pokedex.getPokemon().getAllPossiblesMoves());
+    		listMove.setItems(items);
+    		return;
+    	}
+    	items = FXCollections.observableArrayList((List<Move>) pokedex.getPokemon().getAllPossiblesMoves().stream().filter(p -> p.toString().contains(((TextField) event.getSource()).getText())).collect(Collectors.toList()));
+    	listMove.setItems(items);
+    	
+    }
 
 }

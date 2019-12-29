@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import application.model.appmodel.Pokedex;
 import application.model.moves.Move;
@@ -28,6 +29,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -51,6 +53,8 @@ public class SampleController {
 				new ArrayList<VBox>(Arrays.asList(VBoxTeam1, VBoxTeam2, VBoxTeam3, VBoxTeam4, VBoxTeam5, VBoxTeam6)),
 				btnConfirmTeam);
 	}
+	
+	private ArrayList<Pokemon> pokeList = new ArrayList<>();
 
 	@FXML
 	private ResourceBundle resources;
@@ -230,7 +234,6 @@ public class SampleController {
 				existingMoves.add(mv);
 		}
 
-		ArrayList<Pokemon> pokeList = new ArrayList<>();
 		for (Map<String, List<String>> data : dataPokemon) {
 			Pokemon pk = Pokemon.generateFromMap(data, existingMoves);
 			if (pk != null)
@@ -245,5 +248,19 @@ public class SampleController {
 
 		displayUpdate();
 	}
+	
+    @FXML
+    void searchPokemon(ActionEvent event) {
+    	System.out.println(((TextField) event.getSource()).getText());
+    	
+    	if(((TextField) event.getSource()).getText().contentEquals("")) {
+    		items = FXCollections.observableArrayList(pokeList);
+    		listPokemon.setItems(items);
+    		return;
+    	}
+    	items = FXCollections.observableArrayList((List<Pokemon>) pokeList.stream().filter(p -> p.toString().contains(((TextField) event.getSource()).getText())).collect(Collectors.toList()));
+    	listPokemon.setItems(items);
+    	
+    }
 
 }

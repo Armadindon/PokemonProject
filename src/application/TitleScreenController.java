@@ -59,14 +59,18 @@ public class TitleScreenController {
 
 	@FXML
 	private AnchorPane anchorPFade;
+	
+	
 
 	@FXML
 	void changeToGame(MouseEvent event) throws IOException {
+		System.out.println("Clic");
 		goToGame(event);
 	}
 
 	@FXML
 	void changeToGameK(KeyEvent event) throws IOException {
+		System.out.println("Appui touche");
 		goToGame(event);
 	}
 
