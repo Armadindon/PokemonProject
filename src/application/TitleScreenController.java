@@ -85,7 +85,7 @@ public class TitleScreenController extends AbstractTeamBuilderController {
 
 	private void goToGame(Event event) throws IOException {
 
-		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
+		super.changeSceneWithoutData(event, "Fight.fxml");
 		
 	}
 
@@ -128,7 +128,7 @@ public class TitleScreenController extends AbstractTeamBuilderController {
 		String path = System.getProperty("user.dir") + "/src/application/Misc/Music/Pokemon_Red_&_Blue_OST/01 - Opening.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mp = new MediaPlayer(media);
-        mp.setAutoPlay(true);
+        // mp.setAutoPlay(true);
         mp.setCycleCount(MediaPlayer.INDEFINITE);
 
 		// Duration time while the screen display void

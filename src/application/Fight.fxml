@@ -1,68 +1,253 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" prefWidth="500.0">
-               <children>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="500.0" spacing="10.0">
-                     <children>
-                        <Label text="name" />
-                        <Label text="HP" />
-                     </children>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </VBox>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
-                     <VBox.margin>
-                        <Insets bottom="100.0" left="150.0" right="100.0" top="100.0" />
-                     </VBox.margin>
-                  </Rectangle>
-               </children>
-            </VBox>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" prefWidth="500.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
-                     <VBox.margin>
-                        <Insets bottom="100.0" left="150.0" right="100.0" top="100.0" />
-                     </VBox.margin>
-                  </Rectangle>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="350.0" prefWidth="500.0" spacing="10.0">
-                     <children>
-                        <Label text="name" />
-                        <Label text="HP" />
-                     </children>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </center>
-   <bottom>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" text="Attack" HBox.hgrow="ALWAYS" />
-            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" text="Sac" HBox.hgrow="ALWAYS" />
-            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" text="Switch" HBox.hgrow="ALWAYS" />
-            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" text="Run Away" HBox.hgrow="ALWAYS" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-   </bottom>
-</BorderPane>
+<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" style="-fx-background-color: darkgray;&#10;&#10;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.FightController">
+  <children>
+    <Ellipse layoutX="250.0" layoutY="432.0" radiusX="188.01140594482422" radiusY="98.06077575683594" rotate="7.0" scaleZ="1.0" stroke="BLACK" strokeType="INSIDE" style="">
+      <fill>
+        <Color blue="0.875" green="0.875" red="0.875" fx:id="x4" />
+      </fill>
+    </Ellipse>
+    <TabPane fx:id="tabPaneMenu" layoutX="0.0" layoutY="446.0" prefHeight="254.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" visible="true">
+      <tabs>
+        <Tab text="text">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <TextArea layoutX="95.0" layoutY="14.0" prefHeight="182.0" prefWidth="855.0" text="&#10;&#10;" wrapText="true" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="menuTab">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="216.0" prefWidth="972.0" spacing="50.0">
+                  <children>
+                    <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="Fight">
+                      <font>
+                        <Font size="24.0" fx:id="x1" />
+                      </font>
+                    </Button>
+                    <Button font="$x1" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="BackPack" />
+                    <Button font="$x1" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="Switch" />
+                    <Button font="$x1" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="Run" />
+                  </children>
+                </HBox>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="moveTab">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="72.0" layoutX="193.0" layoutY="41.0" stroke="BLACK" strokeType="INSIDE" width="286.0">
+                  <fill>
+                    <Color blue="0.749" green="0.749" opacity="0.231" red="0.749" fx:id="x2" />
+                  </fill>
+                </Rectangle>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x2" height="72.0" layoutX="522.0" layoutY="41.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x2" height="72.0" layoutX="193.0" layoutY="132.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x2" height="72.0" layoutX="522.0" layoutY="132.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
+                <VBox id="vboxMove1" alignment="CENTER" layoutX="193.0" layoutY="41.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
+                  <children>
+                    <Label id="labelMoveName1" text="??">
+                      <font>
+                        <Font size="18.0" fx:id="x3" />
+                      </font>
+                    </Label>
+                    <Label id="labelPP1" text="??" />
+                  </children>
+                </VBox>
+                <VBox id="vboxMove2" alignment="CENTER" layoutX="522.0" layoutY="41.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
+                  <children>
+                    <Label id="labelMoveName1" font="$x3" text="??" />
+                    <Label id="labelPP2" text="??" />
+                  </children>
+                </VBox>
+                <VBox id="vboxMove3" alignment="CENTER" layoutX="193.0" layoutY="132.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
+                  <children>
+                    <Label id="labelMoveName1" font="$x3" text="??" />
+                    <Label id="labelPP3" text="??" />
+                  </children>
+                </VBox>
+                <VBox id="vboxMove4" alignment="CENTER" layoutX="522.0" layoutY="132.0" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
+                  <children>
+                    <Label id="labelMoveName1" font="$x3" text="??" />
+                    <Label id="labelMoveName4" prefWidth="19.0" text="??" />
+                  </children>
+                </VBox>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="backPackTab">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+        <Tab text="switchTab">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="$x4" height="110.0" layoutX="38.0" layoutY="0.0" stroke="BLACK" strokeType="INSIDE" translateY="5.0" width="275.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" depthTest="INHERIT" fill="$x4" height="110.0" layoutX="363.0" layoutY="0.0" stroke="BLACK" strokeType="INSIDE" translateY="5.0" translateZ="0.0" width="275.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" depthTest="INHERIT" fill="$x4" height="110.0" layoutX="688.0" layoutY="0.0" stroke="BLACK" strokeType="INSIDE" translateY="5.0" translateZ="0.0" width="275.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" depthTest="INHERIT" fill="$x4" height="110.0" layoutX="38.0" layoutY="130.0" stroke="BLACK" strokeType="INSIDE" translateZ="0.0" width="275.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" depthTest="INHERIT" fill="$x4" height="110.0" layoutX="363.0" layoutY="130.0" stroke="BLACK" strokeType="INSIDE" translateZ="0.0" width="275.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" depthTest="INHERIT" fill="$x4" height="110.0" layoutX="688.0" layoutY="130.0" stroke="BLACK" strokeType="INSIDE" translateZ="0.0" width="275.0" />
+                <VBox layoutX="0.0" layoutY="3.0" prefHeight="244.0" prefWidth="1000.0" spacing="15.0" translateZ="0.0">
+                  <children>
+                    <HBox alignment="TOP_CENTER" minHeight="110.0" prefHeight="110.0" prefWidth="972.0" spacing="50.0">
+                      <children>
+                        <HBox fx:id="hboxSwitchPokemon0" alignment="CENTER_LEFT" prefHeight="110.0" prefWidth="275.0">
+                          <children>
+                            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" />
+                            <VBox alignment="TOP_CENTER" maxHeight="80.0" prefHeight="40.0" prefWidth="179.0" spacing="10.0">
+                              <children>
+                                <Label font="$x1" text="Label" />
+                                <Label font="$x3" text="Label" />
+                              </children>
+                            </VBox>
+                          </children>
+                        </HBox>
+                        <HBox id="hboxSwitchPokemon0" fx:id="hboxSwitchPokemon1" alignment="CENTER_LEFT" prefHeight="110.0" prefWidth="275.0">
+                          <children>
+                            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" />
+                            <VBox alignment="TOP_CENTER" maxHeight="80.0" prefHeight="40.0" prefWidth="179.0" spacing="10.0">
+                              <children>
+                                <Label font="$x1" text="Label" />
+                                <Label font="$x3" text="Label" />
+                              </children>
+                            </VBox>
+                          </children>
+                        </HBox>
+                        <HBox id="hboxSwitchPokemon0" fx:id="hboxSwitchPokemon2" alignment="CENTER_LEFT" prefHeight="110.0" prefWidth="275.0">
+                          <children>
+                            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" />
+                            <VBox alignment="TOP_CENTER" maxHeight="80.0" prefHeight="40.0" prefWidth="179.0" spacing="10.0">
+                              <children>
+                                <Label font="$x1" text="Label" />
+                                <Label font="$x3" text="Label" />
+                              </children>
+                            </VBox>
+                          </children>
+                        </HBox>
+                      </children>
+                    </HBox>
+                    <HBox alignment="TOP_CENTER" minHeight="110.0" prefHeight="110.0" prefWidth="972.0" spacing="50.0">
+                      <children>
+                        <HBox id="hboxSwitchPokemon0" fx:id="hboxSwitchPokemon3" alignment="CENTER_LEFT" prefHeight="110.0" prefWidth="275.0">
+                          <children>
+                            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" />
+                            <VBox alignment="TOP_CENTER" maxHeight="80.0" prefHeight="40.0" prefWidth="179.0" spacing="10.0">
+                              <children>
+                                <Label font="$x1" text="Label" />
+                                <Label font="$x3" text="Label" />
+                              </children>
+                            </VBox>
+                          </children>
+                        </HBox>
+                        <HBox id="hboxSwitchPokemon0" fx:id="hboxSwitchPokemon4" alignment="CENTER_LEFT" prefHeight="110.0" prefWidth="275.0">
+                          <children>
+                            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" />
+                            <VBox alignment="TOP_CENTER" maxHeight="80.0" prefHeight="40.0" prefWidth="179.0" spacing="10.0">
+                              <children>
+                                <Label font="$x1" text="Label" />
+                                <Label font="$x3" text="Label" />
+                              </children>
+                            </VBox>
+                          </children>
+                        </HBox>
+                        <HBox id="hboxSwitchPokemon0" fx:id="hboxSwitchPokemon5" alignment="CENTER_LEFT" prefHeight="110.0" prefWidth="275.0">
+                          <children>
+                            <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" />
+                            <VBox alignment="TOP_CENTER" maxHeight="80.0" prefHeight="40.0" prefWidth="179.0" spacing="10.0">
+                              <children>
+                                <Label font="$x1" text="Label" />
+                                <Label font="$x3" text="Label" />
+                              </children>
+                            </VBox>
+                          </children>
+                        </HBox>
+                      </children>
+                    </HBox>
+                  </children>
+                </VBox>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <ImageView fitHeight="272.0" fitWidth="272.0" layoutX="107.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@../../scripts/sprites/6_back.png" />
+      </image>
+    </ImageView>
+    <Ellipse fill="#dfdfdf" layoutX="799.0" layoutY="165.0" radiusX="179.32430267333984" radiusY="72.89216613769531" rotate="7.0" scaleZ="1.0" stroke="BLACK" strokeType="INSIDE" style="" />
+    <ImageView fitHeight="216.0" fitWidth="216.0" layoutX="683.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@../../scripts/sprites/9.png" />
+      </image>
+    </ImageView>
+    <VBox alignment="TOP_RIGHT" layoutX="87.0" layoutY="41.0" prefHeight="100.0" prefWidth="362.0" spacing="20.0" style="-fx-background-color: white;">
+      <children>
+        <HBox alignment="CENTER_LEFT" prefHeight="43.797027587890625" prefWidth="362.0" spacing="0.0">
+          <children>
+            <Label font="$x1" prefWidth="259.0" text="PokeName">
+              <HBox.margin>
+                <Insets left="4.0" />
+              </HBox.margin>
+            </Label>
+            <Label font="$x1" text="PokeLvl" />
+          </children>
+        </HBox>
+        <Label contentDisplay="RIGHT" font="$x1" text="HP">
+          <VBox.margin>
+            <Insets right="5.0" />
+          </VBox.margin>
+        </Label>
+      </children>
+    </VBox>
+    <VBox alignment="TOP_RIGHT" layoutX="612.0" layoutY="308.0" prefHeight="100.0" prefWidth="362.0" spacing="20.0" style="-fx-background-color: white;">
+      <children>
+        <HBox alignment="CENTER_LEFT" prefHeight="43.797027587890625" prefWidth="362.0" spacing="0.0">
+          <children>
+            <Label font="$x1" prefWidth="259.0" text="PokeName">
+              <HBox.margin>
+                <Insets left="4.0" />
+              </HBox.margin>
+            </Label>
+            <Label font="$x1" text="PokeLvl" />
+          </children>
+        </HBox>
+        <Label contentDisplay="RIGHT" font="$x1" text="HP">
+          <VBox.margin>
+            <Insets right="5.0" />
+          </VBox.margin>
+        </Label>
+      </children>
+    </VBox>
+  </children>
+  <stylesheets>
+    <URL value="@application.css" />
+  </stylesheets>
+</AnchorPane>
