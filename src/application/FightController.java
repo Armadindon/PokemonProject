@@ -142,7 +142,8 @@ public class FightController extends AbstractController {
 		// generate the moves of the player in the interface
 		playerUser.moveDisplayUpdate(movePane);
 		playerUser.teamDisplayUpdate(switchPane);
-		playerUser.mainScreenUpdate(imageViewAllyPokemon);
+		playerUser.mainScreenUpdate(imageViewAllyPokemon, false);
+		playerFoe.mainScreenUpdate(ImageViewFoePokemon, true);
 	}
 
 	@FXML
@@ -153,6 +154,8 @@ public class FightController extends AbstractController {
 		tabPaneMenu.getSelectionModel().select(1);
 		
 		playerUser = Player.createRandomPlayer();
+		
+		playerFoe = Player.createRandomPlayer();
 		
 		displayUpdate();
 		

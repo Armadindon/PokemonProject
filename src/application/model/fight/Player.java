@@ -71,7 +71,12 @@ public class Player {
 		}
 	}
 	
-	public void mainScreenUpdate(ImageView imageViewAllyPokemon) {
+	// boolean à remplacer quand le boolean bot sera implémenter
+	public void mainScreenUpdate(ImageView imageViewAllyPokemon, Boolean bot) {
+		if(bot) { 
+			imageViewAllyPokemon.setImage(selectedPokemon.getFrontSprite());
+			return;
+		}
 		imageViewAllyPokemon.setImage(selectedPokemon.getBackSprite());
 	}
 }
