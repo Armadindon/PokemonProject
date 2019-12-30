@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
@@ -19,21 +20,20 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class TeamBuilder {
-	
+
 	private Pokemon pokemon;
-	private ArrayList<Pokemon> team = new ArrayList<>(6); // Only 6 pokemons
-	ArrayList<Move> existingMoves;
-	ArrayList<Pokemon> pokeList;
-	
+	private final ArrayList<Pokemon> team = new ArrayList<>(6); // Only 6 pokemons
+	private final ArrayList<Move> existingMoves;
+	private final ArrayList<Pokemon> pokeList;
+
 	private TeamBuilder(ArrayList<Move> existingMoves, ArrayList<Pokemon> pokeList) {
 		this.pokemon = pokeList.get(0);
 		this.existingMoves = existingMoves;
 		this.pokeList = pokeList;
 	}
-	
 
 	public static TeamBuilder createTeamBuilder() throws IOException {
-		
+
 		List<Map<String, List<String>>> dataPokemon = CSVReader.readCSV("scripts/pokemons.csv");
 		List<Map<String, List<String>>> dataMoves = CSVReader.readCSV("scripts/moves.csv");
 
@@ -49,8 +49,31 @@ public class TeamBuilder {
 			if (pk != null)
 				pokeList.add(pk);
 		}
-		
+
 		return new TeamBuilder(existingMoves, pokeList);
+	}
+
+	public ArrayList<Pokemon> createRandomTeam() {
+		ArrayList<Pokemon> randomTeam = new ArrayList<>();
+
+		Pokemon randomPokemon;
+		int indexPokemon;
+		int indexMove;
+
+		for (int i = 0; i < 6; i++) {
+			indexPokemon = new Random().nextInt(pokeList.size());
+			randomPokemon = pokeList.get(indexPokemon);
+
+			for (int j = 0; j < 4; j++) {
+
+				indexMove = new Random().nextInt(randomPokemon.getAllPossiblesMoves().size());
+				randomPokemon.addMoveToLearnedMoves(randomPokemon.getAllPossiblesMoves().get(indexMove));
+
+			}
+			randomTeam.add(randomPokemon);
+		}
+
+		return randomTeam;
 	}
 
 	public Pokemon getPokemon() {
@@ -64,8 +87,8 @@ public class TeamBuilder {
 	public ArrayList<Pokemon> getTeam() {
 		return team;
 	}
-	
-	public ArrayList<Pokemon> getPokeList(){
+
+	public ArrayList<Pokemon> getPokeList() {
 		return pokeList;
 	}
 
@@ -104,10 +127,10 @@ public class TeamBuilder {
 		ft.play();
 
 	}
-	
+
 	public boolean canAddPokemon(Label labelError) {
-		
-		if(pokemon.getlearnedMoves().size()==0) {
+
+		if (pokemon.getlearnedMoves().size() == 0) {
 			labelError.setText("Your Pokémon need at least 1 Move");
 			FadeTransition ft = new FadeTransition(new Duration(5_000), labelError);
 			ft.setFromValue(1.0);
@@ -116,9 +139,9 @@ public class TeamBuilder {
 			ft.play();
 			return false;
 		}
-		
+
 		return true;
-		
+
 	}
 
 	/**
@@ -187,12 +210,12 @@ public class TeamBuilder {
 
 	public void modelMovesUpdate(Move move, Label name, Label type, Label accuracy, Label pp, Label effect,
 			TextArea description, ArrayList<VBox> moves, ArrayList<Button> delButtons, Button confirmButton) {
-		
+
 		ArrayList<Move> learnedMoves = pokemon.getlearnedMoves();
 		name.setText(move.getName());
 		type.setText(move.getType().name());
 		accuracy.setText(Integer.toString(move.getAccuracy()));
-		pp.setText(Integer.toString(move.getPp()));
+		pp.setText(Integer.toString(move.getMaxPP()));
 		effect.setText(move.getEffectToString());
 		description.setText(move.getDescription());
 
@@ -202,7 +225,7 @@ public class TeamBuilder {
 			int i;
 			for (i = 0; i < learnedMoves.size(); i++) {
 				((Label) moves.get(i).getChildren().get(0)).setText(learnedMoves.get(i).getName());
-				((Label) moves.get(i).getChildren().get(1)).setText(Integer.toString((learnedMoves.get(i).getPp())));
+				((Label) moves.get(i).getChildren().get(1)).setText(Integer.toString((learnedMoves.get(i).getMaxPP())));
 				moves.get(i).setVisible(true);
 				delButtons.get(i).setVisible(true);
 			}
@@ -219,11 +242,11 @@ public class TeamBuilder {
 			delButtons.get(0).setVisible(false);
 		}
 	}
-	
+
 	public void addMovePokedex(Move move, Label labelError) {
-		if(!pokemon.addMoveToLearnedMoves(move)){
+		if (!pokemon.addMoveToLearnedMoves(move)) {
 			labelError.setText("Oops you cannot add this move");
-			
+
 			FadeTransition ft = new FadeTransition(new Duration(3_000), labelError);
 			ft.setFromValue(1.0);
 			ft.setToValue(0.0);
@@ -231,7 +254,7 @@ public class TeamBuilder {
 			ft.play();
 		}
 	}
-	
+
 	public void removeMovePokedex(int moveIndex) {
 		pokemon.removeMoveFromLearnedMoves(moveIndex);
 	}

@@ -22,5 +22,31 @@ public abstract class AbstractController implements InterfaceController {
 		window.setScene(moveScene);
 		window.show();
 	}
+
+	protected void changeSceneTeamBuilder(Event event, String fxmlFile, TeamBuilder teamBuilder) throws IOException {
+
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource(fxmlFile));
+
+		Parent root = loader.load();
+		Scene moveScene = new Scene(root);
+
+		// Acces to the controller of pokemove
+
+		InterfaceController controller = loader.getController();
+
+		controller.initTeamBuilder(teamBuilder);
+
+		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+		window.setScene(moveScene);
+		window.show();
+
+	}
+	
+	@Override
+	public void initTeamBuilder(TeamBuilder teamBuilder) throws IOException {
+		return;
+	}
 	
 }

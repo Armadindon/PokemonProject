@@ -30,7 +30,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class TitleScreenController extends AbstractTeamBuilderController {
+public class TitleScreenController extends AbstractController {
 	
 	private MediaPlayer mp;
 	

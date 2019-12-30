@@ -36,7 +36,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class PokeMoveController extends AbstractTeamBuilderController implements InterfaceTeamBuilderController {
+public class PokeMoveController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 

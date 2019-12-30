@@ -1,5 +1,7 @@
 package application.model.fight;
 
+import javafx.scene.layout.AnchorPane;
+
 public class Fight {
 	
 	private final Player firstPlayer;
@@ -10,5 +12,4 @@ public class Fight {
 		this.firstPlayer = firstPlayer;
 		this.secondPlayer = secondPlayer;
 	}
-	
 }

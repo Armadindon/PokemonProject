@@ -5,3 +5,7 @@
     visibility: hidden ;
 }
 
+#Content {
+	-fx-background-color: white;
+}
+

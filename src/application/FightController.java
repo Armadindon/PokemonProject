@@ -1,46 +1,50 @@
 package application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import application.model.fight.Fight;
+import application.model.fight.Player;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+public class FightController extends AbstractController {
 
-public class FightController {
+	private Player playerUser;
 
-    @FXML
+	private Player playerFoe;
+
+	private Fight fightModel; // Pas sur si on garde, mon idée serait de gérer les combats dans fights et de
+								// faire appel aux méthode de rafraichissement de l'interface présente dans le
+								// controlleur donc ça puisse l'info dans les players (comme ça on pense à si on
+								// veut jouer à plusieurs joueurs et au dévellopement futur possible du jeu, hop
+								// comme l'affichage se fait en fonction du joueur c'est cool étou)
+
+	@FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
 
     @FXML
+    private ImageView ImageViewFoePokemon;
+
+    @FXML
     private HBox hBoxMenuButtons;
 
     @FXML
-    private HBox hboxSwitchPokemon0;
-
-    @FXML
-    private HBox hboxSwitchPokemon1;
-
-    @FXML
-    private HBox hboxSwitchPokemon2;
-
-    @FXML
-    private HBox hboxSwitchPokemon3;
-
-    @FXML
-    private HBox hboxSwitchPokemon4;
-
-    @FXML
-    private HBox hboxSwitchPokemon5;
+    private ImageView imageViewAllyPokemon;
 
     @FXML
     private Label labelAllyPokeHP;
@@ -61,6 +65,9 @@ public class FightController {
     private Label labelFoePokeName;
 
     @FXML
+    private AnchorPane movePane;
+
+    @FXML
     private ProgressBar progressBarAllyPokeHP;
 
     @FXML
@@ -70,53 +77,84 @@ public class FightController {
     private AnchorPane root;
 
     @FXML
+    private AnchorPane switchPane;
+
+    @FXML
     private TabPane tabPaneMenu;
 
     @FXML
     private TextArea textAreaMatchNotification;
 
-    @FXML
-    private VBox vBoxMove0;
+	@FXML
+	private VBox vBoxMove0;
 
-    @FXML
-    private VBox vBoxMove1;
+	@FXML
+	private VBox vBoxMove1;
 
-    @FXML
-    private VBox vBoxMove2;
+	@FXML
+	private VBox vBoxMove2;
 
-    @FXML
-    private VBox vBoxMove3;
+	@FXML
+	private VBox vBoxMove3;
 
+	@FXML
+	void run(ActionEvent event) {
+		// oof
+		Platform.exit();
+	}
+	
+	@FXML
+	void mainMenu(ActionEvent event) {
+		tabPaneMenu.getSelectionModel().select(1);
+	}
 
-    @FXML
-    void backPackPage(MouseEvent event) {
-    }
+	@FXML
+	void backPackPage(ActionEvent event) {
+	}
 
-    @FXML
-    void fightMenu(MouseEvent event) {
-    }
+	@FXML
+	void fightMenu(ActionEvent event) {
+		tabPaneMenu.getSelectionModel().select(2);
+		playerUser.moveDisplayUpdate(movePane);
+	}
 
-    @FXML
-    void run(MouseEvent event) {
-    }
+	@FXML
+	void switchMenu(ActionEvent event) {
+		tabPaneMenu.getSelectionModel().select(3);
+		
+		playerUser.teamDisplayUpdate(switchPane);
+	}
 
-    @FXML
-    void switchMenu(MouseEvent event) {
-    }
+	@FXML
+	void switchPokemon(MouseEvent event) {
+		int numPokemon = Integer.parseInt((((HBox) event.getSource()).getId()).replace("hboxSwitchPokemon", ""));
+		System.out.println(numPokemon);
+	}
 
-    @FXML
-    void switchPokemon(MouseEvent event) {
-    }
+	@FXML
+	void useMove(MouseEvent event) {
+		int numMove = Integer.parseInt((((VBox) event.getSource()).getId()).replace("vBoxMove", ""));
+		System.out.println(numMove);
+	}
 
-    @FXML
-    void useMove(MouseEvent event) {
-    }
+	@Override
+	public void displayUpdate() {
+		// generate the moves of the player in the interface
+		playerUser.moveDisplayUpdate(movePane);
+		playerUser.teamDisplayUpdate(switchPane);
+		playerUser.mainScreenUpdate(imageViewAllyPokemon);
+	}
 
-    @FXML
-    void initialize() {
+	@FXML
+	void initialize() throws IOException {
 
-
-
-    }
-
+		// Pour selectionner un tab (text:0, menu principal: 1, fight:2, switch: 3,
+		// backpack: 4 (mais rien c'est fait pour lui encore)
+		tabPaneMenu.getSelectionModel().select(1);
+		
+		playerUser = Player.createRandomPlayer();
+		
+		displayUpdate();
+		
+	}
 }

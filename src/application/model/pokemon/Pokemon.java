@@ -114,6 +114,10 @@ public class Pokemon {
 		return frontSprite;
 	}
 	
+	public Image getBackSprite() {
+		return backSprite;
+	}
+	
 	public Type getType1() {
 		return type1;
 	}

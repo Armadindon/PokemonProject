@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class NewGameLoadMenuController extends AbstractTeamBuilderController {
+public class NewGameLoadMenuController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 

@@ -24,14 +24,15 @@ public class Move {
 	private final AttackType damageClass;
 	private final Type type;
 	private final int power;
-	private final int pp;
+	private final int maxPp;
+	private int pp;
 	private final int priority;
 	private final Target target;
 	private final HashMap<String, Integer> statChange;
 	private final String description;
 
 	public Move(int id, String name, String moveCategory, int accuracy, MoveSideEffect effect, int effectChance,
-			AttackType damageClass, Type type, int power, int pp, int priority, Target target, String statChange,
+			AttackType damageClass, Type type, int power, int maxPp, int priority, Target target, String statChange,
 			String description) {
 		super();
 		this.id = id;
@@ -43,7 +44,8 @@ public class Move {
 		this.damageClass = damageClass;
 		this.type = type;
 		this.power = power;
-		this.pp = pp;
+		this.maxPp = maxPp;
+		this.pp = maxPp;
 		this.priority = priority;
 		this.target = target;
 		this.statChange = parseStatChange(statChange);
@@ -51,37 +53,40 @@ public class Move {
 	}
 
 	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gere juste les atatques pour l'instant
-		
+
 		String moveCategory = data.get("move_category").get(0);
 		if (moveCategory.equals("damage") || moveCategory.equals("damage+ailment") || moveCategory.equals("ailment")) {
 			int id = Integer.parseInt(data.get("id").get(0));
 			String name = data.get("name").get(0);
-			int accuracy = 100;//si la prochaine instruction n'a pas de données
-			if(!data.get("accuracy").get(0).equals(""))accuracy = Integer.parseInt(data.get("accuracy").get(0)); // peut renvoyer un string vide
-			
+			int accuracy = 100;// si la prochaine instruction n'a pas de données
+			if (!data.get("accuracy").get(0).equals(""))
+				accuracy = Integer.parseInt(data.get("accuracy").get(0)); // peut renvoyer un string vide
+
 			MoveSideEffect effect;
 			int effectChance;
-			
-			if(moveCategory.equals("damage+ailment") || moveCategory.equals("ailment")) {
+
+			if (moveCategory.equals("damage+ailment") || moveCategory.equals("ailment")) {
 				try {
-					effect = (p1,p2)->{
+					effect = (p1, p2) -> {
 						p1.setStatus(Status.valueOf(data.get("effect_ailment").get(0).toUpperCase()));
 					};
 					effectChance = Integer.parseInt(data.get("effect_chance").get(0));
-				}catch(Exception e) {
+				} catch (Exception e) {
 					System.err.println(e);
-					return null; // Si le effect_ailment n'est pas connu ou pas encore programmé on ne rajoute pas le move (exemple : Trap, Confusion, etc.)
+					return null; // Si le effect_ailment n'est pas connu ou pas encore programmé on ne rajoute
+									// pas le move (exemple : Trap, Confusion, etc.)
 				}
 
-			}else {
+			} else {
 				effect = null;
 				effectChance = 0;
 			}
-			
+
 			AttackType damageClass = AttackType.valueOf(data.get("damage_class").get(0).toUpperCase());
 			Type type = Type.valueOf(data.get("type").get(0).toUpperCase());
 			int power = Integer.parseInt(data.get("power").get(0));
-			int pp = Integer.parseInt(data.get("pp").get(0));
+			int maxPp = Integer.parseInt(data.get("pp").get(0));
+			int pp = maxPp;
 			int priority = Integer.parseInt(data.get("priority").get(0));
 
 			// on remplace les "-" car ils ne sont pas autoris�s dans les noms de constantes
@@ -89,17 +94,16 @@ public class Move {
 			Target target = Target.valueOf(data.get("target").get(0).replace("-", "").toUpperCase());
 			String statChange = data.get("stat_changes").get(0);
 			String description = data.get("description").get(0);
-			return new Move(id, name, moveCategory, accuracy, effect, effectChance, damageClass, type, power, pp,
+			return new Move(id, name, moveCategory, accuracy, effect, effectChance, damageClass, type, power, maxPp,
 					priority, target, statChange, description);
 		}
 		return null;
 	}
-	
 
 	public int getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -112,14 +116,18 @@ public class Move {
 		return "none";
 	}
 
-	public int getPp() {
+	public int getMaxPP() {
+		return maxPp;
+	}
+	
+	public int getPP() {
 		return pp;
 	}
 
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public Type getType() {
 		return type;
 	}
@@ -148,33 +156,40 @@ public class Move {
 
 		return res;
 	}
-	
-	
+
 	public AttackResult use(Pokemon p, Pokemon p2) {
-		if(p == null) throw new IllegalArgumentException("The pokemon can't be null");
-		if(p2 == null) return AttackResult.MISSED;
-		if(Math.random()*100 <= accuracy) {
-			int attack = (damageClass == AttackType.PHYSICAL)?p.getCurrentStats().getAttack():p.getCurrentStats().getSpecialAttack();
-			int defense = (damageClass == AttackType.PHYSICAL)?p2.getCurrentStats().getDefense():p2.getCurrentStats().getSpecialDefense();
-			double stab = (type==p.getType1() || type == p.getType2())?1.5:1; //Le STAB est selon si le pokémon est du même type que l'attaque, sela donnes des dégats bonus
+		if (p == null)
+			throw new IllegalArgumentException("The pokemon can't be null");
+		if (p2 == null)
+			return AttackResult.MISSED;
+		if (Math.random() * 100 <= accuracy) {
+			int attack = (damageClass == AttackType.PHYSICAL) ? p.getCurrentStats().getAttack()
+					: p.getCurrentStats().getSpecialAttack();
+			int defense = (damageClass == AttackType.PHYSICAL) ? p2.getCurrentStats().getDefense()
+					: p2.getCurrentStats().getSpecialDefense();
+			double stab = (type == p.getType1() || type == p.getType2()) ? 1.5 : 1; // Le STAB est selon si le pokémon
+																					// est du même type que l'attaque,
+																					// sela donnes des dégats bonus
 			double totalResistance = p2.getType1().resistanceAgain(type);
-			totalResistance *= (p2.getType2()!=null)?p2.getType2().resistanceAgain(type):1;
-			double randomMultiplicator = Math.random() * (1-0.85);
-			
-			int totalDamage = (int) ((((p.getLevel()*0.4+2)*power*attack)/(defense*50)+2)*stab*totalResistance*randomMultiplicator);
-			
+			totalResistance *= (p2.getType2() != null) ? p2.getType2().resistanceAgain(type) : 1;
+			double randomMultiplicator = Math.random() * (1 - 0.85);
+
+			int totalDamage = (int) ((((p.getLevel() * 0.4 + 2) * power * attack) / (defense * 50) + 2) * stab
+					* totalResistance * randomMultiplicator);
+
 			System.out.println(totalDamage + " ont été infligé");
-			
-			
-			
-			if(Math.random()*100 <= effectChance) {
+
+			if (Math.random() * 100 <= effectChance) {
 				System.out.println("L'effet a eu lieu en prime");
 				effect.effect(p, p2);
 			}
-			
-			if(totalResistance==1) return AttackResult.SUCCEED;
-			if(totalResistance > 1) return AttackResult.EFFECTIVE;
-			if(totalResistance < 1) return AttackResult.NOTEFFECTIVE;
+
+			if (totalResistance == 1)
+				return AttackResult.SUCCEED;
+			if (totalResistance > 1)
+				return AttackResult.EFFECTIVE;
+			if (totalResistance < 1)
+				return AttackResult.NOTEFFECTIVE;
 		}
 		return AttackResult.MISSED;
 	}

@@ -35,7 +35,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class SampleController extends AbstractTeamBuilderController implements InterfaceTeamBuilderController{
+public class SampleController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 
