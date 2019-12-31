@@ -1,1 +1,17 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.tab-pane {
+    -fx-tab-max-height: 0 ;
+} 
+.tab-pane .tab-header-area {
+    visibility: hidden ;
+}
+
+#Content {
+	-fx-background-color: white;
+}
+
+.progress-bar { -fx-box-border: black; }
+
+.green-bar  { -fx-accent: green;  }
+.yellow-bar { -fx-accent: yellow; }
+.orange-bar { -fx-accent: orange; }
+.red-bar    { -fx-accent: red;    }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import application.model.appmodel.TeamBuilder;
+import application.model.items.Item;
+import application.model.moves.AttackResult;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 import javafx.scene.control.Label;
@@ -19,6 +21,9 @@ public class Player {
 	private Pokemon selectedPokemon;
 	private int alive;
 	private final boolean bot;
+	private Action nextAction;
+	private int whichAction;
+	private ArrayList<Item> backPack = new ArrayList<>();
 
 	// HP Display
 
@@ -104,7 +109,7 @@ public class Player {
 		pokeLvl.setText("lvl" + selectedPokemon.getLevel());
 		pokeHP.setText(currentHP + " / " + maxHP);
 
-		Double progress = (double) (currentHP * 100) / maxHP;
+		Double progress = (double) currentHP/maxHP;
 
 		pgHP.setProgress(progress);
 		if (progress < 0.2) {
@@ -116,5 +121,49 @@ public class Player {
 		} else {
 			updateProgressBarColor(pgHP, GREEN_BAR);
 		}
+	}
+	
+	public void setNextAction(Action nextAction, int which) {
+		this.nextAction = nextAction;
+		this.whichAction = which;
+	}
+	
+	public Pokemon getSelectedPokemon() {
+		return selectedPokemon;
+	}
+	
+	public Action getNextAction() {
+		return nextAction;
+	}
+	
+	/*
+	 * On dit :
+	 * 80% de chance que le bot attaque avec un attaque aléatoire
+	 * 20 % il switch sur un pokémon aléatoire
+	 */
+	public void generateNextAction() {
+		double choice = Math.random();
+		if(choice>0.80) {
+			setNextAction(Action.MOVE, (int) Math.random()*(selectedPokemon.getlearnedMoves().size()-1));
+		}else {
+			setNextAction(Action.SWITCH, (int) Math.random()*(team.size()-1));
+		}
+		
+	}
+	
+	
+	/*
+	 * Méthode principale : Effectue le tour du joueur
+	 */
+	public AttackResult turn(Player p) {
+		switch(nextAction) {
+			case MOVE:
+				selectedPokemon.getlearnedMoves().get(whichAction).use(selectedPokemon, p.selectedPokemon);
+				break;
+			case SWITCH:
+				switchPokemon(team.get(whichAction));
+		}
+			
+		return null;
 	}
 }

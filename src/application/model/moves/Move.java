@@ -170,9 +170,12 @@ public class Move {
 			double stab = (type == p.getType1() || type == p.getType2()) ? 1.5 : 1; // Le STAB est selon si le pokémon
 																					// est du même type que l'attaque,
 																					// sela donnes des dégats bonus
+			
 			double totalResistance = p2.getType1().resistanceAgain(type);
 			totalResistance *= (p2.getType2() != null) ? p2.getType2().resistanceAgain(type) : 1;
-			double randomMultiplicator = Math.random() * (1 - 0.85);
+			double randomMultiplicator = Math.random() * (1 - 0.85)+0.85;
+			
+			System.out.println("Attaque : "+attack+", defense : "+defense+", stab : "+stab+", resistance : "+totalResistance+ " randomMultiplicator : "+randomMultiplicator);
 
 			int totalDamage = (int) ((((p.getLevel() * 0.4 + 2) * power * attack) / (defense * 50) + 2) * stab
 					* totalResistance * randomMultiplicator);
@@ -183,6 +186,8 @@ public class Move {
 				System.out.println("L'effet a eu lieu en prime");
 				effect.effect(p, p2);
 			}
+			
+			p2.getCurrentStats().add(-totalDamage);
 
 			if (totalResistance == 1)
 				return AttackResult.SUCCEED;

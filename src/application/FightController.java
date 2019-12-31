@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.model.fight.Action;
 import application.model.fight.Fight;
 import application.model.fight.Player;
 import javafx.application.Platform;
@@ -25,11 +26,13 @@ public class FightController extends AbstractController {
 
 	private Player playerFoe;
 
-	private Fight fightModel; // Pas sur si on garde, mon idée serait de gérer les combats dans fights et de
+	//private Fight fightModel; // Pas sur si on garde, mon idée serait de gérer les combats dans fights et de
 								// faire appel aux méthode de rafraichissement de l'interface présente dans le
 								// controlleur donc ça puisse l'info dans les players (comme ça on pense à si on
 								// veut jouer à plusieurs joueurs et au dévellopement futur possible du jeu, hop
 								// comme l'affichage se fait en fonction du joueur c'est cool étou)
+								//
+								//Jsuis Ok
 
 	@FXML
     private ResourceBundle resources;
@@ -128,15 +131,27 @@ public class FightController extends AbstractController {
 		playerUser.teamDisplayUpdate(switchPane);
 	}
 
+	
+	/*
+	 * Pour les deux méthodes ci dessous, il faudrait changer l'affichage pour afficher un message en fonction de player.turn()
+	 */
 	@FXML
 	void switchPokemon(MouseEvent event) {
 		int numPokemon = Integer.parseInt((((HBox) event.getSource()).getId()).replace("hboxSwitchPokemon", ""));
+		playerUser.setNextAction(Action.SWITCH, numPokemon);
+		if(playerFoe.isBot()) playerFoe.generateNextAction();
+		tabPaneMenu.getSelectionModel().select(1);
+		doTurns();
 		System.out.println(numPokemon);
 	}
 
 	@FXML
 	void useMove(MouseEvent event) {
 		int numMove = Integer.parseInt((((VBox) event.getSource()).getId()).replace("vBoxMove", ""));
+		playerUser.setNextAction(Action.MOVE, numMove);
+		if(playerFoe.isBot()) playerFoe.generateNextAction();
+		tabPaneMenu.getSelectionModel().select(1);
+		doTurns();
 		System.out.println(numMove);
 	}
 	
@@ -165,6 +180,7 @@ public class FightController extends AbstractController {
 		anchorPaneMenu.setVisible(false);
 	}
 	
+	//Il faudrait gérer ca dans cette méthode ici (on évite de déléguer au modèle l'affichage)
 	@Override
 	public void displayUpdate() {
 		// generate the moves of the player in the interface
@@ -187,6 +203,41 @@ public class FightController extends AbstractController {
 		
 		// A voir si on actuallise pas l'affichage dans le fight et à partir de là on actualise avec les players
 		Fight fightModel = new Fight(playerUser, playerFoe);
+		
+		displayUpdate();
+		
+	}
+	
+	/*
+	 * Permet d'aiguiller la priorité
+	 */
+	public void doTurns() {
+		if(playerFoe.getNextAction().getPriority() > playerUser.getNextAction().getPriority()) {
+			//Il faut afficher le message en fonction du retour
+			playerFoe.turn(playerUser);
+			playerUser.turn(playerFoe);
+		}else if(playerFoe.getNextAction().getPriority() < playerUser.getNextAction().getPriority()) {
+			//Il faut afficher le message en fonction du retour
+			playerUser.turn(playerFoe);
+			playerFoe.turn(playerUser);
+		}else {
+			//si les deux on la même priorité
+			if(playerUser.getNextAction() == Action.MOVE && playerFoe.getNextAction() == Action.MOVE) {
+				//C'est la vitesse des pokémons qui choisit la priorité
+				if(playerUser.getSelectedPokemon().getCurrentStats().getSpeed() >= playerFoe.getSelectedPokemon().getCurrentStats().getSpeed()) {
+					//en cas d'égalité on donne l'avantage au joueur
+					playerUser.turn(playerFoe);
+					playerFoe.turn(playerUser);
+				}else {
+					playerFoe.turn(playerUser);
+					playerUser.turn(playerFoe);
+				}
+			}else {
+				//l'ordre n'a pas d'importance
+				playerUser.turn(playerFoe);
+				playerFoe.turn(playerUser);
+			}
+		}
 		
 		displayUpdate();
 		

@@ -1,6 +1,5 @@
 package application.model.fight;
 
-import javafx.scene.layout.AnchorPane;
 
 public class Fight {
 	
