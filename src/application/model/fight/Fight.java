@@ -12,4 +12,12 @@ public class Fight {
 		this.firstPlayer = firstPlayer;
 		this.secondPlayer = secondPlayer;
 	}
+	
+	public Player getFirstPlayer() {
+		return firstPlayer;
+	}
+	
+	public Player getSecondPlayer() {
+		return firstPlayer;
+	}
 }

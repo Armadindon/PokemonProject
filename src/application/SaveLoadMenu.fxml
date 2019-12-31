@@ -23,10 +23,16 @@
         <Point3D z="1.0" />
       </rotationAxis>
     </ImageView>
-    <Button cancelButton="false" defaultButton="true" layoutX="421.0" layoutY="260.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="158.0" text="New Game">
-      <font>
-        <Font size="24.0" />
-      </font>
-    </Button>
+    <VBox alignment="CENTER" layoutX="313.0" layoutY="264.0" prefHeight="406.0" prefWidth="375.0" spacing="90.0">
+      <children>
+        <Button fx:id="saveButton" cancelButton="false" defaultButton="false" mnemonicParsing="false" prefHeight="70.0" prefWidth="217.0" text="Save">
+          <font>
+            <Font size="24.0" fx:id="x1" />
+          </font>
+        </Button>
+        <Button cancelButton="false" defaultButton="false" font="$x1" mnemonicParsing="false" prefHeight="70.0" prefWidth="217.0" text="Load" />
+        <Button cancelButton="false" defaultButton="false" font="$x1" mnemonicParsing="false" prefHeight="70.0" prefWidth="217.0" text="Back to menu" />
+      </children>
+    </VBox>
   </children>
 </AnchorPane>

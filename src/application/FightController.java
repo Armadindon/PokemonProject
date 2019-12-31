@@ -78,6 +78,9 @@ public class FightController extends AbstractController {
 
     @FXML
     private AnchorPane switchPane;
+    
+    @FXML
+    private AnchorPane anchorPaneMenu;
 
     @FXML
     private TabPane tabPaneMenu;
@@ -136,7 +139,32 @@ public class FightController extends AbstractController {
 		int numMove = Integer.parseInt((((VBox) event.getSource()).getId()).replace("vBoxMove", ""));
 		System.out.println(numMove);
 	}
-
+	
+	@FXML
+	void openMenu(ActionEvent event) {
+		anchorPaneMenu.setVisible(true);
+	}
+	
+	@FXML
+	void save(ActionEvent event) {
+		
+	}
+	
+	@FXML
+	void load(ActionEvent event) {
+		
+	}
+	
+	@FXML
+	void backToMenu(ActionEvent event) throws IOException {
+		super.changeSceneWithoutData(event, "TitleScreen.fxml");
+	}
+	
+	@FXML
+	void back(ActionEvent event) {
+		anchorPaneMenu.setVisible(false);
+	}
+	
 	@Override
 	public void displayUpdate() {
 		// generate the moves of the player in the interface
@@ -156,6 +184,9 @@ public class FightController extends AbstractController {
 		playerUser = Player.createRandomPlayer();
 		
 		playerFoe = Player.createRandomPlayer();
+		
+		// A voir si on actuallise pas l'affichage dans le fight et à partir de là on actualise avec les players
+		Fight fightModel = new Fight(playerUser, playerFoe);
 		
 		displayUpdate();
 		

@@ -84,9 +84,7 @@ public class TitleScreenController extends AbstractController {
 	}
 
 	private void goToGame(Event event) throws IOException {
-
-		super.changeSceneWithoutData(event, "Fight.fxml");
-		
+		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 
 	@Override
