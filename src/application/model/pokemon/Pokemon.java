@@ -85,6 +85,8 @@ public class Pokemon {
 		
 		return new Pokemon(id, name, baseExperience, height, weight, carriedItem, frontSprite, backSprite, allPossiblesMoves, learnedMoves, baseStats, currentStats, type1, type2, status);
 	}
+	
+	
 
 	public int getId() {
 		return id;
@@ -109,6 +111,14 @@ public class Pokemon {
 	public Stats getBaseStats() {
 		return baseStats;
 	}
+	
+	public int getLevel() {
+		return level;
+	}
+	
+	public Stats getCurrentStats() {
+		return currentStats;
+	}
 
 	public Image getFrontSprite() {
 		return frontSprite;
@@ -132,6 +142,10 @@ public class Pokemon {
 	
 	public ArrayList<Move> getlearnedMoves(){
 		return learnedMoves;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	@Override
@@ -161,9 +175,6 @@ public class Pokemon {
 				&& type2 == other.type2 && weight == other.weight;
 	}
 	
-	public void setStatus(Status status) {
-		this.status = status;
-	}
 	
 	public boolean addMoveToLearnedMoves(Move move) {
 		if(learnedMoves.size() < 4) {
@@ -178,14 +189,6 @@ public class Pokemon {
 	
 	public void removeMoveFromLearnedMoves(int moveIndex) {
 		learnedMoves.remove(moveIndex);
-	}
-	
-	public int getLevel() {
-		return level;
-	}
-	
-	public Stats getCurrentStats() {
-		return currentStats;
 	}
 	
 	public void hurt(int damage) {

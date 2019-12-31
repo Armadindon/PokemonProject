@@ -199,12 +199,12 @@
       <children>
         <HBox alignment="CENTER_LEFT" prefHeight="43.797027587890625" prefWidth="362.0" spacing="0.0">
           <children>
-            <Label fx:id="labelFoePokeName" font="$x1" prefWidth="259.0" text="PokeName">
+            <Label fx:id="labelFoePokeName" font="$x1" prefWidth="258.0" text="PokeName">
               <HBox.margin>
-                <Insets left="4.0" />
+                <Insets left="10.0" fx:id="x5" />
               </HBox.margin>
             </Label>
-            <Label id="labelForPokeLvl" fx:id="labelFoePokeLvl" font="$x1" text="PokeLvl" />
+            <Label fx:id="labelFoePokeLvl" alignment="CENTER_RIGHT" contentDisplay="RIGHT" font="$x1" prefWidth="106.0" text="PokeLvl" />
           </children>
         </HBox>
         <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
@@ -222,12 +222,8 @@
       <children>
         <HBox alignment="CENTER_LEFT" prefHeight="43.797027587890625" prefWidth="362.0" spacing="0.0">
           <children>
-            <Label fx:id="labelAllyPokeName" font="$x1" prefWidth="259.0" text="PokeName">
-              <HBox.margin>
-                <Insets left="4.0" />
-              </HBox.margin>
-            </Label>
-            <Label fx:id="labelAllyPokeLvl" font="$x1" text="PokeLvl" />
+            <Label fx:id="labelAllyPokeName" font="$x1" prefWidth="259.0" text="PokeName" HBox.margin="$x5" />
+            <Label fx:id="labelAllyPokeLvl" alignment="CENTER_RIGHT" contentDisplay="RIGHT" font="$x1" prefWidth="158.0" text="PokeLvl" />
           </children>
         </HBox>
         <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">

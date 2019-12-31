@@ -142,8 +142,8 @@ public class FightController extends AbstractController {
 		// generate the moves of the player in the interface
 		playerUser.moveDisplayUpdate(movePane);
 		playerUser.teamDisplayUpdate(switchPane);
-		playerUser.mainScreenUpdate(imageViewAllyPokemon, false);
-		playerFoe.mainScreenUpdate(ImageViewFoePokemon, true);
+		playerUser.mainScreenUpdate(imageViewAllyPokemon, labelAllyPokeName, labelAllyPokeLvl, labelAllyPokeHP, progressBarAllyPokeHP, false);
+		playerFoe.mainScreenUpdate(ImageViewFoePokemon, labelFoePokeName, labelFoePokeLvl, labelFoePokeHP, progressBarFoePokeHP, true);
 	}
 
 	@FXML
