@@ -3,6 +3,7 @@ package application.model.fight;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 import application.model.appmodel.TeamBuilder;
 import application.model.items.Item;
@@ -45,6 +46,7 @@ public class Player {
 	}
 
 	public void switchPokemon(Pokemon p) {
+		System.out.println("Le prochaine pokémon : "+p);
 		if (team.contains(p)) {
 			selectedPokemon = p;
 		} else {
@@ -77,17 +79,15 @@ public class Player {
 
 			HBox pokemonDisplay = ((HBox) switchPane.getChildren().get(i));
 			((ImageView) pokemonDisplay.getChildren().get(0)).setImage(pokemon.getFrontSprite());
+			pokemonDisplay.setDisable(false);
 
 			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(0))).setText(pokemon.getName());
 			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(1)))
 					.setText(pokemon.getBaseStats().getHp() + "/" + "hpmax");
 
-			pokemonDisplay.setDisable(false);
-			
 			if (i == pokeIndex) {
 				pokemonDisplay.setDisable(true);
 			}
-			
 		}
 	}
 
@@ -146,10 +146,13 @@ public class Player {
 	 */
 	public void generateNextAction() {
 		double choice = Math.random();
-		if(choice>0.80) {
-			setNextAction(Action.MOVE, (int) Math.random()*(selectedPokemon.getlearnedMoves().size()-1));
+		Random randomChoice = new Random();
+		if(choice < 0.80) {
+			System.out.println("Le bot attaquera !");
+			setNextAction(Action.MOVE, randomChoice.nextInt(selectedPokemon.getlearnedMoves().size()));
 		}else {
-			setNextAction(Action.SWITCH, (int) Math.random()*(team.size()-1));
+			System.out.println("Le bot changera de pokémon ! "+team.size());
+			setNextAction(Action.SWITCH, randomChoice.nextInt(team.size()));
 		}
 		
 	}
@@ -161,12 +164,21 @@ public class Player {
 	public AttackResult turn(Player p) {
 		switch(nextAction) {
 			case MOVE:
-				selectedPokemon.getlearnedMoves().get(whichAction).use(selectedPokemon, p.selectedPokemon);
-				break;
+				return selectedPokemon.getlearnedMoves().get(whichAction).use(selectedPokemon, p.selectedPokemon);
 			case SWITCH:
 				switchPokemon(team.get(whichAction));
+			default:
+				break;
 		}
 			
 		return null;
+	}
+	
+	public int getWhichAction() {
+		return whichAction;
+	}
+	
+	public ArrayList<Pokemon> getTeam() {
+		return team;
 	}
 }

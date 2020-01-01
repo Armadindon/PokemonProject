@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import application.model.fight.Action;
 import application.model.fight.Fight;
 import application.model.fight.Player;
+import application.model.moves.AttackResult;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -113,6 +114,12 @@ public class FightController extends AbstractController {
 	void mainMenu(ActionEvent event) {
 		tabPaneMenu.getSelectionModel().select(1);
 	}
+	
+
+    @FXML
+    void mainMenuClick(MouseEvent event) {
+		tabPaneMenu.getSelectionModel().select(1);
+    }
 
 	@FXML
 	void backPackPage(ActionEvent event) {
@@ -212,13 +219,31 @@ public class FightController extends AbstractController {
 	 * Permet d'aiguiller la priorité
 	 */
 	public void doTurns() {
+		AttackResult att = null; // Si il reste a null, il n'y a rien a rajouter
+		
+		String message = "";
+		
+		//on gère l'affichage avant les actions
+		switch (playerUser.getNextAction()) {
+			case MOVE:
+				message = playerUser.getSelectedPokemon().getName()+" utilise "+playerUser.getSelectedPokemon().getlearnedMoves().get(playerUser.getWhichAction())+"\n";
+				break;
+				
+			case SWITCH:
+				message = "Reviens "+playerUser.getSelectedPokemon().getName()+", vasy "+playerUser.getTeam().get(playerUser.getWhichAction())+"\n";
+				break;
+	
+			default:
+				break;
+		}
+		
 		if(playerFoe.getNextAction().getPriority() > playerUser.getNextAction().getPriority()) {
 			//Il faut afficher le message en fonction du retour
 			playerFoe.turn(playerUser);
-			playerUser.turn(playerFoe);
+			att = playerUser.turn(playerFoe);
 		}else if(playerFoe.getNextAction().getPriority() < playerUser.getNextAction().getPriority()) {
 			//Il faut afficher le message en fonction du retour
-			playerUser.turn(playerFoe);
+			att = playerUser.turn(playerFoe);
 			playerFoe.turn(playerUser);
 		}else {
 			//si les deux on la même priorité
@@ -226,20 +251,41 @@ public class FightController extends AbstractController {
 				//C'est la vitesse des pokémons qui choisit la priorité
 				if(playerUser.getSelectedPokemon().getCurrentStats().getSpeed() >= playerFoe.getSelectedPokemon().getCurrentStats().getSpeed()) {
 					//en cas d'égalité on donne l'avantage au joueur
-					playerUser.turn(playerFoe);
+					att = playerUser.turn(playerFoe);
 					playerFoe.turn(playerUser);
 				}else {
 					playerFoe.turn(playerUser);
-					playerUser.turn(playerFoe);
+					att = playerUser.turn(playerFoe);
 				}
 			}else {
 				//l'ordre n'a pas d'importance
-				playerUser.turn(playerFoe);
+				att = playerUser.turn(playerFoe);
 				playerFoe.turn(playerUser);
 			}
 		}
-		
 		displayUpdate();
+		tabPaneMenu.getSelectionModel().select(0);
+		
+		if(att != null) {
+			switch(att) {
+				case SUCCEED:
+					message += "Le coup a touché !";
+					break;
+				
+				case NOTEFFECTIVE:
+					message += "Le coup n'était pas très efficace ...";
+					break;
+				
+				case EFFECTIVE:
+					message += "C'est super efficace !";
+					break;
+				
+				case MISSED:
+					message += "L'attaque a ratée !";
+			}
+		}
+		
+		textAreaMatchNotification.setText(message);
 		
 	}
 }

@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Point3D?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" scaleZ="1.0" snapToPixel="true" style="-fx-background-color: darkgray;&#10;&#10;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.FightController">
+<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" scaleZ="1.0" snapToPixel="true" style="-fx-background-color: darkgray;&#10;&#10;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FightController">
   <children>
     <Ellipse layoutX="250.0" layoutY="432.0" radiusX="188.01140594482422" radiusY="98.06077575683594" rotate="7.0" scaleZ="1.0" stroke="BLACK" strokeType="INSIDE" style="">
       <fill>
@@ -29,7 +32,7 @@
           <content>
             <AnchorPane id="Content" disable="false" minHeight="0.0" minWidth="0.0" prefHeight="NaN" prefWidth="1000.0" style="&#10;" visible="true">
               <children>
-                <TextArea fx:id="textAreaMatchNotification" layoutX="95.0" layoutY="14.0" prefHeight="182.0" prefWidth="855.0" text="&#10;&#10;" wrapText="true" />
+                <TextArea fx:id="textAreaMatchNotification" layoutX="95.0" layoutY="14.0" onMouseClicked="#mainMenuClick" prefHeight="182.0" prefWidth="855.0" text="&#10;&#10;" wrapText="true" />
               </children>
             </AnchorPane>
           </content>
