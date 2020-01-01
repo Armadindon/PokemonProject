@@ -82,9 +82,12 @@ public class Player {
 			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(1)))
 					.setText(pokemon.getBaseStats().getHp() + "/" + "hpmax");
 
+			pokemonDisplay.setDisable(false);
+			
 			if (i == pokeIndex) {
 				pokemonDisplay.setDisable(true);
 			}
+			
 		}
 	}
 
