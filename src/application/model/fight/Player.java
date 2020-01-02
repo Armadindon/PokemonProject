@@ -157,7 +157,7 @@ public class Player {
 			int next;
 			do {
 				next =  randomChoice.nextInt(team.size());
-			} while (!team.get(next).isAlive());
+			} while (!team.get(next).isAlive() && !team.get(next).equals(selectedPokemon));
 			setNextAction(Action.SWITCH,next ,p);
 		}
 		

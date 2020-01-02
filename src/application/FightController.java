@@ -111,7 +111,7 @@ public class FightController extends AbstractController {
     private Button cancelButtonSwitch;
 	
 	
-	List<String> msgs = null;
+	private List<String> msgs = null;
 
 	@FXML
 	void run(ActionEvent event) {
@@ -127,7 +127,15 @@ public class FightController extends AbstractController {
 
     @FXML
     void mainMenuClick(MouseEvent event) {
-		tabPaneMenu.getSelectionModel().select(1);
+    	System.out.println(msgs);
+    	if(msgs.size()>=1) {
+        	textAreaMatchNotification.setText(msgs.get(0));
+    		msgs = msgs.subList(1, msgs.size());
+    	}
+    	else {
+    		msgs = null;
+    		tabPaneMenu.getSelectionModel().select(1);
+    	}
     }
 
 	@FXML
@@ -153,12 +161,27 @@ public class FightController extends AbstractController {
 	 */
 	@FXML
 	void switchPokemon(MouseEvent event) {
+		boolean wasAlive = playerUser.getSelectedPokemon().isAlive();
 		int numPokemon = Integer.parseInt((((HBox) event.getSource()).getId()).replace("hboxSwitchPokemon", ""));
 		playerUser.setNextAction(Action.SWITCH, numPokemon,playerFoe);
 		if(playerFoe.isBot()) playerFoe.generateNextAction(playerUser);
 		tabPaneMenu.getSelectionModel().select(1);
-		doTurns();
+		if(wasAlive) doTurns();
+		else switchPokemons();
 		System.out.println(numPokemon);
+	}
+	
+	/*
+	 * Permet de faire son tour seulement si on switch (utile dans le cas ou on switch car le pokémon est mort)
+	 */
+	private void switchPokemons() {
+		if(playerUser.getNextAction() == Action.SWITCH) {
+			playerUser.turn(playerFoe);
+		}
+		if(playerFoe.getNextAction() == Action.SWITCH) {
+			playerUser.turn(playerUser);
+		}
+		displayUpdate();
 	}
 
 	@FXML
@@ -227,17 +250,17 @@ public class FightController extends AbstractController {
 	
 	private String[] turns(Player... players) {
 		
-		String[] msgs = new String[players.length];
+		String[] messages = new String[players.length];
 		AttackResult att;
 		
 		for(int i =0;i<players.length;i++) {
 			switch(players[i].getNextAction()) {
 				case MOVE:
-					msgs[i] = playerUser.getSelectedPokemon().getName()+" utilise "+playerUser.getSelectedPokemon().getlearnedMoves().get(playerUser.getWhichAction()).getName()+"\n";
+					messages[i] = players[i].getSelectedPokemon().getName()+" utilise "+players[i].getSelectedPokemon().getlearnedMoves().get(players[i].getWhichAction()).getName()+"\n";
 					break;
 					
 				case SWITCH:
-					msgs[i] = "Reviens "+playerUser.getSelectedPokemon().getName()+", vasy "+playerUser.getTeam().get(playerUser.getWhichAction()).getName()+"\n";
+					messages[i] = "Reviens "+players[i].getSelectedPokemon().getName()+", vasy "+players[i].getTeam().get(players[i].getWhichAction()).getName()+"\n";
 					break;
 		
 				default:
@@ -248,24 +271,25 @@ public class FightController extends AbstractController {
 			if(att != null) {
 				switch(att) {
 					case SUCCEED:
-						msgs[i] += "Le coup a touché !\n";
+						messages[i] += "Le coup a touché !\n";
 						break;
 					
 					case NOTEFFECTIVE:
-						msgs[i] += "Le coup n'était pas très efficace ...\n";
+						messages[i] += "Le coup n'était pas très efficace ...\n";
 						break;
 					
 					case EFFECTIVE:
-						msgs[i] += "C'est super efficace !\n";
+						messages[i] += "C'est super efficace !\n";
 						break;
 					
 					case MISSED:
-						msgs[i] += "L'attaque a ratée !\n";
+						messages[i] += "L'attaque a ratée !\n";
 				}
 			}
-			System.out.println(players[i].getWhichPlayer()+" "+players[i]);
+			
+			
 			if(!players[i].getWhichPlayer().getSelectedPokemon().isAlive()) {
-				msgs[i]+= "Le pokémon adverse est KO !";
+				messages[i]+= "Le pokémon adverse est KO !";
 				if(players[i].getWhichPlayer().isBot()) players[i].getWhichPlayer().forceSwitch();
 				else {
 					tabPaneMenu.getSelectionModel().select(3);
@@ -273,23 +297,20 @@ public class FightController extends AbstractController {
 					return null;
 				}
 			}
-			return msgs;
 			
 		}
 		
 
-		
+		System.out.println(Arrays.toString(messages));
 		displayUpdate();
 		
-		return msgs;
+		return messages;
 	}
 	
 	/*
 	 * Permet d'aiguiller la priorité
 	 */
-	public void doTurns() {
-		AttackResult att = null; // Si il reste a null, il n'y a rien a rajouter
-		
+	public void doTurns() {		
 		String[] messages = new String[2];
 		
 		
@@ -318,9 +339,9 @@ public class FightController extends AbstractController {
 		
 		if(messages != null) {
 			msgs = Arrays.asList(messages);
-			
+			System.out.println(msgs);
 			tabPaneMenu.getSelectionModel().select(0);
-			textAreaMatchNotification.setText(messages[0]);
+			mainMenuClick(null);
 		}
 
 		
