@@ -187,7 +187,7 @@ public class Move {
 				effect.effect(p, p2);
 			}
 			
-			p2.getCurrentStats().add(-totalDamage);
+			p2.addHp(-totalDamage);
 
 			if (totalResistance == 1)
 				return AttackResult.SUCCEED;
@@ -203,4 +203,5 @@ public class Move {
 	public String toString() {
 		return id + " - " + name;
 	}
+	
 }

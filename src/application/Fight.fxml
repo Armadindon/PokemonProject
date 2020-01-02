@@ -179,7 +179,7 @@
                         </VBox>
                       </children>
                     </HBox>
-                    <Button layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#mainMenu" text="return" />
+                    <Button fx:id="cancelButtonSwitch" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#mainMenu" text="return" />
                   </children>
                   <stylesheets>
                     <URL value="@hboxColor.css" />

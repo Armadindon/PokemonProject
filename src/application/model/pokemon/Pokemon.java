@@ -201,4 +201,9 @@ public class Pokemon {
 		return alive;
 	}
 	
+	public void addHp(int hp) {
+		currentStats.add(hp);
+		if(currentStats.getHp() == 0) alive = false;
+	}
+	
 }

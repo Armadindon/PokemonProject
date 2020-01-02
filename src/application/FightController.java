@@ -2,6 +2,8 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.model.fight.Action;
@@ -11,6 +13,7 @@ import application.model.moves.AttackResult;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TabPane;
@@ -103,6 +106,12 @@ public class FightController extends AbstractController {
 
 	@FXML
 	private VBox vBoxMove3;
+	
+	@FXML
+    private Button cancelButtonSwitch;
+	
+	
+	List<String> msgs = null;
 
 	@FXML
 	void run(ActionEvent event) {
@@ -145,8 +154,8 @@ public class FightController extends AbstractController {
 	@FXML
 	void switchPokemon(MouseEvent event) {
 		int numPokemon = Integer.parseInt((((HBox) event.getSource()).getId()).replace("hboxSwitchPokemon", ""));
-		playerUser.setNextAction(Action.SWITCH, numPokemon);
-		if(playerFoe.isBot()) playerFoe.generateNextAction();
+		playerUser.setNextAction(Action.SWITCH, numPokemon,playerFoe);
+		if(playerFoe.isBot()) playerFoe.generateNextAction(playerUser);
 		tabPaneMenu.getSelectionModel().select(1);
 		doTurns();
 		System.out.println(numPokemon);
@@ -155,8 +164,8 @@ public class FightController extends AbstractController {
 	@FXML
 	void useMove(MouseEvent event) {
 		int numMove = Integer.parseInt((((VBox) event.getSource()).getId()).replace("vBoxMove", ""));
-		playerUser.setNextAction(Action.MOVE, numMove);
-		if(playerFoe.isBot()) playerFoe.generateNextAction();
+		playerUser.setNextAction(Action.MOVE, numMove,playerFoe);
+		if(playerFoe.isBot()) playerFoe.generateNextAction(playerUser);
 		tabPaneMenu.getSelectionModel().select(1);
 		doTurns();
 		System.out.println(numMove);
@@ -204,9 +213,9 @@ public class FightController extends AbstractController {
 		// backpack: 4 (mais rien c'est fait pour lui encore)
 		tabPaneMenu.getSelectionModel().select(1);
 		
-		playerUser = Player.createRandomPlayer();
+		playerUser = Player.createRandomPlayer(false);
 		
-		playerFoe = Player.createRandomPlayer();
+		playerFoe = Player.createRandomPlayer(true);
 		
 		// A voir si on actuallise pas l'affichage dans le fight et à partir de là on actualise avec les players
 		Fight fightModel = new Fight(playerUser, playerFoe);
@@ -215,77 +224,106 @@ public class FightController extends AbstractController {
 		
 	}
 	
+	
+	private String[] turns(Player... players) {
+		
+		String[] msgs = new String[players.length];
+		AttackResult att;
+		
+		for(int i =0;i<players.length;i++) {
+			switch(players[i].getNextAction()) {
+				case MOVE:
+					msgs[i] = playerUser.getSelectedPokemon().getName()+" utilise "+playerUser.getSelectedPokemon().getlearnedMoves().get(playerUser.getWhichAction()).getName()+"\n";
+					break;
+					
+				case SWITCH:
+					msgs[i] = "Reviens "+playerUser.getSelectedPokemon().getName()+", vasy "+playerUser.getTeam().get(playerUser.getWhichAction()).getName()+"\n";
+					break;
+		
+				default:
+					break;
+			}
+			att = players[i].turn(players[i].getWhichPlayer());
+			
+			if(att != null) {
+				switch(att) {
+					case SUCCEED:
+						msgs[i] += "Le coup a touché !\n";
+						break;
+					
+					case NOTEFFECTIVE:
+						msgs[i] += "Le coup n'était pas très efficace ...\n";
+						break;
+					
+					case EFFECTIVE:
+						msgs[i] += "C'est super efficace !\n";
+						break;
+					
+					case MISSED:
+						msgs[i] += "L'attaque a ratée !\n";
+				}
+			}
+			System.out.println(players[i].getWhichPlayer()+" "+players[i]);
+			if(!players[i].getWhichPlayer().getSelectedPokemon().isAlive()) {
+				msgs[i]+= "Le pokémon adverse est KO !";
+				if(players[i].getWhichPlayer().isBot()) players[i].getWhichPlayer().forceSwitch();
+				else {
+					tabPaneMenu.getSelectionModel().select(3);
+					cancelButtonSwitch.setDisable(true);
+					return null;
+				}
+			}
+			return msgs;
+			
+		}
+		
+
+		
+		displayUpdate();
+		
+		return msgs;
+	}
+	
 	/*
 	 * Permet d'aiguiller la priorité
 	 */
 	public void doTurns() {
 		AttackResult att = null; // Si il reste a null, il n'y a rien a rajouter
 		
-		String message = "";
+		String[] messages = new String[2];
 		
-		//on gère l'affichage avant les actions
-		switch (playerUser.getNextAction()) {
-			case MOVE:
-				message = playerUser.getSelectedPokemon().getName()+" utilise "+playerUser.getSelectedPokemon().getlearnedMoves().get(playerUser.getWhichAction())+"\n";
-				break;
-				
-			case SWITCH:
-				message = "Reviens "+playerUser.getSelectedPokemon().getName()+", vasy "+playerUser.getTeam().get(playerUser.getWhichAction())+"\n";
-				break;
-	
-			default:
-				break;
-		}
 		
 		if(playerFoe.getNextAction().getPriority() > playerUser.getNextAction().getPriority()) {
 			//Il faut afficher le message en fonction du retour
-			playerFoe.turn(playerUser);
-			att = playerUser.turn(playerFoe);
+			messages = turns(playerFoe,playerUser);
 		}else if(playerFoe.getNextAction().getPriority() < playerUser.getNextAction().getPriority()) {
 			//Il faut afficher le message en fonction du retour
-			att = playerUser.turn(playerFoe);
-			playerFoe.turn(playerUser);
+			messages = turns(playerUser,playerFoe);
 		}else {
 			//si les deux on la même priorité
 			if(playerUser.getNextAction() == Action.MOVE && playerFoe.getNextAction() == Action.MOVE) {
 				//C'est la vitesse des pokémons qui choisit la priorité
 				if(playerUser.getSelectedPokemon().getCurrentStats().getSpeed() >= playerFoe.getSelectedPokemon().getCurrentStats().getSpeed()) {
 					//en cas d'égalité on donne l'avantage au joueur
-					att = playerUser.turn(playerFoe);
-					playerFoe.turn(playerUser);
+					messages = turns(playerUser,playerFoe);
 				}else {
-					playerFoe.turn(playerUser);
-					att = playerUser.turn(playerFoe);
+					messages = turns(playerFoe,playerUser);
 				}
 			}else {
 				//l'ordre n'a pas d'importance
-				att = playerUser.turn(playerFoe);
-				playerFoe.turn(playerUser);
+				messages = turns(playerUser,playerFoe);
 			}
 		}
 		displayUpdate();
-		tabPaneMenu.getSelectionModel().select(0);
 		
-		if(att != null) {
-			switch(att) {
-				case SUCCEED:
-					message += "Le coup a touché !";
-					break;
-				
-				case NOTEFFECTIVE:
-					message += "Le coup n'était pas très efficace ...";
-					break;
-				
-				case EFFECTIVE:
-					message += "C'est super efficace !";
-					break;
-				
-				case MISSED:
-					message += "L'attaque a ratée !";
-			}
+		if(messages != null) {
+			msgs = Arrays.asList(messages);
+			
+			tabPaneMenu.getSelectionModel().select(0);
+			textAreaMatchNotification.setText(messages[0]);
 		}
+
 		
-		textAreaMatchNotification.setText(message);
 		
 	}
 }

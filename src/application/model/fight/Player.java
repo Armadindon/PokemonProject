@@ -24,6 +24,7 @@ public class Player {
 	private final boolean bot;
 	private Action nextAction;
 	private int whichAction;
+	private Player whichPlayer;
 	private ArrayList<Item> backPack = new ArrayList<>();
 
 	// HP Display
@@ -41,16 +42,16 @@ public class Player {
 		this.bot = bot;
 	}
 
-	public static Player createRandomPlayer() throws IOException {
-		return new Player(TeamBuilder.createTeamBuilder().createRandomTeam(), true);
+	public static Player createRandomPlayer(boolean b) throws IOException {
+		return new Player(TeamBuilder.createTeamBuilder().createRandomTeam(), b);
 	}
 
 	public void switchPokemon(Pokemon p) {
-		System.out.println("Le prochaine pokémon : "+p);
-		if (team.contains(p)) {
+		System.out.println("Le prochain pokémon : "+p.getName());
+		if (p.isAlive()) {
 			selectedPokemon = p;
 		} else {
-			throw new IllegalArgumentException("The pokemon is not in the team");
+			throw new IllegalArgumentException("The pokemon is KO");
 		}
 	}
 
@@ -85,7 +86,7 @@ public class Player {
 			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(1)))
 					.setText(pokemon.getBaseStats().getHp() + "/" + "hpmax");
 
-			if (i == pokeIndex) {
+			if (i == pokeIndex || !team.get(i).isAlive()) {
 				pokemonDisplay.setDisable(true);
 			}
 		}
@@ -126,9 +127,10 @@ public class Player {
 		}
 	}
 	
-	public void setNextAction(Action nextAction, int which) {
+	public void setNextAction(Action nextAction, int which,Player target) {
 		this.nextAction = nextAction;
 		this.whichAction = which;
+		whichPlayer = target;
 	}
 	
 	public Pokemon getSelectedPokemon() {
@@ -144,17 +146,30 @@ public class Player {
 	 * 80% de chance que le bot attaque avec un attaque aléatoire
 	 * 20 % il switch sur un pokémon aléatoire
 	 */
-	public void generateNextAction() {
+	public void generateNextAction(Player p) {
 		double choice = Math.random();
 		Random randomChoice = new Random();
 		if(choice < 0.80) {
 			System.out.println("Le bot attaquera !");
-			setNextAction(Action.MOVE, randomChoice.nextInt(selectedPokemon.getlearnedMoves().size()));
+			setNextAction(Action.MOVE, randomChoice.nextInt(selectedPokemon.getlearnedMoves().size()),p);
 		}else {
 			System.out.println("Le bot changera de pokémon ! "+team.size());
-			setNextAction(Action.SWITCH, randomChoice.nextInt(team.size()));
+			int next;
+			do {
+				next =  randomChoice.nextInt(team.size());
+			} while (!team.get(next).isAlive());
+			setNextAction(Action.SWITCH,next ,p);
 		}
 		
+	}
+	
+	public void forceSwitch() {
+		Random randomChoice = new Random();
+		int next;
+		do {
+			next =  randomChoice.nextInt(team.size());
+		} while (!team.get(next).isAlive());
+		setNextAction(Action.SWITCH,next ,whichPlayer);
 	}
 	
 	
@@ -180,5 +195,21 @@ public class Player {
 	
 	public ArrayList<Pokemon> getTeam() {
 		return team;
+	}
+	
+	/*
+	 * Check différents paramètres:
+	 * 	-Le pokémon actuel est il vivant ?
+	 */
+	public boolean isEverythingOk() {
+		if(!selectedPokemon.isAlive()) {
+			alive -=1;
+			return false;
+		};
+		return true;
+	}
+	
+	public Player getWhichPlayer() {
+		return whichPlayer;
 	}
 }

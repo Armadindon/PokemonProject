@@ -20,7 +20,8 @@ public class Stats {
 	}
 	
 	public void add(int hp) {
-		this.hp += hp;
+		if(this.hp + hp <0) this.hp = 0;
+		else this.hp += hp;
 	}
 
 	public int getSpeed() {
