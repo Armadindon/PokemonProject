@@ -1,6 +1,8 @@
 package application;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -28,7 +30,7 @@ public class ChooseGameController extends AbstractController {
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 		if (league.isPresent()) {
 			this.league = league;
-		}
+		}else league = Optional.empty();
 
 		this.teamBuilder = teamBuilder;
 	}
@@ -92,6 +94,16 @@ public class ChooseGameController extends AbstractController {
 
 	@FXML
 	void save(ActionEvent event) {
+	      try {
+	          FileOutputStream fileOut = new FileOutputStream("save.ser");
+	          ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	          out.writeObject(teamBuilder);
+	          out.close();
+	          fileOut.close();
+	          System.out.printf("Serialized data is saved in /tmp/employee.ser");
+	       } catch (IOException i) {
+	          i.printStackTrace();
+	       }
 
 		labelSave.setText("Team saved !");
 		displayUpdate();

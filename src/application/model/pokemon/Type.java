@@ -1,8 +1,9 @@
 package application.model.pokemon;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public enum Type {
+public enum Type implements Serializable{
 	
 	STEEL(0.5,2,0.5,1,1,0.5,2,0.5,0.5,0.5,0.5,0,0.5,0.5,2,1,1,0.5),
 	FIGHTING(1,1,1,1,1,2,1,1,0.5,1,1,1,2,0.5,1,1,0.5,2),

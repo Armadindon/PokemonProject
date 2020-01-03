@@ -1,6 +1,7 @@
 package application.model.pokemon;
 
 import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,15 +14,15 @@ import application.model.items.Item;
 import application.model.moves.Move;
 import javafx.scene.image.Image;
 
-public class Pokemon {
+public class Pokemon implements Serializable{
 	private final int id;
 	private String name;
 	private final int baseExperience;
 	private final int height;
 	private final int weight;
 	private final Item carriedItem;
-	private final Image frontSprite;
-	private final Image backSprite;
+	private final String frontSprite;
+	private final String backSprite;
 	private final ArrayList<Move> allPossiblesMoves;
 	private ArrayList<Move> learnedMoves;
 	private Stats baseStats;
@@ -34,8 +35,8 @@ public class Pokemon {
 
 	
 	//Constructeur Temporaire
-	public Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem, Image frontSprite,
-			Image backSprite, ArrayList<Move> allPossiblesMoves, ArrayList<Move> learnedMoves, Stats baseStats,
+	public Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem, String frontSprite,
+			String backSprite, ArrayList<Move> allPossiblesMoves, ArrayList<Move> learnedMoves, Stats baseStats,
 			Stats currentStats, Type type1, Type type2, Status status) {
 		this.id = id;
 		this.name = name;
@@ -61,13 +62,13 @@ public class Pokemon {
 		int height = Integer.parseInt(data.get("height").get(0));
 		int weight = Integer.parseInt(data.get("weight").get(0));
 		Item carriedItem = null;
-		Image frontSprite = new Image("file:" + System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteFront").get(0).replace("/", File.separator));
+		String frontSprite = System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteFront").get(0).replace("/", File.separator);
 		
-		Image backSprite;
+		String backSprite;
 		if(data.get("spriteBack").get(0).equals("NULL")) {
 			backSprite = null;
 		}else {
-			backSprite = new Image("file:" + System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteBack").get(0).replace("/", File.separator));
+			backSprite = System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteBack").get(0).replace("/", File.separator);
 		}
 		
 		ArrayList<Move> allPossiblesMoves = new ArrayList<>();
@@ -126,11 +127,11 @@ public class Pokemon {
 		return currentStats;
 	}
 
-	public Image getFrontSprite() {
+	public String getFrontSprite() {
 		return frontSprite;
 	}
 	
-	public Image getBackSprite() {
+	public String getBackSprite() {
 		if(backSprite == null) return frontSprite;
 		else return backSprite;
 	}

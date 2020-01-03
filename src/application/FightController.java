@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
 import application.model.fight.Action;
-import application.model.fight.Fight;
 import application.model.fight.Player;
 import application.model.moves.AttackResult;
 import application.model.moves.Move;
@@ -24,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -65,9 +65,9 @@ public class FightController extends AbstractController {
 			playerFoe = Player.createRandomPlayer(true);
 		}
 		
-		// playerUser = new Player(teamBuilder, false);
+		playerUser = new Player(teamBuilder, false);
 		
-		playerUser = Player.createRandomPlayer(false);
+		//playerUser = Player.createRandomPlayer(false);
 		
 		displayUpdate();
 	}
@@ -297,7 +297,7 @@ public class FightController extends AbstractController {
 			Pokemon pokemon = team.get(i);
 
 			HBox pokemonDisplay = ((HBox) switchPane.getChildren().get(i));
-			((ImageView) pokemonDisplay.getChildren().get(0)).setImage(pokemon.getFrontSprite());
+			((ImageView) pokemonDisplay.getChildren().get(0)).setImage(new Image("file:"+pokemon.getFrontSprite()));
 			pokemonDisplay.setDisable(false);
 
 			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(0))).setText(pokemon.getName());
@@ -320,9 +320,9 @@ public class FightController extends AbstractController {
 		Pokemon selectedPokemon = p.getSelectedPokemon();
 
 		if (p.isBot()) {
-			imgV.setImage(selectedPokemon.getFrontSprite());
+			imgV.setImage(new Image("file:"+selectedPokemon.getFrontSprite()));
 		} else {
-			imgV.setImage(selectedPokemon.getBackSprite());
+			imgV.setImage(new Image("file:"+selectedPokemon.getBackSprite()));
 		}
 
 		int maxHP = selectedPokemon.getBaseStats().getHp();

@@ -74,16 +74,19 @@ public class TitleScreenController extends AbstractController {
 	@FXML
 	void changeToGame(MouseEvent event) throws IOException {
 		System.out.println("Clic");
+		mp.stop();
 		goToGame(event);
 	}
 
 	@FXML
 	void changeToGameK(KeyEvent event) throws IOException {
 		System.out.println("Appui touche");
+		mp.stop();
 		goToGame(event);
 	}
 
 	private void goToGame(Event event) throws IOException {
+		mp.stop();
 		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 

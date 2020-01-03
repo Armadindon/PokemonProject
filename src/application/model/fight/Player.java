@@ -1,6 +1,7 @@
 package application.model.fight;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -17,7 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class Player {
+public class Player implements Serializable{
 	private final ArrayList<Pokemon> team;
 	private Pokemon selectedPokemon;
 	private int alive;

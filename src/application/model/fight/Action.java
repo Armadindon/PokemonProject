@@ -1,6 +1,8 @@
 package application.model.fight;
 
-public enum Action {
+import java.io.Serializable;
+
+public enum Action implements Serializable{
 	
 	MOVE(0),
 	SWITCH(1),

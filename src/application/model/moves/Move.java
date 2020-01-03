@@ -1,5 +1,6 @@
 package application.model.moves;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,7 @@ import application.model.pokemon.Pokemon;
 import application.model.pokemon.Status;
 import application.model.pokemon.Type;
 
-public class Move {
+public class Move implements Serializable{
 	/*
 	 * "id", "name", "move_category", "accuracy", "effect_ailment", "effect_chance",
 	 * "damage_class", "type", "power", "pp", "priority", "target", "stat_changes",

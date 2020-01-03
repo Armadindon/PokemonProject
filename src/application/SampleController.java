@@ -41,7 +41,7 @@ public class SampleController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 
-	private Optional<League> league;
+	private Optional<League> league = Optional.empty();
 	
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) {
@@ -237,6 +237,11 @@ public class SampleController extends AbstractController {
 		listPokemon.setItems(items);
 
 	}
+	
+    @FXML
+    void goToMenu(ActionEvent event) throws IOException {
+    	changeSceneTeamBuilder(event,"ChooseGame.fxml" , teamBuilder, league);
+    }
 	
 	
 

@@ -29,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -60,7 +61,7 @@ public class PokeMoveController extends AbstractController {
 		// changement des labels et infos de la page
 		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 24));
 		textFPokemonName.setText(selectedPokemon.getName());
-		imgPokemon.setImage(selectedPokemon.getFrontSprite());
+		imgPokemon.setImage(new Image("file:"+selectedPokemon.getFrontSprite()));
 
 		ArrayList<Move> allPossibleMoves = selectedPokemon.getAllPossiblesMoves();
 

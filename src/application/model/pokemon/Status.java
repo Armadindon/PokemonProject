@@ -1,6 +1,8 @@
 package application.model.pokemon;
 
-public enum Status {
+import java.io.Serializable;
+
+public enum Status implements Serializable{
 	
 	PARALYSIS,
 	FREEZE,

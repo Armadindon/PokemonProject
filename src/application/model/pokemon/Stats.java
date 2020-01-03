@@ -1,6 +1,8 @@
 package application.model.pokemon;
 
-public class Stats {
+import java.io.Serializable;
+
+public class Stats implements Serializable{
 	
 	private int speed;
 	private int attack;

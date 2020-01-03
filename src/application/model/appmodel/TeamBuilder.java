@@ -1,6 +1,7 @@
 package application.model.appmodel;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,17 +20,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class TeamBuilder {
+public class TeamBuilder implements Serializable {
 
 	private Pokemon pokemon;
-	private final ArrayList<Pokemon> team = new ArrayList<>(6); // Only 6 pokemons
+	private final ArrayList<Pokemon> team = new ArrayList<>(6); // max 6 pokemons
 	private final ArrayList<Move> existingMoves;
 	private final ArrayList<Pokemon> pokeList;
+	private boolean inFight;
 
-	private TeamBuilder(ArrayList<Move> existingMoves, ArrayList<Pokemon> pokeList) {
+	private TeamBuilder(ArrayList<Move> existingMoves, ArrayList<Pokemon> pokeList,boolean inFight) {
 		this.pokemon = pokeList.get(0);
 		this.existingMoves = existingMoves;
 		this.pokeList = pokeList;
+		this.inFight = inFight;
 	}
 
 	public static TeamBuilder createTeamBuilder() throws IOException {
@@ -50,7 +53,7 @@ public class TeamBuilder {
 				pokeList.add(pk);
 		}
 
-		return new TeamBuilder(existingMoves, pokeList);
+		return new TeamBuilder(existingMoves, pokeList,false);
 	}
 
 	public ArrayList<Pokemon> createRandomTeam() {
@@ -190,7 +193,7 @@ public class TeamBuilder {
 		defSpe.setText(Integer.toString(pokeStats.getSpecialDefense()));
 		speed.setText(Integer.toString(pokeStats.getSpeed()));
 
-		img.setImage((Image) pokemon.getFrontSprite());
+		img.setImage(new Image("file:"+pokemon.getFrontSprite()));
 
 		if (0 != team.size()) {
 			confirmButton.setDisable(false);

@@ -1,6 +1,8 @@
 package application.model.moves;
 
-public enum Target {
+import java.io.Serializable;
+
+public enum Target implements Serializable{
 	
 	USER,
 	SELECTEDPOKEMON,
