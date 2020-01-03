@@ -93,7 +93,7 @@ public class FightController extends AbstractController {
     private TabPane tabPaneMenu;
 
     @FXML
-    private TextArea textAreaMatchNotification;
+    private Label labelMatchNotification;
 
 	@FXML
 	private VBox vBoxMove0;
@@ -128,7 +128,7 @@ public class FightController extends AbstractController {
     @FXML
     void mainMenuClick(MouseEvent event) {
     	if(msgs.size()>=1) {
-        	textAreaMatchNotification.setText(msgs.get(0));
+        	labelMatchNotification.setText(msgs.get(0));
     		msgs = msgs.subList(1, msgs.size());
     	}
     	else {
