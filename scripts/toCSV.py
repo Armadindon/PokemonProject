@@ -53,8 +53,10 @@ if __name__ == "__main__":
                 with open("sprites/" + str(jsonPokemon["id"]) + "_back.png", "wb") as f:
                     for chunk in rqBack.iter_content(1024):
                         f.write(chunk)
+
             except Exception as e:
                 print("Erreur de download des sprites de l'id " + str(jsonPokemon["id"]))
+                Infos["spriteBack"] = "NULL"
 
             print(Infos)
             csvWriter.writerow(Infos)

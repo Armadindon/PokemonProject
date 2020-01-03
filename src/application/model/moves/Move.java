@@ -67,8 +67,9 @@ public class Move {
 
 			if (moveCategory.equals("damage+ailment") || moveCategory.equals("ailment")) {
 				try {
+					Status status = Status.valueOf(data.get("effect_ailment").get(0).toUpperCase());
 					effect = (p1, p2) -> {
-						p1.setStatus(Status.valueOf(data.get("effect_ailment").get(0).toUpperCase()));
+						p1.setStatus(status);
 					};
 					effectChance = Integer.parseInt(data.get("effect_chance").get(0));
 				} catch (Exception e) {
@@ -188,6 +189,7 @@ public class Move {
 			}
 			
 			p2.addHp(-totalDamage);
+			pp --;
 
 			if (totalResistance == 1)
 				return AttackResult.SUCCEED;
@@ -198,7 +200,8 @@ public class Move {
 		}
 		return AttackResult.MISSED;
 	}
-
+	
+	
 	@Override
 	public String toString() {
 		return id + " - " + name;

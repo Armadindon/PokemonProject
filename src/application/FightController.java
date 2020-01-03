@@ -127,7 +127,6 @@ public class FightController extends AbstractController {
 
     @FXML
     void mainMenuClick(MouseEvent event) {
-    	System.out.println(msgs);
     	if(msgs.size()>=1) {
         	textAreaMatchNotification.setText(msgs.get(0));
     		msgs = msgs.subList(1, msgs.size());
@@ -168,7 +167,6 @@ public class FightController extends AbstractController {
 		tabPaneMenu.getSelectionModel().select(1);
 		if(wasAlive) doTurns();
 		else switchPokemons();
-		System.out.println(numPokemon);
 	}
 	
 	/*
@@ -191,7 +189,6 @@ public class FightController extends AbstractController {
 		if(playerFoe.isBot()) playerFoe.generateNextAction(playerUser);
 		tabPaneMenu.getSelectionModel().select(1);
 		doTurns();
-		System.out.println(numMove);
 	}
 	
 	@FXML
@@ -241,7 +238,6 @@ public class FightController extends AbstractController {
 		playerFoe = Player.createRandomPlayer(true);
 		
 		// A voir si on actuallise pas l'affichage dans le fight et à partir de là on actualise avec les players
-		Fight fightModel = new Fight(playerUser, playerFoe);
 		
 		displayUpdate();
 		
@@ -301,7 +297,6 @@ public class FightController extends AbstractController {
 		}
 		
 
-		System.out.println(Arrays.toString(messages));
 		displayUpdate();
 		
 		return messages;
@@ -339,7 +334,6 @@ public class FightController extends AbstractController {
 		
 		if(messages != null) {
 			msgs = Arrays.asList(messages);
-			System.out.println(msgs);
 			tabPaneMenu.getSelectionModel().select(0);
 			mainMenuClick(null);
 		}

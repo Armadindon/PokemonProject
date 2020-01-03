@@ -62,7 +62,13 @@ public class Pokemon {
 		int weight = Integer.parseInt(data.get("weight").get(0));
 		Item carriedItem = null;
 		Image frontSprite = new Image("file:" + System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteFront").get(0).replace("/", File.separator));
-		Image backSprite = new Image("file:" + System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteBack").get(0).replace("/", File.separator));
+		
+		Image backSprite;
+		if(data.get("spriteBack").get(0).equals("NULL")) {
+			backSprite = null;
+		}else {
+			backSprite = new Image("file:" + System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteBack").get(0).replace("/", File.separator));
+		}
 		
 		ArrayList<Move> allPossiblesMoves = new ArrayList<>();
 		
@@ -125,7 +131,8 @@ public class Pokemon {
 	}
 	
 	public Image getBackSprite() {
-		return backSprite;
+		if(backSprite == null) return frontSprite;
+		else return backSprite;
 	}
 	
 	public Type getType1() {

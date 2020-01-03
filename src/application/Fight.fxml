@@ -74,30 +74,45 @@
                   <children>
                     <VBox id="vBoxMove0" alignment="CENTER" layoutX="193.0" layoutY="41.0" onMouseClicked="#useMove" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
                       <children>
-                        <Label id="labelMoveName1" scaleZ="1.0" text="??">
-                          <font>
-                            <Font size="18.0" fx:id="x3" />
-                          </font>
-                        </Label>
-                        <Label id="labelPP1" text="??" />
+                                    <Label id="labelMoveName1" text="??">
+                                       <font>
+                                          <Font size="18.0" fx:id="x31" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Label" />
+                                    <Label id="labelPP2" text="??" />
                       </children>
                     </VBox>
                     <VBox id="vBoxMove1" alignment="CENTER" layoutX="522.0" layoutY="41.0" onMouseClicked="#useMove" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
                       <children>
-                        <Label id="labelMoveName1" font="$x3" text="??" />
+                        <Label id="labelMoveName1" text="??">
+                                       <font>
+                            <Font size="18.0" fx:id="x3" />
+                                       </font></Label>
+                                    <Label text="Label" />
                         <Label id="labelPP2" text="??" />
                       </children>
                     </VBox>
                     <VBox id="vBoxMove2" alignment="CENTER" layoutX="193.0" layoutY="132.0" onMouseClicked="#useMove" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
                       <children>
-                        <Label id="labelMoveName1" disable="false" font="$x3" text="??" />
-                        <Label id="labelPP3" text="??" />
+                                    <Label id="labelMoveName1" text="??">
+                                       <font>
+                                          <Font size="18.0" fx:id="x311" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Label" />
+                                    <Label id="labelPP2" text="??" />
                       </children>
                     </VBox>
                     <VBox id="vBoxMove3" alignment="CENTER" layoutX="522.0" layoutY="132.0" onMouseClicked="#useMove" prefHeight="72.0" prefWidth="286.0" spacing="10.0" visible="true">
                       <children>
-                        <Label id="labelMoveName1" font="$x3" text="??" />
-                        <Label id="labelMoveName4" prefWidth="19.0" text="??" />
+                                    <Label id="labelMoveName1" text="??">
+                                       <font>
+                                          <Font size="18.0" fx:id="x312" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Label" />
+                                    <Label id="labelPP2" text="??" />
                       </children>
                     </VBox>
                   </children>

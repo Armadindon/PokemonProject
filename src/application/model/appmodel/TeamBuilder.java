@@ -65,8 +65,12 @@ public class TeamBuilder {
 			randomPokemon = pokeList.get(indexPokemon);
 
 			for (int j = 0; j < 4; j++) {
-
-				indexMove = new Random().nextInt(randomPokemon.getAllPossiblesMoves().size());
+				
+				//Change the random number if the attack is already learned
+				do {
+					indexMove = new Random().nextInt(randomPokemon.getAllPossiblesMoves().size());
+				}while(randomPokemon.getlearnedMoves().contains(randomPokemon.getAllPossiblesMoves().get(indexMove)));
+				
 				randomPokemon.addMoveToLearnedMoves(randomPokemon.getAllPossiblesMoves().get(indexMove));
 
 			}

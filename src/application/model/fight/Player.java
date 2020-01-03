@@ -67,7 +67,8 @@ public class Player {
 			Move pokeMove = pokeMoves.get(i);
 
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(0))).setText(pokeMove.getName());
-			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(1)))
+			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(1))).setText(pokeMove.getType().name());
+			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(2)))
 					.setText(pokeMove.getPP() + "/" + pokeMove.getMaxPP());
 		}
 	}
