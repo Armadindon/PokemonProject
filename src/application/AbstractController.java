@@ -1,7 +1,10 @@
 package application;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
+import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +26,7 @@ public abstract class AbstractController implements InterfaceController {
 		window.show();
 	}
 
-	protected void changeSceneTeamBuilder(Event event, String fxmlFile, TeamBuilder teamBuilder) throws IOException {
+	protected void changeSceneTeamBuilder(Event event, String fxmlFile, TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource(fxmlFile));
@@ -35,7 +38,7 @@ public abstract class AbstractController implements InterfaceController {
 
 		InterfaceController controller = loader.getController();
 
-		controller.initTeamBuilder(teamBuilder);
+		controller.initTeamBuilder(teamBuilder, league);
 
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -45,7 +48,7 @@ public abstract class AbstractController implements InterfaceController {
 	}
 	
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder) throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 		return;
 	}
 	

@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.*;
@@ -39,8 +41,14 @@ public class SampleController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 
+	private Optional<League> league;
+	
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder) {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) {
+		if(league.isPresent()) {
+			this.league = league;
+		}
+		
 		this.teamBuilder = teamBuilder;
 
 		items = FXCollections.observableArrayList(teamBuilder.getPokeList());
@@ -206,7 +214,7 @@ public class SampleController extends AbstractController {
 		
 		teamBuilder.setPokemon(listPokemon.getSelectionModel().getSelectedItem());
 
-		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder);
+		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder, Optional.empty());
 	}
 	
 	@FXML

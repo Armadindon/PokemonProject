@@ -18,7 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-public class ChooseGameController extends AbstractController {
+public class LeagueIntermissionController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 
@@ -38,7 +38,7 @@ public class ChooseGameController extends AbstractController {
 
 	@FXML
 	private URL location;
-
+	
 	@FXML
 	private Label labelSave;
 
@@ -89,10 +89,12 @@ public class ChooseGameController extends AbstractController {
 		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, league);
 
 	}
-
+	
 	@FXML
 	void save(ActionEvent event) {
-
+		
+		
+		
 		labelSave.setText("Team saved !");
 		displayUpdate();
 	}

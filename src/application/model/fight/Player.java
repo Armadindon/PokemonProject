@@ -27,19 +27,15 @@ public class Player {
 	private Player whichPlayer;
 	private ArrayList<Item> backPack = new ArrayList<>();
 
-	// HP Display
-
-	private static final String RED_BAR = "red-bar";
-	private static final String YELLOW_BAR = "yellow-bar";
-	private static final String ORANGE_BAR = "orange-bar";
-	private static final String GREEN_BAR = "green-bar";
-	private static final String[] pgColorStyles = { RED_BAR, ORANGE_BAR, YELLOW_BAR, GREEN_BAR };
-
 	public Player(ArrayList<Pokemon> team, boolean bot) {
 		this.team = Objects.requireNonNull(team);
 		this.selectedPokemon = team.get(0); // Le premier Pokémon est celui lancé en premier
 		alive = team.size();
 		this.bot = bot;
+	}
+	
+	public Player(TeamBuilder teamBuilder, boolean bot) {
+		this(teamBuilder.getTeam(), bot);
 	}
 
 	public static Player createRandomPlayer(boolean b) throws IOException {
@@ -47,7 +43,6 @@ public class Player {
 	}
 
 	public void switchPokemon(Pokemon p) {
-		System.out.println("Le prochain pokémon : "+p.getName());
 		if (p.isAlive()) {
 			selectedPokemon = p;
 		} else {
@@ -57,75 +52,6 @@ public class Player {
 
 	public boolean isBot() {
 		return bot;
-	}
-
-	public void moveDisplayUpdate(AnchorPane movePane) {
-		ArrayList<Move> pokeMoves = selectedPokemon.getlearnedMoves();
-		for (int i = 0; i < pokeMoves.size(); i++) {
-			// From the Anchor pane of moves, get the i vbox containing 2 labels. 0: move's
-			// Name, 1: move's PP
-			Move pokeMove = pokeMoves.get(i);
-
-			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(0))).setText(pokeMove.getName());
-			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(1))).setText(pokeMove.getType().name());
-			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(2)))
-					.setText(pokeMove.getPP() + "/" + pokeMove.getMaxPP());
-		}
-	}
-
-	public void teamDisplayUpdate(AnchorPane switchPane) {
-		int pokeIndex = team.indexOf(selectedPokemon);
-
-		for (int i = 0; i < team.size(); i++) {
-			Pokemon pokemon = team.get(i);
-
-			HBox pokemonDisplay = ((HBox) switchPane.getChildren().get(i));
-			((ImageView) pokemonDisplay.getChildren().get(0)).setImage(pokemon.getFrontSprite());
-			pokemonDisplay.setDisable(false);
-
-			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(0))).setText(pokemon.getName());
-			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(1)))
-					.setText(pokemon.getBaseStats().getHp() + "/" + "hpmax");
-
-			if (i == pokeIndex || !team.get(i).isAlive()) {
-				pokemonDisplay.setDisable(true);
-			}
-		}
-	}
-
-	private void updateProgressBarColor(ProgressBar pgHP, String colorStyle) {
-		pgHP.getStyleClass().removeAll(pgColorStyles);
-		pgHP.getStyleClass().add(colorStyle);
-	}
-
-	// boolean à enlever des paramètres quand le boolean bot sera implémenter
-	public void mainScreenUpdate(ImageView imageViewPokemon, Label pokeName, Label pokeLvl, Label pokeHP,
-			ProgressBar pgHP, Boolean bot) {
-		if (bot) {
-			imageViewPokemon.setImage(selectedPokemon.getFrontSprite());
-		} else {
-			imageViewPokemon.setImage(selectedPokemon.getBackSprite());
-		}
-
-		int maxHP = selectedPokemon.getBaseStats().getHp();
-		int currentHP = selectedPokemon.getCurrentStats().getHp();
-
-		pokeName.setText(selectedPokemon.getName());
-		pokeLvl.setText("lvl" + selectedPokemon.getLevel());
-		pokeHP.setText(currentHP + " / " + maxHP);
-
-		Double progress = (double) currentHP/maxHP;
-
-		pgHP.setProgress(progress);
-		if (progress < 0.2) {
-			updateProgressBarColor(pgHP, RED_BAR);
-		} else if (progress < 0.4) {
-			updateProgressBarColor(pgHP, ORANGE_BAR);
-		} else if (progress < 0.6) {
-			updateProgressBarColor(pgHP, YELLOW_BAR);
-		} else {
-			updateProgressBarColor(pgHP, GREEN_BAR);
-		}
 	}
 	
 	public void setNextAction(Action nextAction, int which,Player target) {

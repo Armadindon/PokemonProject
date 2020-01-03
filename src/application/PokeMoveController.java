@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
@@ -43,9 +45,15 @@ public class PokeMoveController extends AbstractController {
 	private Pokemon selectedPokemon;
 
 	private ArrayList<Pokemon> team;
+	
+	private Optional<League> league;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder) throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
+		if(league.isPresent()) {
+			this.league = league;
+		}
+		
 		this.teamBuilder = teamBuilder;
 		selectedPokemon = teamBuilder.getPokemon();
 
@@ -183,7 +191,7 @@ public class PokeMoveController extends AbstractController {
 
 	@FXML
 	void changeToPokedexCancel(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder);
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty());
 	}
 
 	@FXML
@@ -195,7 +203,7 @@ public class PokeMoveController extends AbstractController {
 
 		teamBuilder.addPokemonToTeam(selectedPokemon);
 
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder);
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty());
 	}
 
 	@FXML

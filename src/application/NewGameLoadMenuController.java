@@ -2,6 +2,8 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.model.appmodel.TeamBuilder;
@@ -44,7 +46,7 @@ public class NewGameLoadMenuController extends AbstractController {
 
 	@FXML
 	void newGame(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder);
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty());
 	}
 
 	@FXML
