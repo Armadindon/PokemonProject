@@ -184,9 +184,9 @@ public class FightController extends AbstractController {
 			msgs = msgs.subList(1, msgs.size());
 		} else {
 			try {
-				if(playerUser.getAlive() == 0) {//lose
+				if(playerUser.getAlive() == 0) { // lose
 					changeSceneTeamBuilder(event, "ChooseGameController.fxml", teamBuilder, Optional.empty());
-				}else if(playerFoe.getAlive() == 0) {//win
+				}else if(playerFoe.getAlive() == 0) { // win
 					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague));
 				}else {
 					msgs = null;
