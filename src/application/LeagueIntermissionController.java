@@ -24,13 +24,13 @@ public class LeagueIntermissionController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 
-	private Optional<League> league;
+	private Optional<League> league = Optional.empty();
 
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 		if (league.isPresent()) {
 			this.league = league;
-		}
+		}else league = Optional.empty();
 
 		this.teamBuilder = teamBuilder;
 	}

@@ -26,13 +26,11 @@ public class TeamBuilder implements Serializable {
 	private final ArrayList<Pokemon> team = new ArrayList<>(6); // max 6 pokemons
 	private final ArrayList<Move> existingMoves;
 	private final ArrayList<Pokemon> pokeList;
-	private boolean inFight;
 
-	private TeamBuilder(ArrayList<Move> existingMoves, ArrayList<Pokemon> pokeList,boolean inFight) {
+	private TeamBuilder(ArrayList<Move> existingMoves, ArrayList<Pokemon> pokeList) {
 		this.pokemon = pokeList.get(0);
 		this.existingMoves = existingMoves;
 		this.pokeList = pokeList;
-		this.inFight = inFight;
 	}
 
 	public static TeamBuilder createTeamBuilder() throws IOException {
@@ -53,7 +51,7 @@ public class TeamBuilder implements Serializable {
 				pokeList.add(pk);
 		}
 
-		return new TeamBuilder(existingMoves, pokeList,false);
+		return new TeamBuilder(existingMoves, pokeList);
 	}
 
 	public ArrayList<Pokemon> createRandomTeam() {

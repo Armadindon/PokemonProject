@@ -1,8 +1,9 @@
 package application.model.appmodel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class League {
+public class League implements Serializable{
 
 	private final ArrayList<TeamBuilder> league;
 	private int wichTeam;

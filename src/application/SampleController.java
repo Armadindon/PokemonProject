@@ -47,7 +47,7 @@ public class SampleController extends AbstractController {
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) {
 		if(league.isPresent()) {
 			this.league = league;
-		}
+		}else league = Optional.empty();
 		
 		this.teamBuilder = teamBuilder;
 

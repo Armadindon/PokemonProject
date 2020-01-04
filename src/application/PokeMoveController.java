@@ -53,7 +53,7 @@ public class PokeMoveController extends AbstractController {
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 		if(league.isPresent()) {
 			this.league = league;
-		}
+		}else league = Optional.empty();
 		
 		this.teamBuilder = teamBuilder;
 		selectedPokemon = teamBuilder.getPokemon();

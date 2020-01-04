@@ -37,7 +37,8 @@ public abstract class AbstractController implements InterfaceController {
 		// Acces to the controller of pokemove
 
 		InterfaceController controller = loader.getController();
-
+		
+		
 		controller.initTeamBuilder(teamBuilder, league);
 
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -48,7 +49,7 @@ public abstract class AbstractController implements InterfaceController {
 	}
 	
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional <League> league) throws IOException {
 		return;
 	}
 	

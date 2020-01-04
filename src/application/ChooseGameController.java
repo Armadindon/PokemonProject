@@ -1,5 +1,7 @@
 package application;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -10,6 +12,8 @@ import java.util.ResourceBundle;
 
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
+import application.model.utils.MenuSelect;
+import application.model.utils.SaveUtility;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,13 +22,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ChooseGameController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
 
-	private Optional<League> league;
+	private Optional<League> league = Optional.empty();
 
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
@@ -93,18 +100,22 @@ public class ChooseGameController extends AbstractController {
 	}
 
 	@FXML
-	void save(ActionEvent event) {
-	      try {
-	          FileOutputStream fileOut = new FileOutputStream("save.ser");
-	          ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	          out.writeObject(teamBuilder);
-	          out.close();
-	          fileOut.close();
-	          System.out.printf("Serialized data is saved in /tmp/employee.ser");
-	       } catch (IOException i) {
-	          i.printStackTrace();
-	       }
-
+	void save(ActionEvent event) throws IOException {
+		FileChooser fileChooser = new FileChooser();
+		
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Pokemon Save Files (*.pkmn)", "*.pkmn"));
+		fileChooser.setInitialDirectory(new File("Saves"));
+		
+		File f = fileChooser.showSaveDialog((Stage) root.getScene().getWindow());
+		
+	    SaveUtility save = new SaveUtility(MenuSelect.MAINMENU, teamBuilder, league);
+	    
+	    FileOutputStream file =  new FileOutputStream(f);
+	    ObjectOutputStream oos = new ObjectOutputStream(file);
+	    oos.writeObject(save);
+	    oos.flush();
+	    oos.close();
+	    
 		labelSave.setText("Team saved !");
 		displayUpdate();
 	}
