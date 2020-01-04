@@ -8,19 +8,27 @@ import application.model.fight.Player;
 public class League implements Serializable{
 
 	private final ArrayList<Player> league;
-	private int wichTeam;
+	private int wichPlayer;
 
 	public League(ArrayList<Player> league) {
 		this.league = league;
-		this.wichTeam = 0;
+		this.wichPlayer = 0;
 	}
 	
 	public Player getFightingTeam() {
-		return league.get(wichTeam);
+		if(isOver()) {
+			throw new IllegalStateException("The league is over");
+		}
+		
+		return league.get(wichPlayer);
 	}
 	
 	public void nextFightingTeam() {
-		wichTeam++;
+		wichPlayer++;
+	}
+	
+	public boolean isOver() {
+		return wichPlayer >= league.size() - 1;
 	}
 	
 	public static League generateRandomLeague(int members, int pokemonPerPerson,TeamBuilder tb) {

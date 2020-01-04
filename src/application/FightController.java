@@ -44,7 +44,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class FightController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
-	
+
 	private League currentLeague;
 
 	private Player playerUser;
@@ -61,8 +61,7 @@ public class FightController extends AbstractController {
 	// Jsuis Ok
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder,Optional<League> league)
-			throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 
 		// Pour selectionner un tab (text:0, menu principal: 1, fight:2, switch: 3,
 		// backpack: 4 (mais rien c'est fait pour lui encore)
@@ -76,11 +75,11 @@ public class FightController extends AbstractController {
 			playerFoe = new Player(teamBuilder.createRandomTeam(6), true);
 			this.currentLeague = null;
 		}
-		
+
 		playerUser = new Player(teamBuilder, false);
-		
-		//playerUser = Player.createRandomPlayer(false);
-		
+
+		// playerUser = Player.createRandomPlayer(false);
+
 		displayUpdate();
 	}
 
@@ -184,15 +183,15 @@ public class FightController extends AbstractController {
 			msgs = msgs.subList(1, msgs.size());
 		} else {
 			try {
-				if(playerUser.getAlive() == 0) { // lose
+				if (playerUser.getAlive() == 0) { // lose
 					changeSceneTeamBuilder(event, "ChooseGameController.fxml", teamBuilder, Optional.empty());
-				}else if(playerFoe.getAlive() == 0) { // win
+				} else if (playerFoe.getAlive() == 0) { // win
 					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague));
-				}else {
+				} else {
 					msgs = null;
 					tabPaneMenu.getSelectionModel().select(1);
 				}
-			}catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -265,41 +264,44 @@ public class FightController extends AbstractController {
 	@FXML
 	void save(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
-		
+
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Pokemon Save Files (*.pkmn)", "*.pkmn"));
 		fileChooser.setInitialDirectory(new File("Saves"));
-		
+
 		File f = fileChooser.showSaveDialog((Stage) root.getScene().getWindow());
-		
+
 		SaveUtility save;
-		
-	    if(currentLeague !=null)  save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.of(currentLeague));
-	    else save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.empty());
-	    
-	    FileOutputStream file =  new FileOutputStream(f);
-	    ObjectOutputStream oos = new ObjectOutputStream(file);
-	    oos.writeObject(save);
-	    oos.flush();
-	    oos.close();
-	    
+
+		if (currentLeague != null)
+			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.of(currentLeague));
+		else
+			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.empty());
+
+		FileOutputStream file = new FileOutputStream(f);
+		ObjectOutputStream oos = new ObjectOutputStream(file);
+		oos.writeObject(save);
+		oos.flush();
+		oos.close();
+
 	}
 
 	@FXML
 	void load(ActionEvent event) throws IOException, ClassNotFoundException {
 		FileChooser fileChooser = new FileChooser();
-		
+
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Pokemon Save Files (*.pkmn)", "*.pkmn"));
 		fileChooser.setInitialDirectory(new File("Saves"));
-		
+
 		File f = fileChooser.showOpenDialog((Stage) root.getScene().getWindow());
-		if(f == null) return;
-	    
-	    FileInputStream file =  new FileInputStream(f);
-	    ObjectInputStream ois = new ObjectInputStream(file);
-	    
-	    SaveUtility save = (SaveUtility) ois.readObject();
-	    ois.close();
-	    changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague());
+		if (f == null)
+			return;
+
+		FileInputStream file = new FileInputStream(f);
+		ObjectInputStream ois = new ObjectInputStream(file);
+
+		SaveUtility save = (SaveUtility) ois.readObject();
+		ois.close();
+		changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague());
 	}
 
 	@FXML
@@ -349,7 +351,7 @@ public class FightController extends AbstractController {
 			Pokemon pokemon = team.get(i);
 
 			HBox pokemonDisplay = ((HBox) switchPane.getChildren().get(i));
-			((ImageView) pokemonDisplay.getChildren().get(0)).setImage(new Image("file:"+pokemon.getFrontSprite()));
+			((ImageView) pokemonDisplay.getChildren().get(0)).setImage(new Image("file:" + pokemon.getFrontSprite()));
 			pokemonDisplay.setDisable(false);
 
 			(((Label) ((VBox) pokemonDisplay.getChildren().get(1)).getChildren().get(0))).setText(pokemon.getName());
@@ -372,9 +374,10 @@ public class FightController extends AbstractController {
 		Pokemon selectedPokemon = p.getSelectedPokemon();
 
 		if (p.isBot()) {
-			imgV.setImage(new Image("file:"+selectedPokemon.getFrontSprite()));
+
+			imgV.setImage(new Image("file:" + selectedPokemon.getFrontSprite()));
 		} else {
-			imgV.setImage(new Image("file:"+selectedPokemon.getBackSprite()));
+			imgV.setImage(new Image("file:" + selectedPokemon.getBackSprite()));
 		}
 
 		int maxHP = selectedPokemon.getBaseStats().getHp();
@@ -443,13 +446,13 @@ public class FightController extends AbstractController {
 			if (!players[i].getWhichPlayer().getSelectedPokemon().isAlive()) {
 				messages[i] += "Le pokémon adverse est KO !\n";
 				players[i].getWhichPlayer().mainPokemonKilled();
-				if(players[i].getAlive() == 0) {
-					if(players[i].isBot()) {
+				if (players[i].getAlive() == 0) {
+					if (players[i].isBot()) {
 						messages[i] += "Vous avez Gagné - Vous allez passer au combat suivant !\n";
-					}else {
+					} else {
 						messages[i] += "Vous avez Perdu - Vous aller être redirigé vers l'acceuil !\n";
 					}
-				}else if(!players[i].getWhichPlayer().isBot()){
+				} else if (!players[i].getWhichPlayer().isBot()) {
 					tabPaneMenu.getSelectionModel().select(3);
 					cancelButtonSwitch.setDisable(true);
 					return null;

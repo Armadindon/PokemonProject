@@ -65,15 +65,19 @@ public class TeamBuilder implements Serializable {
 			indexPokemon = new Random().nextInt(pokeList.size());
 			randomPokemon = pokeList.get(indexPokemon);
 
-			for (int j = 0; j < 4; j++) {
-				
-				//Change the random number if the attack is already learned
-				do {
-					indexMove = new Random().nextInt(randomPokemon.getAllPossiblesMoves().size());
-				}while(randomPokemon.getlearnedMoves().contains(randomPokemon.getAllPossiblesMoves().get(indexMove)));
-				
-				randomPokemon.addMoveToLearnedMoves(randomPokemon.getAllPossiblesMoves().get(indexMove));
+			int pkmnMovesSizes = randomPokemon.getAllPossiblesMoves().size();
+			if (pkmnMovesSizes > 0) {
+				for (int j = 0; j < 4; j++) {
 
+					// Change the random number if the attack is already learned
+
+					do {
+						indexMove = new Random().nextInt(pkmnMovesSizes);
+					} while (randomPokemon.getlearnedMoves()
+							.contains(randomPokemon.getAllPossiblesMoves().get(indexMove)));
+
+					randomPokemon.addMoveToLearnedMoves(randomPokemon.getAllPossiblesMoves().get(indexMove));
+				}
 			}
 			randomTeam.add(randomPokemon);
 		}
@@ -191,7 +195,7 @@ public class TeamBuilder implements Serializable {
 		defSpe.setText(Integer.toString(pokeStats.getSpecialDefense()));
 		speed.setText(Integer.toString(pokeStats.getSpeed()));
 
-		img.setImage(new Image("file:"+pokemon.getFrontSprite()));
+		img.setImage(new Image("file:" + pokemon.getFrontSprite()));
 
 		if (0 != team.size()) {
 			confirmButton.setDisable(false);
