@@ -54,14 +54,14 @@ public class TeamBuilder implements Serializable {
 		return new TeamBuilder(existingMoves, pokeList);
 	}
 
-	public ArrayList<Pokemon> createRandomTeam() {
+	public ArrayList<Pokemon> createRandomTeam(int numberOfPokemon) {
 		ArrayList<Pokemon> randomTeam = new ArrayList<>();
 
 		Pokemon randomPokemon;
 		int indexPokemon;
 		int indexMove;
 
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < numberOfPokemon; i++) {
 			indexPokemon = new Random().nextInt(pokeList.size());
 			randomPokemon = pokeList.get(indexPokemon);
 

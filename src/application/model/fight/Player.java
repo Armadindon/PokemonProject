@@ -39,9 +39,6 @@ public class Player implements Serializable{
 		this(teamBuilder.getTeam(), bot);
 	}
 
-	public static Player createRandomPlayer(boolean b) throws IOException {
-		return new Player(TeamBuilder.createTeamBuilder().createRandomTeam(), b);
-	}
 
 	public void switchPokemon(Pokemon p) {
 		if (p.isAlive()) {
@@ -125,16 +122,16 @@ public class Player implements Serializable{
 		return team;
 	}
 	
-	/*
-	 * Check différents paramètres:
-	 * 	-Le pokémon actuel est il vivant ?
-	 */
-	public boolean isEverythingOk() {
-		if(!selectedPokemon.isAlive()) {
-			alive -=1;
-			return false;
-		};
-		return true;
+	public void mainPokemonKilled() {
+		alive--;
+		if(bot) {
+			System.out.println("FORCE SWITCH");
+			forceSwitch();
+		}
+	}
+	
+	public int getAlive() {
+		return alive;
 	}
 	
 	public Player getWhichPlayer() {

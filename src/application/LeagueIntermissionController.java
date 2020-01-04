@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class LeagueIntermissionController extends AbstractController {
@@ -35,84 +36,37 @@ public class LeagueIntermissionController extends AbstractController {
 		this.teamBuilder = teamBuilder;
 	}
 
-	@FXML
-	private ResourceBundle resources;
+    @FXML
+    private AnchorPane root;
 
-	@FXML
-	private URL location;
-	
-	@FXML
-	private Label labelSave;
+    @FXML
+    private Button btnKeepGoing;
 
-	@FXML
-	private Button btnHomeMade;
+    @FXML
+    private Font x1;
 
-	@FXML
-	private Button btnLigueDUT2;
+    @FXML
+    private Button btnQuit;
 
-	@FXML
-	private Button btnLigueGame;
+    @FXML
+    void nextLeagueFight(ActionEvent event) {
 
-	@FXML
-	private Button btnQuit;
+    }
 
-	@FXML
-	private Button btnRandomFight;
+    @FXML
+    void quit(ActionEvent event) {
 
-	@FXML
-	private ImageView imgPokemon;
+    }
 
-	@FXML
-	private AnchorPane root;
+    @FXML
+    void randomFight(ActionEvent event) {
 
-	@FXML
-	void randomFight(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, Optional.empty());
-	}
-
-	@FXML
-	void LigueDUT2Game(ActionEvent event) throws IOException {
-		// créer une ligue random si pas init
-
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, league);
-
-	}
-
-	@FXML
-	void homeMadeGame(ActionEvent event) throws IOException {
-
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, Optional.empty());
-	}
-
-	@FXML
-	void ligueGame(ActionEvent event) throws IOException {
-		// créer une ligue random si pas init
-
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, league);
-
-	}
-	
-	@FXML
-	void save(ActionEvent event) {
-		
-
-		
-		labelSave.setText("Team saved !");
-		displayUpdate();
-	}
-
-	@FXML
-	void quit(ActionEvent event) {
-		Platform.exit();
-	}
+    }
 
 	@Override
 	public void displayUpdate() {
-		FadeTransition ft = new FadeTransition(new Duration(3_000), labelSave);
-		ft.setFromValue(1.0);
-		ft.setToValue(0.0);
-
-		ft.play();
+		// TODO Auto-generated method stub
+		
 	}
 
 }

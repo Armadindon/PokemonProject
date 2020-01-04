@@ -57,7 +57,7 @@ public class NewGameLoadMenuController extends AbstractController {
 		fileChooser.setInitialDirectory(new File("Saves"));
 		
 		File f = fileChooser.showOpenDialog((Stage) root.getScene().getWindow());
-		
+		if(f == null) return;
 	    
 	    FileInputStream file =  new FileInputStream(f);
 	    ObjectInputStream ois = new ObjectInputStream(file);
