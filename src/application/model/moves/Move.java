@@ -56,7 +56,7 @@ public class Move implements Serializable{
 	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gere juste les atatques pour l'instant
 
 		String moveCategory = data.get("move_category").get(0);
-		if (moveCategory.equals("damage") || moveCategory.equals("damage+ailment") || moveCategory.equals("ailment")) {
+		if (moveCategory.equals("damage") || moveCategory.equals("damage+ailment") || moveCategory.equals("ailment") || moveCategory.equals("net-good-stats")) {
 			int id = Integer.parseInt(data.get("id").get(0));
 			String name = data.get("name").get(0);
 			int accuracy = 100;// si la prochaine instruction n'a pas de données
@@ -149,11 +149,11 @@ public class Move implements Serializable{
 			return res;
 		}
 
-		String[] arrayStats = statChange.split(",");
+		String[] arrayStats = statChange.split(";");
 
 		for (int i = 0; i < arrayStats.length; i++) {
 			String[] stat = arrayStats[i].split(":");
-			res.put(stat[0], Integer.parseInt(stat[1]));
+			res.put(stat[0], Integer.parseInt(stat[1].replace(" ", "")));
 		}
 
 		return res;
@@ -165,6 +165,15 @@ public class Move implements Serializable{
 		if (p2 == null)
 			return AttackResult.MISSED;
 		if (Math.random() * 100 <= accuracy) {
+			
+			if(moveCategory.equals("net-good-stats")) {
+				System.out.println("Boost !");
+				if(target == Target.USER) p.getCurrentStats().addBoosts(statChange);
+				else p.getCurrentStats().addBoosts(statChange);
+				return AttackResult.BOOSTED;
+			}
+			
+			pp --;
 			int attack = (damageClass == AttackType.PHYSICAL) ? p.getCurrentStats().getAttack()
 					: p.getCurrentStats().getSpecialAttack();
 			int defense = (damageClass == AttackType.PHYSICAL) ? p2.getCurrentStats().getDefense()
@@ -172,7 +181,6 @@ public class Move implements Serializable{
 			double stab = (type == p.getType1() || type == p.getType2()) ? 1.5 : 1; // Le STAB est selon si le pokémon
 																					// est du même type que l'attaque,
 																					// sela donnes des dégats bonus
-			
 			double totalResistance = p2.getType1().resistanceAgain(type);
 			totalResistance *= (p2.getType2() != null) ? p2.getType2().resistanceAgain(type) : 1;
 			double randomMultiplicator = Math.random() * (1 - 0.85)+0.85;
@@ -183,6 +191,8 @@ public class Move implements Serializable{
 					* totalResistance * randomMultiplicator);
 
 			System.out.println(totalDamage + " ont été infligé");
+			
+			
 
 			if (Math.random() * 100 <= effectChance) {
 				System.out.println("L'effet a eu lieu en prime");
@@ -190,7 +200,6 @@ public class Move implements Serializable{
 			}
 			
 			p2.addHp(-totalDamage);
-			pp --;
 
 			if (totalResistance == 1)
 				return AttackResult.SUCCEED;

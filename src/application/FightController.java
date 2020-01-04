@@ -333,11 +333,12 @@ public class FightController extends AbstractController {
 			// From the Anchor pane of moves, get the i vbox containing 2 labels. 0: move's
 			// Name, 1: move's PP
 			Move pokeMove = pokeMoves.get(i);
-
+			
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(0))).setText(pokeMove.getName());
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(1))).setText(pokeMove.getType().name());
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(2)))
 					.setText(pokeMove.getPP() + "/" + pokeMove.getMaxPP());
+			if(pokeMove.getPP() <= 0) movePane.getChildren().get(i).setDisable(true);
 		}
 	}
 
@@ -440,6 +441,8 @@ public class FightController extends AbstractController {
 
 				case MISSED:
 					messages[i] += "L'attaque a ratée !\n";
+				case BOOSTED:
+					messages[i] += "Il s'est Boost !\n";
 				}
 			}
 

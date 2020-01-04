@@ -8,8 +8,10 @@ public class statusPotion extends ItemImplementation {
 	
 	private final Status curedStatus;
 
-	public statusPotion(int id, int name, File sprite, ItemEffect effect,Status curedStatus) {
-		super(id, name, sprite, effect);
+	public statusPotion(int id, String name, String sprite, Status curedStatus) {
+		super(id, name, sprite, p-> {
+			if(p.getStatus() == curedStatus) p.setStatus(null);
+		});
 		this.curedStatus = curedStatus;
 	}
 	

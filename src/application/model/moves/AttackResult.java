@@ -5,6 +5,7 @@ public enum AttackResult {
 	EFFECTIVE,
 	NOTEFFECTIVE,
 	SUCCEED,
-	MISSED;
+	MISSED,
+	BOOSTED;
 
 }

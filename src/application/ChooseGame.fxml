@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
 <?import javafx.geometry.Point3D?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.ChooseGameController">
+<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ChooseGameController">
   <children>
     <ImageView id="imgKwaaac" fx:id="imgPokemon" fitHeight="179.8854320919678" fitWidth="488.0000457763672" layoutX="256.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" smooth="false" visible="true">
       <image>
@@ -30,8 +26,8 @@
             <Font size="24.0" fx:id="x1" />
           </font>
         </Button>
-        <Button id="btnLoadGame" fx:id="btnLigueGame" disable="true" font="$x1" mnemonicParsing="false" onAction="#ligueGame" prefHeight="52.0" prefWidth="310.0" text="Fight a random ligue" />
-        <Button id="btnLoadGame" fx:id="btnLigueDUT2" disable="true" font="$x1" mnemonicParsing="false" onAction="#LigueDUT2Game" prefHeight="52.0" prefWidth="310.0" text="Ligue made in DUT2" />
+        <Button id="btnLoadGame" fx:id="btnLigueGame" font="$x1" mnemonicParsing="false" onAction="#ligueGame" prefHeight="52.0" prefWidth="310.0" text="Fight a random ligue" />
+        <Button id="btnLoadGame" fx:id="btnLigueDUT2" font="$x1" mnemonicParsing="false" onAction="#LigueDUT2Game" prefHeight="52.0" prefWidth="310.0" text="Ligue made in DUT2" />
         <Button id="btnLoadGame" fx:id="btnHomeMade" disable="true" font="$x1" mnemonicParsing="false" onAction="#homeMadeGame" prefHeight="52.0" prefWidth="310.0" text="HomeMade Game" />
         <Button id="btnNewGame" font="$x1" mnemonicParsing="false" onAction="#save" prefHeight="38.0" prefWidth="221.0" text="Save" />
         <Button fx:id="btnQuit" font="$x1" mnemonicParsing="false" onAction="#quit" prefHeight="38.0" prefWidth="168.0" text="Quit" />

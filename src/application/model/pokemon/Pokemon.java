@@ -62,13 +62,13 @@ public class Pokemon implements Serializable{
 		int height = Integer.parseInt(data.get("height").get(0));
 		int weight = Integer.parseInt(data.get("weight").get(0));
 		Item carriedItem = null;
-		String frontSprite = System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteFront").get(0).replace("/", File.separator);
+		String frontSprite =  File.separatorChar + "scripts" + File.separatorChar + data.get("spriteFront").get(0).replace("/", File.separator);
 		
 		String backSprite;
 		if(data.get("spriteBack").get(0).equals("NULL")) {
 			backSprite = null;
 		}else {
-			backSprite = System.getProperty("user.dir") + File.separatorChar + "scripts" + File.separatorChar + data.get("spriteBack").get(0).replace("/", File.separator);
+			backSprite =  File.separatorChar + "scripts" + File.separatorChar + data.get("spriteBack").get(0).replace("/", File.separator);
 		}
 		
 		ArrayList<Move> allPossiblesMoves = new ArrayList<>();
@@ -128,12 +128,12 @@ public class Pokemon implements Serializable{
 	}
 
 	public String getFrontSprite() {
-		return frontSprite;
+		return System.getProperty("user.dir") +frontSprite;
 	}
 	
 	public String getBackSprite() {
-		if(backSprite == null) return frontSprite;
-		else return backSprite;
+		if(backSprite == null) return System.getProperty("user.dir") + frontSprite;
+		else return System.getProperty("user.dir") + backSprite;
 	}
 	
 	public Type getType1() {
@@ -212,6 +212,11 @@ public class Pokemon implements Serializable{
 	public void addHp(int hp) {
 		currentStats.add(hp);
 		if(currentStats.getHp() == 0) alive = false;
+		if(currentStats.getHp()>baseStats.getHp()) currentStats.setHp(baseStats.getHp());
+	}
+	
+	public Status getStatus() {
+		return status;
 	}
 	
 }

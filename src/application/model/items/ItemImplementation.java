@@ -1,17 +1,20 @@
 package application.model.items;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import application.model.pokemon.Pokemon;
 
 public abstract class ItemImplementation implements Item {
 	
 	private final int id;
-	private final int name;
-	private final File sprite;
+	private final String name;
+	private final String sprite;
 	private ItemEffect effect;
 
-	public ItemImplementation(int id, int name, File sprite, ItemEffect effect) {
+	public ItemImplementation(int id, String name, String sprite, ItemEffect effect) {
 		this.id = id;
 		this.name = name;
 		this.sprite = sprite;
@@ -25,17 +28,20 @@ public abstract class ItemImplementation implements Item {
 
 	@Override
 	public int getId() {
-		return 0;
+		return id;
 	}
 
 	@Override
 	public String getName() {
-		return null;
+		return name;
 	}
 
 	@Override
-	public File getSprite() {
-		return null;
+	public String getSprite() {
+		return sprite;
 	}
+	
+
+
 
 }
