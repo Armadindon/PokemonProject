@@ -4,26 +4,32 @@ import java.io.Serializable;
 
 public enum Status implements Serializable{
 	
-	PARALYSIS(p -> {
-		
-		p.getCurrentStats()
-	},p->{
-		double choice = Math.random();
-		if(choice<0.25) return false;
-	}),
-	FREEZE(),
-	BURN(),
-	POISON(),
-	SLEEP();
+	PARALYSIS(p->{return true;},p->{return true;},p->{return true;}),
+	FREEZE(p->{return false;},p->{return false;},p->{return false;}),
+	BURN(p->{return false;},p->{return false;},p->{return false;}),
+	POISON(p->{return false;},p->{return false;},p->{return false;}),
+	SLEEP(p->{return false;},p->{return false;},p->{return false;});
 	
-	private StatusEffect effect;
+	private StatusEffect whenReceived;
+	private StatusEffect eachTurn;
+	private StatusEffect whenCured;
 	
-	private Status(StatusEffect atSet,StatusEffect effect,StatusEffect healed) {
-		this.effect = effect;
+	private Status(StatusEffect whenReceived, StatusEffect eachTurn, StatusEffect whenCured) {
+		this.whenReceived = whenReceived;
+		this.eachTurn = eachTurn;
+		this.whenCured = whenCured;
 	}
 	
-	public boolean effect(Pokemon p) {
-		return effect.use(p);
+	public StatusEffect getWhenReceived() {
+		return whenReceived;
 	}
-
+	
+	public StatusEffect getEachTurn() {
+		return eachTurn;
+	}
+	
+	public StatusEffect getWhenCured() {
+		return whenCured;
+	}
+	
 }

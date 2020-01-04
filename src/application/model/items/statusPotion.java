@@ -1,7 +1,5 @@
 package application.model.items;
 
-import java.io.File;
-
 import application.model.pokemon.Status;
 
 public class statusPotion extends ItemImplementation {
