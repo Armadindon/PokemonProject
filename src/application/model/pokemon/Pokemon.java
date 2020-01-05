@@ -153,6 +153,8 @@ public class Pokemon implements Serializable{
 	}
 	
 	public void setStatus(Status status) {
+		if(this.status != null && status == null) this.status.getWhenCured().use(this);
+		if(status != null) status.getWhenReceived().use(this);
 		this.status = status;
 	}
 

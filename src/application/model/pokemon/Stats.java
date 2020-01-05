@@ -34,6 +34,7 @@ public class Stats implements Serializable{
 	}
 	
 	public void addBoosts(Map<String, Integer> aBoosts) {
+		
 		for (String lib : aBoosts.keySet()) {
 			boosts.put(lib, boosts.get(lib)+aBoosts.get(lib));
 			if(boosts.get(lib)>6) boosts.put(lib,6);

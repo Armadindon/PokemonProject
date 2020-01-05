@@ -1,14 +1,60 @@
 package application.model.pokemon;
 
+import java.util.HashMap;
 import java.io.Serializable;
+import java.lang.Math;
 
 public enum Status implements Serializable{
 	
-	PARALYSIS(p->{return true;},p->{return true;},p->{return true;}),
-	FREEZE(p->{return false;},p->{return false;},p->{return false;}),
-	BURN(p->{return false;},p->{return false;},p->{return false;}),
-	POISON(p->{return false;},p->{return false;},p->{return false;}),
-	SLEEP(p->{return false;},p->{return false;},p->{return false;});
+	PARALYSIS(
+			p->{
+				HashMap<String, Integer> boost = new HashMap<>();
+				boost.put("speed",-2);
+				p.getCurrentStats().addBoosts(boost);
+				return true;
+			},p->{
+				double random = Math.random();
+				if(random < 0.25) return false;
+				return true;
+			},p->{
+				HashMap<String, Integer> boost = new HashMap<>();
+				boost.put("speed",2);
+				p.getCurrentStats().addBoosts(boost);
+				return true;
+			}),
+	FREEZE(p->{return true;},p->{
+		double random = Math.random();
+		if(random < 0.1){
+			p.setStatus(null);
+			return true;
+		}	
+		return false;},p->{return true;}),
+	BURN(p->{
+		HashMap<String, Integer> boost = new HashMap<>();
+		boost.put("attack",-2);
+		p.getCurrentStats().addBoosts(boost);
+		return true;
+	},p->{
+		p.addHp((int) -p.getBaseStats().getHp()/16);
+		return true;
+	},p->{
+		HashMap<String, Integer> boost = new HashMap<>();
+		boost.put("attack",2);
+		p.getCurrentStats().addBoosts(boost);
+		return true;
+	}),
+	POISON(p->{return true;},
+			p->{
+				p.addHp((int) (-p.getBaseStats().getHp()/8));
+				return true;
+			},p->{return true;}),
+	SLEEP(p->{return true;},p->{
+		double random = Math.random();
+		if(random < 0.1){
+			p.setStatus(null);
+			return true;
+		}	
+		return false;},p->{return true;});
 	
 	private StatusEffect whenReceived;
 	private StatusEffect eachTurn;

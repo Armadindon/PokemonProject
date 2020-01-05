@@ -26,6 +26,7 @@ import application.model.utils.SaveUtility;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -37,6 +38,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -86,74 +89,89 @@ public class FightController extends AbstractController {
 	@FXML
 	private ResourceBundle resources;
 
-	@FXML
-	private URL location;
+    @FXML
+    private AnchorPane root;
 
-	@FXML
-	private ImageView ImageViewFoePokemon;
+    @FXML
+    private Color x4;
 
-	@FXML
-	private HBox hBoxMenuButtons;
+    @FXML
+    private TabPane tabPaneMenu;
 
-	@FXML
-	private ImageView imageViewAllyPokemon;
+    @FXML
+    private Label labelMatchNotification;
 
-	@FXML
-	private Label labelAllyPokeHP;
+    @FXML
+    private HBox hBoxMenuButtons;
 
-	@FXML
-	private Label labelAllyPokeLvl;
+    @FXML
+    private Font x1;
 
-	@FXML
-	private Label labelAllyPokeName;
+    @FXML
+    private Button btnMenu;
 
-	@FXML
-	private Label labelFoePokeHP;
+    @FXML
+    private Color x2;
 
-	@FXML
-	private Label labelFoePokeLvl;
+    @FXML
+    private AnchorPane movePane;
 
-	@FXML
-	private Label labelFoePokeName;
+    @FXML
+    private Font x31;
 
-	@FXML
-	private AnchorPane movePane;
+    @FXML
+    private AnchorPane switchPane;
 
-	@FXML
-	private ProgressBar progressBarAllyPokeHP;
+    @FXML
+    private Button cancelButtonSwitch;
 
-	@FXML
-	private ProgressBar progressBarFoePokeHP;
+    @FXML
+    private ImageView imageViewAllyPokemon;
 
-	@FXML
-	private AnchorPane root;
+    @FXML
+    private ImageView ImageViewFoePokemon;
 
-	@FXML
-	private AnchorPane switchPane;
+    @FXML
+    private Label labelFoePokeName;
 
-	@FXML
-	private AnchorPane anchorPaneMenu;
+    @FXML
+    private Insets x5;
 
-	@FXML
-	private TabPane tabPaneMenu;
+    @FXML
+    private Label labelFoePokeLvl;
 
-	@FXML
-	private Label labelMatchNotification;
+    @FXML
+    private ProgressBar progressBarFoePokeHP;
 
-	@FXML
-	private VBox vBoxMove0;
+    @FXML
+    private Label labelFoePokeStatus;
 
-	@FXML
-	private VBox vBoxMove1;
+    @FXML
+    private Label labelFoePokeHP;
 
-	@FXML
-	private VBox vBoxMove2;
+    @FXML
+    private Font x11;
 
-	@FXML
-	private VBox vBoxMove3;
+    @FXML
+    private Label labelAllyPokeName;
 
-	@FXML
-	private Button cancelButtonSwitch;
+    @FXML
+    private Label labelAllyPokeLvl;
+
+    @FXML
+    private ProgressBar progressBarAllyPokeHP;
+
+    @FXML
+    private Label labelAllyPokeStatus;
+
+    @FXML
+    private Label labelAllyPokeHP;
+
+    @FXML
+    private Font x111;
+
+    @FXML
+    private AnchorPane anchorPaneMenu;
 
 	private List<String> msgs = null;
 
@@ -321,9 +339,9 @@ public class FightController extends AbstractController {
 		// generate the moves of the player in the interface
 		moveDisplayUpdate(playerUser);
 		teamDisplayUpdate(playerUser);
-		mainScreenUpdate(playerUser, imageViewAllyPokemon, labelAllyPokeName, labelAllyPokeLvl, labelAllyPokeHP,
+		mainScreenUpdate(playerUser, imageViewAllyPokemon, labelAllyPokeName, labelAllyPokeLvl, labelAllyPokeHP,labelAllyPokeStatus ,
 				progressBarAllyPokeHP);
-		mainScreenUpdate(playerFoe, ImageViewFoePokemon, labelFoePokeName, labelFoePokeLvl, labelFoePokeHP,
+		mainScreenUpdate(playerFoe, ImageViewFoePokemon, labelFoePokeName, labelFoePokeLvl, labelFoePokeHP, labelFoePokeStatus,
 				progressBarFoePokeHP);
 	}
 
@@ -370,7 +388,7 @@ public class FightController extends AbstractController {
 		pgHP.getStyleClass().add(colorStyle);
 	}
 
-	public void mainScreenUpdate(Player p, ImageView imgV, Label pokeName, Label pokeLvl, Label pokeHP,
+	public void mainScreenUpdate(Player p, ImageView imgV, Label pokeName, Label pokeLvl, Label pokeHP, Label PokeStatus,
 			ProgressBar pgHP) {
 		Pokemon selectedPokemon = p.getSelectedPokemon();
 
@@ -387,6 +405,10 @@ public class FightController extends AbstractController {
 		pokeName.setText(selectedPokemon.getName());
 		pokeLvl.setText("lvl" + selectedPokemon.getLevel());
 		pokeHP.setText(currentHP + " / " + maxHP);
+		
+		
+		if(selectedPokemon.getStatus() != null) PokeStatus.setText(selectedPokemon.getStatus().name());
+		else PokeStatus.setText("None");
 
 		Double progress = (double) currentHP / maxHP;
 
@@ -441,21 +463,52 @@ public class FightController extends AbstractController {
 
 				case MISSED:
 					messages[i] += "L'attaque a ratée !\n";
+					break;
+					
 				case BOOSTED:
 					messages[i] += "Il s'est Boost !\n";
+					break;
+				
+				case ASLEEP:
+					messages[i] += "Il est endormi, il n'a pas pu attaquer \n";
+					break;
+				
+				case FROZEN:
+					messages[i] += "Il est Glacé, il n'a pas pu attaquer \n";
+					break;
+
+				case PARALYZED:
+					messages[i] += "Il est paralysé, il n'a pas pu attaquer \n";
+					break;				
 				}
 			}
 
 			if (!players[i].getWhichPlayer().getSelectedPokemon().isAlive()) {
 				messages[i] += "Le pokémon adverse est KO !\n";
 				players[i].getWhichPlayer().mainPokemonKilled();
+				if (players[i].getWhichPlayer().getAlive() == 0) {
+					if (players[i].getWhichPlayer().isBot()) {
+						messages[i] += "Vous avez Gagné - Vous allez passer au combat suivant !\n";
+					} else {
+						messages[i] += "Vous avez Perdu - Vous aller être redirigé vers l'acceuil !\n";
+					}
+				} else if (!players[i].getWhichPlayer().isBot()) {
+					tabPaneMenu.getSelectionModel().select(3);
+					cancelButtonSwitch.setDisable(true);
+					return null;
+				}
+			}
+			
+			if(!players[i].getSelectedPokemon().isAlive()) {
+				messages[i] += "Le pokémon est KO a cause de son status !\n";
+				players[i].mainPokemonKilled();
 				if (players[i].getAlive() == 0) {
 					if (players[i].isBot()) {
 						messages[i] += "Vous avez Gagné - Vous allez passer au combat suivant !\n";
 					} else {
 						messages[i] += "Vous avez Perdu - Vous aller être redirigé vers l'acceuil !\n";
 					}
-				} else if (!players[i].getWhichPlayer().isBot()) {
+				} else if (!players[i].isBot()) {
 					tabPaneMenu.getSelectionModel().select(3);
 					cancelButtonSwitch.setDisable(true);
 					return null;

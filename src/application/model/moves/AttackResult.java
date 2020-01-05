@@ -6,6 +6,9 @@ public enum AttackResult {
 	NOTEFFECTIVE,
 	SUCCEED,
 	MISSED,
-	BOOSTED;
+	BOOSTED,
+	PARALYZED,
+	FROZEN,
+	ASLEEP;
 
 }

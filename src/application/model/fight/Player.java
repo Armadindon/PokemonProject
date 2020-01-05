@@ -100,6 +100,20 @@ public class Player implements Serializable {
 	public AttackResult turn(Player p) {
 		switch (nextAction) {
 		case MOVE:
+			
+			if(selectedPokemon.getStatus() != null && !selectedPokemon.getStatus().getEachTurn().use(selectedPokemon)) {
+				switch(selectedPokemon.getStatus()) {
+					case FREEZE:
+						return AttackResult.FROZEN;
+					case PARALYSIS:
+						return AttackResult.PARALYZED;
+					case SLEEP:
+						return AttackResult.ASLEEP;
+					default:
+						return null;
+						
+				}
+			}
 			return selectedPokemon.getlearnedMoves().get(whichAction).use(selectedPokemon, p.selectedPokemon);
 		case SWITCH:
 			switchPokemon(team.get(whichAction));

@@ -70,9 +70,10 @@ public class Move implements Serializable{
 				try {
 					Status status = Status.valueOf(data.get("effect_ailment").get(0).toUpperCase());
 					effect = (p1, p2) -> {
-						p1.setStatus(status);
+						p2.setStatus(status);
 					};
-					effectChance = Integer.parseInt(data.get("effect_chance").get(0));
+					if(moveCategory.equals("ailment")) effectChance = 100;
+					else effectChance = Integer.parseInt(data.get("effect_chance").get(0));
 				} catch (Exception e) {
 					System.err.println(e);
 					return null; // Si le effect_ailment n'est pas connu ou pas encore programmé on ne rajoute
