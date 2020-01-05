@@ -447,7 +447,14 @@ public class FightController extends AbstractController {
 
 	private String[] turns(Player... players) {
 
-		String[] messages = new String[players.length + 1];
+		String[] messages;
+		
+		if (currentData != null && currentData == SpecialData.HOMEMADE) {
+			messages = new String[players.length + 1];
+		} else {
+			messages = new String[players.length];
+		}
+
 		AttackResult att;
 
 		for (int i = 0; i < players.length; i++) {
@@ -507,13 +514,14 @@ public class FightController extends AbstractController {
 			if (!players[i].getWhichPlayer().getSelectedPokemon().isAlive()) {
 				messages[i] += "Le pokémon adverse est KO !\n";
 				players[i].getWhichPlayer().mainPokemonKilled();
-				if (players[i].getWhichPlayer().getAlive() == 0) {
+				System.out.println(players[i].getAlive());
+				if (players[i].getWhichPlayer().getAlive() < 0) {
 					if (players[i].getWhichPlayer().isBot()) {
 						messages[i] += "Vous avez Gagné - Combat suivant !\n";
 					} else {
 						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
-				} else if (!players[i].getWhichPlayer().isBot()) {
+				} else if (!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() < 0) {
 					tabPaneMenu.getSelectionModel().select(3);
 					cancelButtonSwitch.setDisable(true);
 					return null;
@@ -523,13 +531,14 @@ public class FightController extends AbstractController {
 			if (!players[i].getSelectedPokemon().isAlive()) {
 				messages[i] += "Le pokémon est KO a cause de son status !\n";
 				players[i].mainPokemonKilled();
-				if (players[i].getAlive() == 0) {
+				System.out.println(players[i].getAlive());
+				if (players[i].getAlive() < 0) {
 					if (players[i].isBot()) {
-						messages[i] += "Vous avez Gagné - Vous allez passer au combat suivant !\n";
+						messages[i] += "Vous avez Gagné - Combat suivant !\n";
 					} else {
-						messages[i] += "Vous avez Perdu - Vous aller être redirigé vers l'acceuil !\n";
+						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
-				} else if (!players[i].isBot()) {
+				} else if (!players[i].isBot() && players[i].getAlive() < 0) {
 					tabPaneMenu.getSelectionModel().select(3);
 					cancelButtonSwitch.setDisable(true);
 					return null;
@@ -610,8 +619,7 @@ public class FightController extends AbstractController {
 			if (players[i].getAlive() == 0 || players[i + 1].getAlive() == 0) {
 				continue;
 			}
-			
-			
+
 			intOne = getPokemonAliveIndex(players[i].getTeam());
 			intTwo = getPokemonAliveIndex(players[i + 1].getTeam());
 
