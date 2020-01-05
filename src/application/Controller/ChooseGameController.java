@@ -63,7 +63,7 @@ public class ChooseGameController extends AbstractController {
 	@FXML
 	void randomFight(ActionEvent event) throws IOException {
 		//We generate a League with only one guy
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, Optional.of(League.generateRandomLeague(1, 6, teamBuilder)), Optional.empty());
+		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, Optional.of(League.generateRandomLeague(2, 3, teamBuilder)), Optional.empty());
 	}
 
 	@FXML

@@ -41,6 +41,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -48,6 +50,8 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class FightController extends AbstractController {
+	
+	private MediaPlayer mp;
 
 	private League currentLeague;
 
@@ -87,6 +91,13 @@ public class FightController extends AbstractController {
 		}
 
 		playerUser = new Player(teamBuilder, false);
+		
+		// Music
+		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/15 - Battle.mp3";
+        Media media = new Media(new File(path).toURI().toString());
+        mp = new MediaPlayer(media);
+        mp.setAutoPlay(true);
+        mp.setCycleCount(MediaPlayer.INDEFINITE);
 
 		displayUpdate();
 	}

@@ -17,11 +17,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class LeagueIntermissionController extends AbstractController {
+	
+	private MediaPlayer mp;
 
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data) throws IOException {
@@ -30,6 +34,12 @@ public class LeagueIntermissionController extends AbstractController {
 		if (this.league.isPresent()) {
 			this.league.get().nextFightingTeam();
 		}
+		
+		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/16 - Victory.mp3";
+        Media media = new Media(new File(path).toURI().toString());
+        mp = new MediaPlayer(media);
+        mp.setAutoPlay(true);
+        mp.setCycleCount(MediaPlayer.INDEFINITE);
 
 		displayUpdate();
 	}
