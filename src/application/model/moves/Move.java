@@ -169,6 +169,7 @@ public class Move implements Serializable{
 			
 			if(moveCategory.equals("net-good-stats")) {
 				System.out.println("Boost !");
+				System.out.println(name);
 				if(target == Target.USER) p.getCurrentStats().addBoosts(statChange);
 				else p.getCurrentStats().addBoosts(statChange);
 				return AttackResult.BOOSTED;

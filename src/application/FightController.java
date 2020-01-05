@@ -447,7 +447,7 @@ public class FightController extends AbstractController {
 
 	private String[] turns(Player... players) {
 
-		String[] messages = new String[players.length];
+		String[] messages = new String[players.length + 1];
 		AttackResult att;
 
 		for (int i = 0; i < players.length; i++) {
@@ -572,10 +572,8 @@ public class FightController extends AbstractController {
 			}
 		}
 
-		System.out.println("gros con1");
 		if (currentData != null && currentData == SpecialData.HOMEMADE && swapTimer < swapMaxTurn) {
 			homadeSwitch(playerUser, playerFoe);
-			System.out.println("gros con2");
 			messages[2] = "Une force Cessyenne est survenu...";
 			swapTimer = 0;
 		} else {
@@ -603,22 +601,19 @@ public class FightController extends AbstractController {
 
 	private void homadeSwitch(Player... players) {
 		Collections.shuffle(Arrays.asList(players));
-		ArrayList<Pokemon> teamOne;
-		ArrayList<Pokemon> teamTwo;
 
 		int intOne;
 		int intTwo;
 
-		for (int i = 0; i + 2 < players.length; i = i + 2) {
+		for (int i = 0; i + 1 < players.length; i = i + 2) {
 			// If one of the two players are KO, they don't swap
 			if (players[i].getAlive() == 0 || players[i + 1].getAlive() == 0) {
 				continue;
 			}
-			teamOne = players[i].getTeam();
-			teamTwo = players[i + 1].getTeam();
-
-			intOne = getPokemonAliveIndex(teamOne);
-			intTwo = getPokemonAliveIndex(teamTwo);
+			
+			
+			intOne = getPokemonAliveIndex(players[i].getTeam());
+			intTwo = getPokemonAliveIndex(players[i + 1].getTeam());
 
 			players[i].swapTeam(players[i + 1], intOne, intTwo);
 		}

@@ -98,7 +98,10 @@ public class Player implements Serializable {
 	 * @param pokemonNumber The old pokemon you want to swap
 	 */
 	private void swapPokemon(Pokemon newPkmn, int pokemonNumber) {
-		team.remove(pokemonNumber);
+		Pokemon removedP = team.remove(pokemonNumber);
+		if(removedP.equals(selectedPokemon)) {
+			selectedPokemon = newPkmn;
+		}
 		team.add(pokemonNumber, newPkmn);
 	}
 
@@ -114,7 +117,7 @@ public class Player implements Serializable {
 	public void swapTeam(Player playerTwo, int intOne, int intTwo) {
 		Pokemon pkmnOne = team.get(intOne);
 		Pokemon pkmnTwo = playerTwo.getTeam().get(intTwo);
-
+		
 		this.swapPokemon(pkmnTwo, intOne);
 		playerTwo.swapPokemon(pkmnOne, intTwo);
 	}

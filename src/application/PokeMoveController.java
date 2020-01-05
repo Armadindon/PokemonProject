@@ -47,7 +47,8 @@ public class PokeMoveController extends AbstractController {
 	private ArrayList<Pokemon> team;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data) throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+			throws IOException {
 		super.initTeamBuilder(teamBuilder, league, data);
 
 		selectedPokemon = teamBuilder.getPokemon();
@@ -55,7 +56,7 @@ public class PokeMoveController extends AbstractController {
 		// changement des labels et infos de la page
 		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 24));
 		textFPokemonName.setText(selectedPokemon.getName());
-		imgPokemon.setImage(new Image("file:"+selectedPokemon.getFrontSprite()));
+		imgPokemon.setImage(new Image("file:" + selectedPokemon.getFrontSprite()));
 
 		ArrayList<Move> allPossibleMoves = selectedPokemon.getAllPossiblesMoves();
 

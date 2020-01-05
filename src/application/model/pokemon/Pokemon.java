@@ -14,7 +14,7 @@ import application.model.items.Item;
 import application.model.moves.Move;
 import javafx.scene.image.Image;
 
-public class Pokemon implements Serializable{
+public class Pokemon implements Serializable, Cloneable{
 	private final int id;
 	private String name;
 	private final int baseExperience;

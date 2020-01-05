@@ -73,6 +73,9 @@ public class TeamBuilder implements Serializable {
 
 					do {
 						indexMove = new Random().nextInt(pkmnMovesSizes);
+						if(randomPokemon.getAllPossiblesMoves().size() == randomPokemon.getlearnedMoves().size()) {
+							break;
+						}
 					} while (randomPokemon.getlearnedMoves()
 							.contains(randomPokemon.getAllPossiblesMoves().get(indexMove)));
 
