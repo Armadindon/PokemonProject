@@ -268,7 +268,7 @@
         </HBox>
       </children>
     </VBox>
-    <AnchorPane id="root" fx:id="anchorPaneMenu" layoutX="0.0" layoutY="0.0" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" style="-fx-background-color: white;" visible="false">
+    <AnchorPane id="root" fx:id="anchorPaneMenu" layoutX="0.0" layoutY="0.0" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" style="-fx-background-color: white;" visible="true">
       <children>
         <ImageView id="imgKwaaac" fitHeight="179.8854320919678" fitWidth="488.0000457763672" layoutX="256.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" smooth="false" visible="true">
           <image>
@@ -281,6 +281,7 @@
         <VBox alignment="CENTER" layoutX="313.0" layoutY="264.0" prefHeight="406.0" prefWidth="375.0" spacing="50.0">
           <children>
             <Button id="saveButton" cancelButton="false" defaultButton="false" font="$x1" mnemonicParsing="false" onAction="#back" prefHeight="70.0" prefWidth="217.0" text="Return" />
+            <Button id="saveButton" cancelButton="false" defaultButton="false" disable="true" font="$x1" mnemonicParsing="false" onAction="#pokedex" prefHeight="70.0" prefWidth="217.0" text="Pokedex" />
             <Button id="saveButton" cancelButton="false" defaultButton="false" font="$x1" mnemonicParsing="false" onAction="#save" prefHeight="70.0" prefWidth="217.0" text="Save" />
             <Button cancelButton="false" defaultButton="false" font="$x1" mnemonicParsing="false" onAction="#load" prefHeight="70.0" prefWidth="217.0" text="Load" />
             <Button cancelButton="false" defaultButton="false" font="$x1" mnemonicParsing="false" onAction="#backToMenu" prefHeight="70.0" prefWidth="217.0" text="Back to menu" />

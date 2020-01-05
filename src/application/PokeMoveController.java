@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import application.model.appmodel.League;
+import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
@@ -46,8 +47,8 @@ public class PokeMoveController extends AbstractController {
 	private ArrayList<Pokemon> team;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
-		super.initTeamBuilder(teamBuilder, league);
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data) throws IOException {
+		super.initTeamBuilder(teamBuilder, league, data);
 
 		selectedPokemon = teamBuilder.getPokemon();
 
@@ -185,7 +186,7 @@ public class PokeMoveController extends AbstractController {
 
 	@FXML
 	void changeToPokedexCancel(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty());
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
 	}
 
 	@FXML
@@ -197,7 +198,7 @@ public class PokeMoveController extends AbstractController {
 
 		teamBuilder.addPokemonToTeam(selectedPokemon);
 
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty());
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
 	}
 
 	@FXML

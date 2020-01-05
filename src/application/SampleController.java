@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import application.model.appmodel.League;
+import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.*;
@@ -40,8 +41,8 @@ import javafx.stage.Stage;
 public class SampleController extends AbstractController {
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
-		super.initTeamBuilder(teamBuilder, league);
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data) throws IOException {
+		super.initTeamBuilder(teamBuilder, league, data);
 
 		items = FXCollections.observableArrayList(teamBuilder.getPokeList());
 
@@ -206,7 +207,11 @@ public class SampleController extends AbstractController {
 		
 		teamBuilder.setPokemon(listPokemon.getSelectionModel().getSelectedItem());
 
-		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder, Optional.empty());
+		if(data == null) {
+			data = Optional.empty();
+		}
+		
+		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder, Optional.empty(), data);
 	}
 	
 	@FXML
@@ -232,9 +237,8 @@ public class SampleController extends AbstractController {
 	
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
-    	changeSceneTeamBuilder(event,"ChooseGame.fxml" , teamBuilder, league);
+    	changeSceneTeamBuilder(event,"ChooseGame.fxml" , teamBuilder, league, data);
     }
-	
-	
+
 
 }
