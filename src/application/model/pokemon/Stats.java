@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Stats implements Serializable {
+public class Stats implements Serializable, Cloneable {
 
 	private int speed;
 	private int attack;

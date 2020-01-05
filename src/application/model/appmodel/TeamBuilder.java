@@ -124,7 +124,6 @@ public class TeamBuilder implements Serializable {
 			labelChangeName.setText("Name too long");
 
 		} else if (name.contains(":")) {
-			// TODO Mettre une vrai vérification sur les ponctuations
 			labelChangeName.setText("Wrong name");
 
 		} else {
@@ -137,7 +136,6 @@ public class TeamBuilder implements Serializable {
 		ft.setToValue(0.0);
 
 		ft.play();
-
 	}
 
 	public boolean canAddPokemon(Label labelError) {

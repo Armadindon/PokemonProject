@@ -184,7 +184,7 @@ public class SampleController extends AbstractController {
 	}
 
 	@FXML
-	void changeToPokeMove(ActionEvent event) throws IOException {
+	void changeToPokeMove(ActionEvent event) throws IOException, CloneNotSupportedException {
 		if (teamBuilder.getTeamSize() == 6) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Warning");
@@ -196,7 +196,7 @@ public class SampleController extends AbstractController {
 			return;
 		}
 		
-		teamBuilder.setPokemon(listPokemon.getSelectionModel().getSelectedItem());
+		teamBuilder.setPokemon(listPokemon.getSelectionModel().getSelectedItem().clone());
 
 		if(data == null) {
 			data = Optional.empty();
