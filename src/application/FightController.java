@@ -199,7 +199,7 @@ public class FightController extends AbstractController {
 		} else {
 			try {
 				if (playerUser.getAlive() == 0) { // lose
-					changeSceneTeamBuilder(event, "ChooseGameController.fxml", teamBuilder, Optional.empty());
+					changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, Optional.empty());
 				} else if (playerFoe.getAlive() == 0) { // win
 					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague));
 				} else {
@@ -485,9 +485,9 @@ public class FightController extends AbstractController {
 				players[i].getWhichPlayer().mainPokemonKilled();
 				if (players[i].getWhichPlayer().getAlive() == 0) {
 					if (players[i].getWhichPlayer().isBot()) {
-						messages[i] += "Vous avez Gagné - Vous allez passer au combat suivant !\n";
+						messages[i] += "Vous avez Gagné - Combat suivant !\n";
 					} else {
-						messages[i] += "Vous avez Perdu - Vous aller être redirigé vers l'acceuil !\n";
+						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
 				} else if (!players[i].getWhichPlayer().isBot()) {
 					tabPaneMenu.getSelectionModel().select(3);

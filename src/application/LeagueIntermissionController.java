@@ -25,7 +25,7 @@ public class LeagueIntermissionController extends AbstractController {
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 		super.initTeamBuilder(teamBuilder, league);
-		
+
 		if (this.league.isPresent()) {
 			this.league.get().nextFightingTeam();
 		}

@@ -39,10 +39,6 @@ import javafx.stage.Stage;
 
 public class SampleController extends AbstractController {
 
-	private TeamBuilder teamBuilder;
-
-	private Optional<League> league = Optional.empty();
-	
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
 		super.initTeamBuilder(teamBuilder, league);
