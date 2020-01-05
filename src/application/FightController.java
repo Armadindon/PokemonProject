@@ -10,11 +10,14 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import application.model.appmodel.League;
+import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import application.model.fight.Action;
 import application.model.fight.Player;
@@ -48,34 +51,39 @@ public class FightController extends AbstractController {
 
 	private League currentLeague;
 
+	private SpecialData currentData;
+
 	private Player playerUser;
 
 	private Player playerFoe;
 
-	// private Fight fightModel; // Pas sur si on garde, mon idée serait de gérer
-	// les combats dans fights et de
-	// faire appel aux méthode de rafraichissement de l'interface présente dans le
-	// controlleur donc ça puisse l'info dans les players (comme ça on pense à si on
-	// veut jouer à plusieurs joueurs et au dévellopement futur possible du jeu, hop
-	// comme l'affichage se fait en fonction du joueur c'est cool étou)
-	//
-	// Jsuis Ok
+	// Homemade mod properties
+
+	private int swapMaxTurn = 1;
+
+	private int swapTimer = 0;
+
+	private int swapNbPkmn = 3;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+			throws IOException {
+		super.initTeamBuilder(teamBuilder, league, data);
 
-		// Pour selectionner un tab (text:0, menu principal: 1, fight:2, switch: 3,
-		// backpack: 4 (mais rien c'est fait pour lui encore)
-		super.initTeamBuilder(teamBuilder, league);
-		
 		tabPaneMenu.getSelectionModel().select(1);
 
-		if (this.league.isPresent()) {
-			this.playerFoe = this.league.get().getFightingTeam();
-			this.currentLeague = this.league.get();
+		if (league.isPresent()) {
+			this.playerFoe = league.get().getFightingTeam();
+			this.currentLeague = league.get();
 		} else {
 			playerFoe = new Player(teamBuilder.createRandomTeam(6), true);
 			this.currentLeague = null;
+		}
+		
+		if (this.data.isPresent()) {
+			this.currentData = data.get();
+		} else {
+			this.currentData = null;
 		}
 
 		playerUser = new Player(teamBuilder, false);
@@ -86,89 +94,89 @@ public class FightController extends AbstractController {
 	@FXML
 	private ResourceBundle resources;
 
-    @FXML
-    private AnchorPane root;
+	@FXML
+	private AnchorPane root;
 
-    @FXML
-    private Color x4;
+	@FXML
+	private Color x4;
 
-    @FXML
-    private TabPane tabPaneMenu;
+	@FXML
+	private TabPane tabPaneMenu;
 
-    @FXML
-    private Label labelMatchNotification;
+	@FXML
+	private Label labelMatchNotification;
 
-    @FXML
-    private HBox hBoxMenuButtons;
+	@FXML
+	private HBox hBoxMenuButtons;
 
-    @FXML
-    private Font x1;
+	@FXML
+	private Font x1;
 
-    @FXML
-    private Button btnMenu;
+	@FXML
+	private Button btnMenu;
 
-    @FXML
-    private Color x2;
+	@FXML
+	private Color x2;
 
-    @FXML
-    private AnchorPane movePane;
+	@FXML
+	private AnchorPane movePane;
 
-    @FXML
-    private Font x31;
+	@FXML
+	private Font x31;
 
-    @FXML
-    private AnchorPane switchPane;
+	@FXML
+	private AnchorPane switchPane;
 
-    @FXML
-    private Button cancelButtonSwitch;
+	@FXML
+	private Button cancelButtonSwitch;
 
-    @FXML
-    private ImageView imageViewAllyPokemon;
+	@FXML
+	private ImageView imageViewAllyPokemon;
 
-    @FXML
-    private ImageView ImageViewFoePokemon;
+	@FXML
+	private ImageView ImageViewFoePokemon;
 
-    @FXML
-    private Label labelFoePokeName;
+	@FXML
+	private Label labelFoePokeName;
 
-    @FXML
-    private Insets x5;
+	@FXML
+	private Insets x5;
 
-    @FXML
-    private Label labelFoePokeLvl;
+	@FXML
+	private Label labelFoePokeLvl;
 
-    @FXML
-    private ProgressBar progressBarFoePokeHP;
+	@FXML
+	private ProgressBar progressBarFoePokeHP;
 
-    @FXML
-    private Label labelFoePokeStatus;
+	@FXML
+	private Label labelFoePokeStatus;
 
-    @FXML
-    private Label labelFoePokeHP;
+	@FXML
+	private Label labelFoePokeHP;
 
-    @FXML
-    private Font x11;
+	@FXML
+	private Font x11;
 
-    @FXML
-    private Label labelAllyPokeName;
+	@FXML
+	private Label labelAllyPokeName;
 
-    @FXML
-    private Label labelAllyPokeLvl;
+	@FXML
+	private Label labelAllyPokeLvl;
 
-    @FXML
-    private ProgressBar progressBarAllyPokeHP;
+	@FXML
+	private ProgressBar progressBarAllyPokeHP;
 
-    @FXML
-    private Label labelAllyPokeStatus;
+	@FXML
+	private Label labelAllyPokeStatus;
 
-    @FXML
-    private Label labelAllyPokeHP;
+	@FXML
+	private Label labelAllyPokeHP;
 
-    @FXML
-    private Font x111;
+	@FXML
+	private Font x111;
 
-    @FXML
-    private AnchorPane anchorPaneMenu;
+	@FXML
+	private AnchorPane anchorPaneMenu;
 
 	private List<String> msgs = null;
 
@@ -181,9 +189,8 @@ public class FightController extends AbstractController {
 	private static final String[] pgColorStyles = { RED_BAR, ORANGE_BAR, YELLOW_BAR, GREEN_BAR };
 
 	@FXML
-	void run(ActionEvent event) {
-		// oof
-		Platform.exit();
+	void run(ActionEvent event) throws IOException {
+		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 
 	@FXML
@@ -199,9 +206,10 @@ public class FightController extends AbstractController {
 		} else {
 			try {
 				if (playerUser.getAlive() == 0) { // lose
-					changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, Optional.empty());
+					changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, Optional.empty(), Optional.empty());
 				} else if (playerFoe.getAlive() == 0) { // win
-					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague));
+					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague),
+							data);
 				} else {
 					msgs = null;
 					tabPaneMenu.getSelectionModel().select(1);
@@ -244,6 +252,7 @@ public class FightController extends AbstractController {
 		if (wasAlive)
 			doTurns();
 		else
+			
 			switchPokemons();
 	}
 
@@ -275,6 +284,11 @@ public class FightController extends AbstractController {
 	void openMenu(ActionEvent event) {
 		anchorPaneMenu.setVisible(true);
 	}
+	
+	@FXML
+	void pokedex(ActionEvent event) {
+		
+	}
 
 	@FXML
 	void save(ActionEvent event) throws IOException {
@@ -287,10 +301,17 @@ public class FightController extends AbstractController {
 
 		SaveUtility save;
 
+		Optional<SpecialData> saveData;
+
+		if (currentData != null) {
+			saveData = Optional.of(currentData);
+		} else {
+			saveData = Optional.empty();
+		}
 		if (currentLeague != null)
-			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.of(currentLeague));
+			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.of(currentLeague), saveData);
 		else
-			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.empty());
+			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.empty(), saveData);
 
 		FileOutputStream file = new FileOutputStream(f);
 		ObjectOutputStream oos = new ObjectOutputStream(file);
@@ -316,7 +337,7 @@ public class FightController extends AbstractController {
 
 		SaveUtility save = (SaveUtility) ois.readObject();
 		ois.close();
-		changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague());
+		changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague(), data);
 	}
 
 	@FXML
@@ -336,10 +357,10 @@ public class FightController extends AbstractController {
 		// generate the moves of the player in the interface
 		moveDisplayUpdate(playerUser);
 		teamDisplayUpdate(playerUser);
-		mainScreenUpdate(playerUser, imageViewAllyPokemon, labelAllyPokeName, labelAllyPokeLvl, labelAllyPokeHP,labelAllyPokeStatus ,
-				progressBarAllyPokeHP);
-		mainScreenUpdate(playerFoe, ImageViewFoePokemon, labelFoePokeName, labelFoePokeLvl, labelFoePokeHP, labelFoePokeStatus,
-				progressBarFoePokeHP);
+		mainScreenUpdate(playerUser, imageViewAllyPokemon, labelAllyPokeName, labelAllyPokeLvl, labelAllyPokeHP,
+				labelAllyPokeStatus, progressBarAllyPokeHP);
+		mainScreenUpdate(playerFoe, ImageViewFoePokemon, labelFoePokeName, labelFoePokeLvl, labelFoePokeHP,
+				labelFoePokeStatus, progressBarFoePokeHP);
 	}
 
 	public void moveDisplayUpdate(Player p) {
@@ -348,12 +369,13 @@ public class FightController extends AbstractController {
 			// From the Anchor pane of moves, get the i vbox containing 2 labels. 0: move's
 			// Name, 1: move's PP
 			Move pokeMove = pokeMoves.get(i);
-			
+
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(0))).setText(pokeMove.getName());
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(1))).setText(pokeMove.getType().name());
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(2)))
 					.setText(pokeMove.getPP() + "/" + pokeMove.getMaxPP());
-			if(pokeMove.getPP() <= 0) movePane.getChildren().get(i).setDisable(true);
+			if (pokeMove.getPP() <= 0)
+				movePane.getChildren().get(i).setDisable(true);
 		}
 	}
 
@@ -385,8 +407,8 @@ public class FightController extends AbstractController {
 		pgHP.getStyleClass().add(colorStyle);
 	}
 
-	public void mainScreenUpdate(Player p, ImageView imgV, Label pokeName, Label pokeLvl, Label pokeHP, Label PokeStatus,
-			ProgressBar pgHP) {
+	public void mainScreenUpdate(Player p, ImageView imgV, Label pokeName, Label pokeLvl, Label pokeHP,
+			Label PokeStatus, ProgressBar pgHP) {
 		Pokemon selectedPokemon = p.getSelectedPokemon();
 
 		if (p.isBot()) {
@@ -402,10 +424,11 @@ public class FightController extends AbstractController {
 		pokeName.setText(selectedPokemon.getName());
 		pokeLvl.setText("lvl" + selectedPokemon.getLevel());
 		pokeHP.setText(currentHP + " / " + maxHP);
-		
-		
-		if(selectedPokemon.getStatus() != null) PokeStatus.setText(selectedPokemon.getStatus().name());
-		else PokeStatus.setText("None");
+
+		if (selectedPokemon.getStatus() != null)
+			PokeStatus.setText(selectedPokemon.getStatus().name());
+		else
+			PokeStatus.setText("None");
 
 		Double progress = (double) currentHP / maxHP;
 
@@ -461,22 +484,22 @@ public class FightController extends AbstractController {
 				case MISSED:
 					messages[i] += "L'attaque a ratée !\n";
 					break;
-					
+
 				case BOOSTED:
 					messages[i] += "Il s'est Boost !\n";
 					break;
-				
+
 				case ASLEEP:
 					messages[i] += "Il est endormi, il n'a pas pu attaquer \n";
 					break;
-				
+
 				case FROZEN:
 					messages[i] += "Il est Glacé, il n'a pas pu attaquer \n";
 					break;
 
 				case PARALYZED:
 					messages[i] += "Il est paralysé, il n'a pas pu attaquer \n";
-					break;				
+					break;
 				}
 			}
 
@@ -495,8 +518,8 @@ public class FightController extends AbstractController {
 					return null;
 				}
 			}
-			
-			if(!players[i].getSelectedPokemon().isAlive()) {
+
+			if (!players[i].getSelectedPokemon().isAlive()) {
 				messages[i] += "Le pokémon est KO a cause de son status !\n";
 				players[i].mainPokemonKilled();
 				if (players[i].getAlive() == 0) {
@@ -523,7 +546,7 @@ public class FightController extends AbstractController {
 	 * Permet d'aiguiller la priorité
 	 */
 	public void doTurns() {
-		String[] messages = new String[2];
+		String[] messages = new String[3];
 
 		if (playerFoe.getNextAction().getPriority() > playerUser.getNextAction().getPriority()) {
 			// Il faut afficher le message en fonction du retour
@@ -547,6 +570,15 @@ public class FightController extends AbstractController {
 				messages = turns(playerUser, playerFoe);
 			}
 		}
+
+		if (currentData != null && currentData == SpecialData.HOMEMADE && swapTimer < swapMaxTurn) {
+			homadeSwitch(playerUser, playerFoe);
+			messages[2] = "Une force Cessyenne est survenu...";
+			swapTimer = 0;
+		} else {
+			swapTimer++;
+		}
+
 		displayUpdate();
 
 		if (messages != null) {
@@ -555,5 +587,37 @@ public class FightController extends AbstractController {
 			mainMenuClick(null);
 		}
 
+	}
+
+	private int getPokemonAliveIndex(ArrayList<Pokemon> team) {
+		int res;
+		do {
+			res = new Random().nextInt(team.size());
+		} while (!team.get(res).isAlive());
+
+		return res;
+	}
+
+	private void homadeSwitch(Player... players) {
+		Collections.shuffle(Arrays.asList(players));
+		ArrayList<Pokemon> teamOne;
+		ArrayList<Pokemon> teamTwo;
+
+		int intOne;
+		int intTwo;
+
+		for (int i = 0; i + 2 < players.length; i = i + 2) {
+			// If one of the two players are KO, they don't swap
+			if (players[i].getAlive() == 0 || players[i + 1].getAlive() == 0) {
+				continue;
+			}
+			teamOne = players[i].getTeam();
+			teamTwo = players[i + 1].getTeam();
+
+			intOne = getPokemonAliveIndex(teamOne);
+			intTwo = getPokemonAliveIndex(teamTwo);
+
+			players[i].swapTeam(players[i + 1], intOne, intTwo);
+		}
 	}
 }

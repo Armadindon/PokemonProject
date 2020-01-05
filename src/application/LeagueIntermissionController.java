@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Optional;
 import application.model.appmodel.League;
+import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import application.model.utils.MenuSelect;
 import application.model.utils.SaveUtility;
@@ -23,8 +24,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class LeagueIntermissionController extends AbstractController {
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
-		super.initTeamBuilder(teamBuilder, league);
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data) throws IOException {
+		super.initTeamBuilder(teamBuilder, league, data);
 
 		if (this.league.isPresent()) {
 			this.league.get().nextFightingTeam();
@@ -50,13 +51,13 @@ public class LeagueIntermissionController extends AbstractController {
 
 	@FXML
 	void nextLeagueFight(ActionEvent event) throws IOException {
-		changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, league);
+		changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, league, data);
 
 	}
 
 	@FXML
 	void goBackToMenu(ActionEvent event) throws IOException {
-		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league);
+		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league, data);
 	}
 
 	@FXML
@@ -76,10 +77,18 @@ public class LeagueIntermissionController extends AbstractController {
 
 		SaveUtility save;
 
+		Optional<SpecialData> saveData;
+
+		if(data != null) {
+			saveData = data;
+		} else {
+			saveData = Optional.empty();
+		}
+
 		if (league != null)
-			save = new SaveUtility(MenuSelect.INTERLEAGUE, teamBuilder, league);
+			save = new SaveUtility(MenuSelect.INTERLEAGUE, teamBuilder, league, saveData);
 		else
-			save = new SaveUtility(MenuSelect.INTERLEAGUE, teamBuilder, Optional.empty());
+			save = new SaveUtility(MenuSelect.INTERLEAGUE, teamBuilder, Optional.empty(), saveData);
 
 		FileOutputStream file = new FileOutputStream(f);
 		ObjectOutputStream oos = new ObjectOutputStream(file);

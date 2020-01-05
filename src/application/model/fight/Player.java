@@ -85,13 +85,37 @@ public class Player implements Serializable {
 		do {
 			next = randomChoice.nextInt(team.size());
 		} while (!team.get(next).isAlive());
-		
+
 		// setNextAction(nextAction, next, whichPlayer);
-		
+
 		switchPokemon(team.get(next));
-		
-		
-		
+	}
+
+	/**
+	 * Remove the pokemon at the given index to replace it with the new pokemon
+	 * 
+	 * @param newPkmn The new pokemon you want to swap
+	 * @param pokemonNumber The old pokemon you want to swap
+	 */
+	private void swapPokemon(Pokemon newPkmn, int pokemonNumber) {
+		team.remove(pokemonNumber);
+		team.add(pokemonNumber, newPkmn);
+	}
+
+	/**
+	 * Swap 2 pokemons between the playerOne you use this method on and the playerTwo you put in parameter
+	 * 
+	 * 
+	 * @param playerTwo the other player you want to switch with
+	 * @param intOne Index of the pokemon of the playerOne
+	 * @param intTwo Index of the pokemon of the playerTwo
+	 */
+	public void swapTeam(Player playerTwo, int intOne, int intTwo) {
+		Pokemon pkmnOne = team.get(intOne);
+		Pokemon pkmnTwo = playerTwo.getTeam().get(intTwo);
+
+		this.swapPokemon(pkmnTwo, intOne);
+		playerTwo.swapPokemon(pkmnOne, intTwo);
 	}
 
 	/*
@@ -100,23 +124,26 @@ public class Player implements Serializable {
 	public AttackResult turn(Player p) {
 		switch (nextAction) {
 		case MOVE:
-			
-			if(selectedPokemon.getStatus() != null && !selectedPokemon.getStatus().getEachTurn().use(selectedPokemon)) {
-				switch(selectedPokemon.getStatus()) {
-					case FREEZE:
-						return AttackResult.FROZEN;
-					case PARALYSIS:
-						return AttackResult.PARALYZED;
-					case SLEEP:
-						return AttackResult.ASLEEP;
-					default:
-						return null;
-						
+
+			if (selectedPokemon.getStatus() != null
+					&& !selectedPokemon.getStatus().getEachTurn().use(selectedPokemon)) {
+				switch (selectedPokemon.getStatus()) {
+				case FREEZE:
+					return AttackResult.FROZEN;
+				case PARALYSIS:
+					return AttackResult.PARALYZED;
+				case SLEEP:
+					return AttackResult.ASLEEP;
+				default:
+					return null;
+
 				}
 			}
 			return selectedPokemon.getlearnedMoves().get(whichAction).use(selectedPokemon, p.selectedPokemon);
 		case SWITCH:
+			selectedPokemon.getCurrentStats().resetBoosts();
 			switchPokemon(team.get(whichAction));
+			team.get(whichAction).getStatus().getWhenReceived().use(team.get(whichAction));
 		default:
 			break;
 		}

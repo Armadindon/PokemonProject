@@ -1,11 +1,11 @@
 # PokemonProject
 PokemonProject is a java project for the University of Université Paris Est Marne La Vallée,
-It's been created by two students : Maxime Rodriguez and Baptiste PERRIN
+It's been created by two students : Maxime RODRIGUEZ and Baptiste PERRIN
 
 Its a graphical app based on the JavaFX library where you can play at Pokémon,
 For compiling it, you just have to launch the Main.java in eclipse.
 
-Our project (The Code) is actually under GNU General License, but all the Sprites, Musics and are owned by The Pokemon Company.
+Our project (The Code) is actually under GNU General License, but all the Sprites, Musics and Pokemons are owned by The Pokemon Company.
 
 ## Good To Know
 ### Knowns Bugs

@@ -64,12 +64,12 @@ public class NewGameLoadMenuController extends AbstractController {
 	    
 	    SaveUtility save = (SaveUtility) ois.readObject();
 	    ois.close();
-	    changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague());
+	    changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague(), save.getSpecialData());
 	}
 
 	@FXML
 	void newGame(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty());
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), Optional.empty());
 	}
 
 	@FXML
