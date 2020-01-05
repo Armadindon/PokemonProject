@@ -15,11 +15,11 @@ import javafx.stage.Stage;
 
 public abstract class AbstractController implements InterfaceController {
 
-	TeamBuilder teamBuilder;
+	protected TeamBuilder teamBuilder;
 
-	Optional<League> league = Optional.empty();
+	protected Optional<League> league = Optional.empty();
 
-	Optional<SpecialData> data;
+	protected Optional<SpecialData> data;
 
 	/**
 	 * Change the scene without transferring any datas
@@ -61,6 +61,10 @@ public abstract class AbstractController implements InterfaceController {
 		// Acces to the controller of pokemove
 
 		InterfaceController controller = loader.getController();
+		
+		if(data == null) {
+			data = Optional.empty();
+		}
 
 		controller.initTeamBuilder(teamBuilder, league, data);
 
@@ -77,16 +81,12 @@ public abstract class AbstractController implements InterfaceController {
 		if (league.isPresent()) {
 			this.league = league;
 		} else
-			league = Optional.empty();
-		
-		if(data == null) {
-			data = Optional.empty();
-		}
+			this.league = Optional.empty();
 		
 		if (data.isPresent()) {
 			this.data = data;
 		} else
-			data = Optional.empty();
+			this.data = Optional.empty();
 
 		this.teamBuilder = teamBuilder;
 	}

@@ -94,7 +94,7 @@ public class Player implements Serializable {
 	/**
 	 * Remove the pokemon at the given index to replace it with the new pokemon
 	 * 
-	 * @param newPkmn The new pokemon you want to swap
+	 * @param newPkmn       The new pokemon you want to swap
 	 * @param pokemonNumber The old pokemon you want to swap
 	 */
 	private void swapPokemon(Pokemon newPkmn, int pokemonNumber) {
@@ -103,12 +103,13 @@ public class Player implements Serializable {
 	}
 
 	/**
-	 * Swap 2 pokemons between the playerOne you use this method on and the playerTwo you put in parameter
+	 * Swap 2 pokemons between the playerOne you use this method on and the
+	 * playerTwo you put in parameter
 	 * 
 	 * 
 	 * @param playerTwo the other player you want to switch with
-	 * @param intOne Index of the pokemon of the playerOne
-	 * @param intTwo Index of the pokemon of the playerTwo
+	 * @param intOne    Index of the pokemon of the playerOne
+	 * @param intTwo    Index of the pokemon of the playerTwo
 	 */
 	public void swapTeam(Player playerTwo, int intOne, int intTwo) {
 		Pokemon pkmnOne = team.get(intOne);
@@ -120,6 +121,7 @@ public class Player implements Serializable {
 
 	/*
 	 * Méthode principale : Effectue le tour du joueur
+	 * 
 	 */
 	public AttackResult turn(Player p) {
 		switch (nextAction) {
@@ -143,7 +145,9 @@ public class Player implements Serializable {
 		case SWITCH:
 			selectedPokemon.getCurrentStats().resetBoosts();
 			switchPokemon(team.get(whichAction));
-			team.get(whichAction).getStatus().getWhenReceived().use(team.get(whichAction));
+			if (team.get(whichAction).getStatus() != null) {
+				team.get(whichAction).getStatus().getWhenReceived().use(team.get(whichAction));
+			}
 		default:
 			break;
 		}

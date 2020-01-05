@@ -79,8 +79,8 @@ public class FightController extends AbstractController {
 			playerFoe = new Player(teamBuilder.createRandomTeam(6), true);
 			this.currentLeague = null;
 		}
-		
-		if (this.data.isPresent()) {
+
+		if (super.data.isPresent()) {
 			this.currentData = data.get();
 		} else {
 			this.currentData = null;
@@ -252,7 +252,7 @@ public class FightController extends AbstractController {
 		if (wasAlive)
 			doTurns();
 		else
-			
+
 			switchPokemons();
 	}
 
@@ -284,10 +284,10 @@ public class FightController extends AbstractController {
 	void openMenu(ActionEvent event) {
 		anchorPaneMenu.setVisible(true);
 	}
-	
+
 	@FXML
 	void pokedex(ActionEvent event) {
-		
+
 	}
 
 	@FXML
@@ -431,6 +431,7 @@ public class FightController extends AbstractController {
 			PokeStatus.setText("None");
 
 		Double progress = (double) currentHP / maxHP;
+		System.out.println(pgHP);
 
 		pgHP.setProgress(progress);
 		if (progress < 0.2) {
@@ -571,8 +572,10 @@ public class FightController extends AbstractController {
 			}
 		}
 
+		System.out.println("gros con1");
 		if (currentData != null && currentData == SpecialData.HOMEMADE && swapTimer < swapMaxTurn) {
 			homadeSwitch(playerUser, playerFoe);
+			System.out.println("gros con2");
 			messages[2] = "Une force Cessyenne est survenu...";
 			swapTimer = 0;
 		} else {

@@ -252,7 +252,7 @@
             <Label fx:id="labelAllyPokeLvl" alignment="CENTER_RIGHT" contentDisplay="RIGHT" font="$x1" prefWidth="158.0" text="PokeLvl" />
           </children>
         </HBox>
-        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+        <VBox id="progressBarAllyPokeHP" alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
           <children>
             <ProgressBar fx:id="progressBarAllyPokeHP" prefHeight="150.0" prefWidth="272.0" progress="0.0" />
           </children>
@@ -268,7 +268,7 @@
         </HBox>
       </children>
     </VBox>
-    <AnchorPane id="root" fx:id="anchorPaneMenu" layoutX="0.0" layoutY="0.0" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" style="-fx-background-color: white;" visible="true">
+    <AnchorPane id="root" fx:id="anchorPaneMenu" layoutX="0.0" layoutY="0.0" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" snapToPixel="true" style="-fx-background-color: white;" visible="false">
       <children>
         <ImageView id="imgKwaaac" fitHeight="179.8854320919678" fitWidth="488.0000457763672" layoutX="256.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" smooth="false" visible="true">
           <image>
