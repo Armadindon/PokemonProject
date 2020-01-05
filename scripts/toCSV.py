@@ -14,7 +14,7 @@ if __name__ == "__main__":
         csvWriter = csv.DictWriter(csvfile,
                                    fieldnames=["id", "name", "base_experience", "height", "weight", "spriteFront",
                                                "spriteBack", "speed", "spDefense", "spAttack", "defense", "attack",
-                                               "hp", "type1", "type2", "learnableMove"])
+                                               "hp", "type1", "type2", "learnableMove","description"])
         csvWriter.writeheader()
 
         for results in lst.json()["results"]:
@@ -54,9 +54,38 @@ if __name__ == "__main__":
                     for chunk in rqBack.iter_content(1024):
                         f.write(chunk)
 
+
             except Exception as e:
                 print("Erreur de download des sprites de l'id " + str(jsonPokemon["id"]))
                 Infos["spriteBack"] = "NULL"
 
+            rqDescription = requests.get(jsonPokemon["species"]["url"])
+
+            for entries in rqDescription.json()["flavor_text_entries"]:
+
+                if entries["language"]["name"] == "en":
+                    Infos["description"] =  entries["flavor_text"].replace("\n","")
+                    break
+
             print(Infos)
             csvWriter.writerow(Infos)
+
+        csvWriter.writerow({
+            "id" : 808,
+            "name" : "Maximator",
+            "base_experience" : 10000,
+            "height" : 169,
+            "width" : 49,
+            "spriteFront" : "sprites/808.png",
+            "spriteBack": "NULL",
+            "speed" : 110,
+            "spDefense" : 65,
+            "spAttack": 70,
+            "defense" : 40,
+            "attack" : 35,
+            "hp" : 75,
+            "type1" : "normal",
+            "type2" : "fairy",
+            "learnableMove" : "33;57;67;290;",
+            "description" : "The legends says that Maximator will come eat children at night without taking any Kg, he love that people call him 'Kwaac'"
+        })
