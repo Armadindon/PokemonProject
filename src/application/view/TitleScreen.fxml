@@ -22,7 +22,7 @@
     </Label>
     <ImageView id="imgKwaaac" fx:id="imgPokemon" fitHeight="179.8854320919678" fitWidth="488.0000457763672" layoutX="256.0" layoutY="41.0" onMouseClicked="#changeToGame" pickOnBounds="true" preserveRatio="true" smooth="false" visible="true">
       <image>
-        <Image url="@../../Misc/titleScreen/pokeScreen.png" />
+        <Image url="@../../../Misc/titleScreen/pokeScreen.png" />
       </image>
       <rotationAxis>
         <Point3D z="1.0" />
@@ -32,7 +32,7 @@
       <children>
         <ImageView fx:id="imgKwaaac" fitHeight="122.0" fitWidth="94.6865658331774" layoutX="0.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../Misc/titleScreen/Kwaaac.png" />
+            <Image url="@../../../Misc/titleScreen/Kwaaac.png" />
           </image>
         </ImageView>
         <Label id="labelKwaac" fx:id="labelKwaaac" alignment="CENTER" layoutX="0.0" layoutY="186.0" prefHeight="66.0" prefWidth="249.0" text="RODRIGUEZ Maxime">
@@ -43,7 +43,7 @@
         <Label fx:id="labelArmadindon" alignment="CENTER" font="$x1" layoutX="805.0" layoutY="186.0" prefHeight="66.0" prefWidth="194.6865234375" text="PERRIN Baptiste" />
         <ImageView id="imgKwaaac" fx:id="imgArmadindon" fitHeight="122.0" fitWidth="94.6865658331774" layoutX="903.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../../Misc/titleScreen/Kwaaac.png" />
+            <Image url="@../../../Misc/titleScreen/Kwaaac.png" />
           </image>
           <rotationAxis>
             <Point3D z="1.0" />
