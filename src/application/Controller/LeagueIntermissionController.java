@@ -67,6 +67,7 @@ public class LeagueIntermissionController extends AbstractController {
 
 	@FXML
 	void goBackToMenu(ActionEvent event) throws IOException {
+		mp.stop();
 		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league, data);
 	}
 

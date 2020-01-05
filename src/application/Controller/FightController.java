@@ -201,6 +201,7 @@ public class FightController extends AbstractController {
 
 	@FXML
 	void run(ActionEvent event) throws IOException {
+		mp.stop();
 		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 
