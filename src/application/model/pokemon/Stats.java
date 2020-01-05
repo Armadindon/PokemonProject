@@ -24,6 +24,10 @@ public class Stats implements Serializable, Cloneable {
 		this.specialDefense = specialDefense;
 		this.hp = hp;
 	}
+	
+	public Object clone() throws CloneNotSupportedException {
+		return (Stats) super.clone();
+	}
 
 	public void resetBoosts() {
 		String[] possibleBoost = { "attack", "special-attack", "defense", "special-defense", "speed", "accuracy", "evasion" };

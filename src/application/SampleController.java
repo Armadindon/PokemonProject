@@ -196,7 +196,7 @@ public class SampleController extends AbstractController {
 			return;
 		}
 		
-		teamBuilder.setPokemon(listPokemon.getSelectionModel().getSelectedItem().clone());
+		teamBuilder.setPokemon((Pokemon) listPokemon.getSelectionModel().getSelectedItem().clone());
 
 		if(data == null) {
 			data = Optional.empty();

@@ -54,8 +54,21 @@ public class Pokemon implements Serializable, Cloneable {
 		this.status = status;
 	}
 
-	public Pokemon clone() throws CloneNotSupportedException {
-		return (Pokemon) super.clone();
+	public Object clone() throws CloneNotSupportedException {
+		Pokemon clonedPokemon = (Pokemon) super.clone();
+
+		clonedPokemon.baseStats = (Stats) baseStats.clone();
+		clonedPokemon.currentStats = (Stats) currentStats.clone();
+
+		ArrayList<Move> clonedMoves = new ArrayList<>();
+
+		for (Move m : learnedMoves) {
+			clonedMoves.add((Move) m.clone());
+		}
+
+		clonedPokemon.learnedMoves = clonedMoves;
+
+		return clonedPokemon;
 	}
 
 	public static Pokemon generateFromMap(Map<String, List<String>> data, ArrayList<Move> existingMoves) {
