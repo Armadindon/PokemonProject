@@ -521,7 +521,7 @@ public class FightController extends AbstractController {
 					} else {
 						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
-				} else if (!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() < 0) {
+				} else if (!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() <= 0) {
 					tabPaneMenu.getSelectionModel().select(3);
 					cancelButtonSwitch.setDisable(true);
 					return null;
@@ -538,7 +538,7 @@ public class FightController extends AbstractController {
 					} else {
 						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
-				} else if (!players[i].isBot() && players[i].getAlive() < 0) {
+				} else if (!players[i].isBot() && players[i].getAlive() <= 0) {
 					tabPaneMenu.getSelectionModel().select(3);
 					cancelButtonSwitch.setDisable(true);
 					return null;

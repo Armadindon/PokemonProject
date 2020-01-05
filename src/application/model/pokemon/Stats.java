@@ -26,7 +26,7 @@ public class Stats implements Serializable {
 	}
 
 	public void resetBoosts() {
-		String[] possibleBoost = { "attack", "special-attack", "defense", "special-defense", "speed", "accuracy" };
+		String[] possibleBoost = { "attack", "special-attack", "defense", "special-defense", "speed", "accuracy", "evasion" };
 		for (String string : possibleBoost) {
 			boosts.put(string, 0);
 		}

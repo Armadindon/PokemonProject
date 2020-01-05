@@ -216,7 +216,7 @@
     <ImageView fx:id="imageViewAllyPokemon" fitHeight="216.0" fitWidth="216.0" layoutX="142.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true" />
     <Ellipse fill="#dfdfdf" layoutX="799.0" layoutY="165.0" radiusX="173.0" radiusY="72.89216613769531" rotate="7.0" scaleZ="1.0" stroke="BLACK" strokeType="INSIDE" style="" />
     <ImageView fx:id="ImageViewFoePokemon" fitHeight="216.0" fitWidth="216.0" layoutX="683.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" />
-    <VBox alignment="TOP_RIGHT" layoutX="87.0" layoutY="41.0" prefHeight="100.0" prefWidth="362.0" spacing="20.0" style="-fx-background-color: white;">
+    <VBox alignment="TOP_RIGHT" layoutX="87.0" layoutY="41.0" prefHeight="100.0" prefWidth="362.0" spacing="40.0" style="-fx-background-color: white;">
       <children>
         <HBox alignment="CENTER_LEFT" prefHeight="43.797027587890625" prefWidth="362.0" spacing="0.0">
           <children>
@@ -228,23 +228,15 @@
             <Label fx:id="labelFoePokeLvl" alignment="CENTER_RIGHT" contentDisplay="RIGHT" font="$x1" prefWidth="106.0" text="PokeLvl" />
           </children>
         </HBox>
-        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-          <children>
-            <ProgressBar fx:id="progressBarFoePokeHP" prefHeight="150.0" prefWidth="272.0" progress="0.0" />
-          </children>
-          <padding>
-            <Insets right="20.0" />
-          </padding>
-        </VBox>
         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
           <children>
-            <Label fx:id="labelFoePokeStatus" font="$x1" prefWidth="276.0" text="STATUS" />
-            <Label fx:id="labelFoePokeHP" font="$x1" text="HP/HP" />
+            <Label fx:id="labelFoePokeStatus" font="$x1" prefWidth="227.0" text="STATUS" />
+            <Label fx:id="labelFoePokeHP" alignment="CENTER_RIGHT" contentDisplay="RIGHT" font="$x1" prefWidth="134.56060791015625" text="HP/HP" />
           </children>
         </HBox>
       </children>
     </VBox>
-    <VBox alignment="TOP_RIGHT" layoutX="610.0" layoutY="306.0" prefHeight="100.0" prefWidth="362.0" spacing="20.0" style="-fx-background-color: white;">
+    <VBox alignment="TOP_RIGHT" layoutX="610.0" layoutY="306.0" prefHeight="100.0" prefWidth="362.0" spacing="45.0" style="-fx-background-color: white;">
       <children>
         <HBox alignment="CENTER_LEFT" prefHeight="43.797027587890625" prefWidth="362.0" spacing="0.0">
           <children>
@@ -252,18 +244,10 @@
             <Label fx:id="labelAllyPokeLvl" alignment="CENTER_RIGHT" contentDisplay="RIGHT" font="$x1" prefWidth="158.0" text="PokeLvl" />
           </children>
         </HBox>
-        <VBox id="progressBarAllyPokeHP" alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-          <children>
-            <ProgressBar fx:id="progressBarAllyPokeHP" prefHeight="150.0" prefWidth="272.0" progress="0.0" />
-          </children>
-          <padding>
-            <Insets right="20.0" />
-          </padding>
-        </VBox>
         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
           <children>
-            <Label id="labelFoePokeStatus" fx:id="labelAllyPokeStatus" font="$x1" prefWidth="276.0" text="STATUS" />
-            <Label id="labelFoePokeHP" fx:id="labelAllyPokeHP" font="$x1" text="HP/HP" />
+            <Label id="labelFoePokeStatus" fx:id="labelAllyPokeStatus" font="$x1" prefWidth="227.0" text="STATUS" />
+            <Label id="labelFoePokeHP" fx:id="labelAllyPokeHP" alignment="CENTER_RIGHT" contentDisplay="RIGHT" font="$x1" prefWidth="135.0" text="HP/HP" />
           </children>
         </HBox>
       </children>
@@ -289,6 +273,8 @@
         </VBox>
       </children>
     </AnchorPane>
+    <ProgressBar fx:id="progressBarFoePokeHP" layoutX="150.0" layoutY="91.0" prefHeight="11.0" prefWidth="284.56060791015625" progress="0.0" />
+    <ProgressBar fx:id="progressBarAllyPokeHP" layoutX="671.0" layoutY="357.0" prefHeight="11.0" prefWidth="284.0" progress="0.0" />
   </children>
   <stylesheets>
     <URL value="@application.css" />
