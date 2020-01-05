@@ -205,7 +205,7 @@ public class FightController extends AbstractController {
 			msgs = msgs.subList(1, msgs.size());
 		} else {
 			try {
-				if (playerUser.getAlive() == 0) { // lose
+				if (playerUser.getAlive() <= 0) { // lose
 					changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, Optional.empty(), Optional.empty());
 				} else if (playerFoe.getAlive() == 0) { // win
 					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague),
@@ -431,7 +431,6 @@ public class FightController extends AbstractController {
 			PokeStatus.setText("None");
 
 		Double progress = (double) currentHP / maxHP;
-		System.out.println(pgHP);
 
 		pgHP.setProgress(progress);
 		if (progress < 0.2) {
@@ -514,24 +513,23 @@ public class FightController extends AbstractController {
 			if (!players[i].getWhichPlayer().getSelectedPokemon().isAlive()) {
 				messages[i] += "Le pokémon adverse est KO !\n";
 				players[i].getWhichPlayer().mainPokemonKilled();
-				System.out.println(players[i].getAlive());
 				if (players[i].getWhichPlayer().getAlive() < 0) {
 					if (players[i].getWhichPlayer().isBot()) {
 						messages[i] += "Vous avez Gagné - Combat suivant !\n";
 					} else {
 						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
-				} else if (!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() <= 0) {
+				} else if (!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() != 0) {
 					tabPaneMenu.getSelectionModel().select(3);
 					cancelButtonSwitch.setDisable(true);
 					return null;
+				}else if(!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() <= 0) {
 				}
 			}
 
 			if (!players[i].getSelectedPokemon().isAlive()) {
 				messages[i] += "Le pokémon est KO a cause de son status !\n";
 				players[i].mainPokemonKilled();
-				System.out.println(players[i].getAlive());
 				if (players[i].getAlive() < 0) {
 					if (players[i].isBot()) {
 						messages[i] += "Vous avez Gagné - Combat suivant !\n";
@@ -588,6 +586,7 @@ public class FightController extends AbstractController {
 		} else {
 			swapTimer++;
 		}
+		
 
 		displayUpdate();
 

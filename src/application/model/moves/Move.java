@@ -56,7 +56,7 @@ public class Move implements Serializable{
 	public static Move generateFromMap(Map<String, List<String>> data) { // on ne gere juste les atatques pour l'instant
 
 		String moveCategory = data.get("move_category").get(0);
-		if (moveCategory.equals("damage") || moveCategory.equals("damage+ailment") || moveCategory.equals("ailment") || moveCategory.equals("net-good-stats")) {
+		if (moveCategory.equals("damage") || moveCategory.equals("damage+ailment") || moveCategory.equals("ailment") || moveCategory.equals("net-good-stats") || moveCategory.equals("ohko")) {
 			int id = Integer.parseInt(data.get("id").get(0));
 			String name = data.get("name").get(0);
 			int accuracy = 100;// si la prochaine instruction n'a pas de données
@@ -75,7 +75,6 @@ public class Move implements Serializable{
 					if(moveCategory.equals("ailment")) effectChance = 100;
 					else effectChance = Integer.parseInt(data.get("effect_chance").get(0));
 				} catch (Exception e) {
-					System.err.println(e);
 					return null; // Si le effect_ailment n'est pas connu ou pas encore programmé on ne rajoute
 									// pas le move (exemple : Trap, Confusion, etc.)
 				}
@@ -87,7 +86,9 @@ public class Move implements Serializable{
 
 			AttackType damageClass = AttackType.valueOf(data.get("damage_class").get(0).toUpperCase());
 			Type type = Type.valueOf(data.get("type").get(0).toUpperCase());
-			int power = Integer.parseInt(data.get("power").get(0));
+			int power;
+			if(!moveCategory.equals("ohko")) power = Integer.parseInt(data.get("power").get(0));
+			else power = Integer.MAX_VALUE;
 			int maxPp = Integer.parseInt(data.get("pp").get(0));
 			int pp = maxPp;
 			int priority = Integer.parseInt(data.get("priority").get(0));
