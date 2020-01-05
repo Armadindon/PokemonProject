@@ -26,7 +26,9 @@ public class Stats implements Serializable, Cloneable {
 	}
 	
 	public Object clone() throws CloneNotSupportedException {
-		return (Stats) super.clone();
+		Stats stats = (Stats) super.clone();
+		stats.resetBoosts();
+		return stats;
 	}
 
 	public void resetBoosts() {

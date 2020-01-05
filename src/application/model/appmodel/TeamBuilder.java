@@ -97,7 +97,16 @@ public class TeamBuilder implements Serializable {
 	}
 
 	public ArrayList<Pokemon> getTeam() {
-		return team;
+		ArrayList<Pokemon> copyTeam = new ArrayList<>();
+		team.forEach(p-> {
+			try {
+				copyTeam.add((Pokemon) p.clone());
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		return copyTeam;
 	}
 
 	public ArrayList<Pokemon> getPokeList() {
@@ -215,6 +224,8 @@ public class TeamBuilder implements Serializable {
 			confirmButton.setDisable(true);
 			teamDisplay.get(0).setVisible(false);
 		}
+		
+		description.setText(pokemon.getDescription());
 
 	}
 

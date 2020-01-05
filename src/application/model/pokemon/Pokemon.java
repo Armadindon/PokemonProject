@@ -32,11 +32,12 @@ public class Pokemon implements Serializable, Cloneable {
 	private Status status;
 	private final int level = 1; // on considère que tout les pokémons sont niveau 1 pour l'instant
 	private boolean alive = true;
+	private final String description;
 
 	// Constructeur Temporaire
 	public Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem,
 			String frontSprite, String backSprite, ArrayList<Move> allPossiblesMoves, ArrayList<Move> learnedMoves,
-			Stats baseStats, Stats currentStats, Type type1, Type type2, Status status) {
+			Stats baseStats, Stats currentStats, Type type1, Type type2, Status status,String description) {
 		this.id = id;
 		this.name = name;
 		this.baseExperience = baseExperience;
@@ -52,6 +53,7 @@ public class Pokemon implements Serializable, Cloneable {
 		this.type1 = type1;
 		this.type2 = type2;
 		this.status = status;
+		this.description = description;
 	}
 
 	public Object clone() throws CloneNotSupportedException {
@@ -114,9 +116,11 @@ public class Pokemon implements Serializable, Cloneable {
 		}
 
 		Status status = null;
+		
+		String description = data.get("description").get(0).replace("\"", "");
 
 		return new Pokemon(id, name, baseExperience, height, weight, carriedItem, frontSprite, backSprite,
-				allPossiblesMoves, learnedMoves, baseStats, currentStats, type1, type2, status);
+				allPossiblesMoves, learnedMoves, baseStats, currentStats, type1, type2, status,description);
 	}
 
 	public int getId() {
@@ -249,6 +253,10 @@ public class Pokemon implements Serializable, Cloneable {
 
 	public Status getStatus() {
 		return status;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 
 }

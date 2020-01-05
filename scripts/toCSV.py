@@ -75,7 +75,7 @@ if __name__ == "__main__":
             "name" : "Maximator",
             "base_experience" : 10000,
             "height" : 169,
-            "width" : 49,
+            "weight" : 49,
             "spriteFront" : "sprites/808.png",
             "spriteBack": "NULL",
             "speed" : 110,

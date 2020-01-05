@@ -171,6 +171,7 @@ public class Move implements Serializable, Cloneable {
 	}
 
 	public AttackResult use(Pokemon p, Pokemon p2) {
+		pp--;
 		if (p == null)
 			throw new IllegalArgumentException("The pokemon can't be null");
 		if (p2 == null)
@@ -187,7 +188,6 @@ public class Move implements Serializable, Cloneable {
 				return AttackResult.BOOSTED;
 			}
 
-			pp--;
 			int attack = (damageClass == AttackType.PHYSICAL) ? p.getCurrentStats().getAttack()
 					: p.getCurrentStats().getSpecialAttack();
 			int defense = (damageClass == AttackType.PHYSICAL) ? p2.getCurrentStats().getDefense()

@@ -216,10 +216,15 @@ public class FightController extends AbstractController {
 			labelMatchNotification.setText(msgs.get(0));
 			msgs = msgs.subList(1, msgs.size());
 		} else {
+			System.out.println("Vivants j1 "+playerUser.getAlive()+ "Vivants j2 "+playerFoe.getAlive());
 			try {
 				if (playerUser.getAlive() <= 0) { // lose
+					mp.stop();
+					System.out.println("Le joueur a perdu, on le redirige");
 					changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, Optional.empty(), Optional.empty());
-				} else if (playerFoe.getAlive() == 0) { // win
+				} else if (playerFoe.getAlive() <= 0) { // win
+					mp.stop();
+					System.out.println("Le joueur a gagné, on le redirige");
 					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague),
 							data);
 				} else {
