@@ -41,21 +41,14 @@ import javafx.util.Duration;
 
 public class PokeMoveController extends AbstractController {
 
-	private TeamBuilder teamBuilder;
-
 	private Pokemon selectedPokemon;
 
 	private ArrayList<Pokemon> team;
-	
-	private Optional<League> league;
 
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
-		if(league.isPresent()) {
-			this.league = league;
-		}else league = Optional.empty();
-		
-		this.teamBuilder = teamBuilder;
+		super.initTeamBuilder(teamBuilder, league);
+
 		selectedPokemon = teamBuilder.getPokemon();
 
 		// changement des labels et infos de la page

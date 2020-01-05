@@ -44,12 +44,8 @@ public class SampleController extends AbstractController {
 	private Optional<League> league = Optional.empty();
 	
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) {
-		if(league.isPresent()) {
-			this.league = league;
-		}else league = Optional.empty();
-		
-		this.teamBuilder = teamBuilder;
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
+		super.initTeamBuilder(teamBuilder, league);
 
 		items = FXCollections.observableArrayList(teamBuilder.getPokeList());
 

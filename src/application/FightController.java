@@ -46,8 +46,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 public class FightController extends AbstractController {
 
-	private TeamBuilder teamBuilder;
-
 	private League currentLeague;
 
 	private Player playerUser;
@@ -68,20 +66,19 @@ public class FightController extends AbstractController {
 
 		// Pour selectionner un tab (text:0, menu principal: 1, fight:2, switch: 3,
 		// backpack: 4 (mais rien c'est fait pour lui encore)
+		super.initTeamBuilder(teamBuilder, league);
+		
 		tabPaneMenu.getSelectionModel().select(1);
-		this.teamBuilder = teamBuilder;
 
-		if (league.isPresent()) {
-			this.playerFoe = league.get().getFightingTeam();
-			this.currentLeague = league.get();
+		if (this.league.isPresent()) {
+			this.playerFoe = this.league.get().getFightingTeam();
+			this.currentLeague = this.league.get();
 		} else {
 			playerFoe = new Player(teamBuilder.createRandomTeam(6), true);
 			this.currentLeague = null;
 		}
 
 		playerUser = new Player(teamBuilder, false);
-
-		// playerUser = Player.createRandomPlayer(false);
 
 		displayUpdate();
 	}

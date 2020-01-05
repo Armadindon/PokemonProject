@@ -33,8 +33,6 @@ import javafx.util.Duration;
 public class TitleScreenController extends AbstractController {
 	
 	private MediaPlayer mp;
-	
-	private TeamBuilder tb;
 
 	@FXML
 	private ResourceBundle resources;

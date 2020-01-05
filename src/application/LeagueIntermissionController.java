@@ -22,19 +22,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 public class LeagueIntermissionController extends AbstractController {
 
-	private TeamBuilder teamBuilder;
-
-	private Optional<League> league = Optional.empty();
-
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league) throws IOException {
-		if (league.isPresent()) {
-			this.league = league;
-			league.get().nextFightingTeam();
-		} else
-			league = Optional.empty();
-
-		this.teamBuilder = teamBuilder;
+		super.initTeamBuilder(teamBuilder, league);
+		
+		if (this.league.isPresent()) {
+			this.league.get().nextFightingTeam();
+		}
 
 		displayUpdate();
 	}

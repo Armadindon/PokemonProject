@@ -135,7 +135,6 @@ public class Player implements Serializable {
 	public void mainPokemonKilled() {
 		alive--;
 		if (bot && alive >= 1) {
-			System.out.println("FORCE SWITCH");
 			forceSwitch();
 		}
 	}
