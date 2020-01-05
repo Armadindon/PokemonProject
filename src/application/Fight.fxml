@@ -28,7 +28,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" scaleZ="1.0" snapToPixel="true" style="-fx-background-color: darkgray;&#10;&#10;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.FightController">
+<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" scaleZ="1.0" snapToPixel="true" style="-fx-background-color: darkgray;&#10;&#10;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.Controller.FightController">
   <children>
     <Ellipse layoutX="250.0" layoutY="432.0" radiusX="188.01140594482422" radiusY="98.06077575683594" rotate="7.0" scaleZ="1.0" stroke="BLACK" strokeType="INSIDE" style="">
       <fill>

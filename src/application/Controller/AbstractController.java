@@ -1,4 +1,4 @@
-package application;
+package application.Controller;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -30,7 +30,7 @@ public abstract class AbstractController implements InterfaceController {
 	 */
 	protected void changeSceneWithoutData(Event event, String fxmlFile) throws IOException {
 
-		Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/"+fxmlFile));
 		Scene moveScene = new Scene(root);
 
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -53,7 +53,7 @@ public abstract class AbstractController implements InterfaceController {
 			Optional<League> league, Optional<SpecialData> data) throws IOException {
 
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource(fxmlFile));
+		loader.setLocation(getClass().getResource("/application/"+fxmlFile));
 
 		Parent root = loader.load();
 		Scene moveScene = new Scene(root);

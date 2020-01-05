@@ -8,5 +8,7 @@ module application{
 	requires javafx.web;
 	
 	exports application;
+	exports application.Controller;
 	opens application to javafx.fxml;
+	opens application.Controller to javafx.fxml;
 }

@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PokeMoveController">
+<AnchorPane fx:id="root" maxHeight="701.0" maxWidth="1001.0" minHeight="699.0" minWidth="999.0" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.PokeMoveController">
   <children>
     <VBox prefHeight="524.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="176.0">
       <children>

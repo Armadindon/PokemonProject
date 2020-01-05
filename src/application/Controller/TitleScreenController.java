@@ -1,4 +1,4 @@
-package application;
+package application.Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -124,7 +124,7 @@ public class TitleScreenController extends AbstractController {
 	@FXML
 	void initialize() throws IOException {
 		
-		String path = System.getProperty("user.dir") + "/src/application/Misc/Music/Pokemon_Red_&_Blue_OST/01 - Opening.mp3";
+		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/01 - Opening.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mp = new MediaPlayer(media);
         mp.setAutoPlay(true);
