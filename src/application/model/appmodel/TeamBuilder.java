@@ -20,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+
 public class TeamBuilder implements Serializable {
 
 	private Pokemon pokemon;

@@ -3,8 +3,8 @@ package application.Controller;
 import java.io.IOException;
 import java.util.Optional;
 
+import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
-import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;

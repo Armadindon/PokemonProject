@@ -10,8 +10,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
-import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;

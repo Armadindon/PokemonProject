@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
-import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 
 public interface InterfaceController {

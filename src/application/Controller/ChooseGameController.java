@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
-import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import application.model.utils.MenuSelect;
 import application.model.utils.SaveUtility;

@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
-import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 import application.model.fight.Action;
 import application.model.fight.Player;
@@ -398,7 +398,7 @@ public class FightController extends AbstractController {
 
 	public void teamDisplayUpdate(Player p) {
 
-		ArrayList<Pokemon> team = p.getTeam();
+		List<Pokemon> team = p.getTeam();
 
 		int pokeIndex = team.indexOf(p.getSelectedPokemon());
 
@@ -615,11 +615,11 @@ public class FightController extends AbstractController {
 
 	}
 
-	private int getPokemonAliveIndex(ArrayList<Pokemon> team) {
+	private int getPokemonAliveIndex(List<Pokemon> list) {
 		int res;
 		do {
-			res = new Random().nextInt(team.size());
-		} while (!team.get(res).isAlive());
+			res = new Random().nextInt(list.size());
+		} while (!list.get(res).isAlive());
 
 		return res;
 	}

@@ -2,35 +2,56 @@ package application.model.fight;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import application.model.appmodel.TeamBuilder;
 import application.model.items.Item;
 import application.model.moves.AttackResult;
 import application.model.pokemon.Pokemon;
 
+
+/**
+ * Class representing a trainer, this class is mostly used inf the fights
+ * @author Armadindon, Kwaaac
+ *
+ */
 public class Player implements Serializable {
-	private final ArrayList<Pokemon> team;
+	private final List<Pokemon> team;
 	private Pokemon selectedPokemon;
-	private int alive;
 	private final boolean bot;
 	private Action nextAction;
 	private int whichAction;
 	private Player whichPlayer;
 	private ArrayList<Item> backPack = new ArrayList<>();
-
-	public Player(ArrayList<Pokemon> team, boolean bot) {
+	
+	/**
+	 * Default Constructor
+	 * @param team - List containing max 6 pokemons
+	 * @param bot - if the player is a bot
+	 */
+	public Player(List<Pokemon> team, boolean bot) {
+		if(team.size() > 6 || team.size() == 0) throw new IllegalArgumentException("The team need at least 1 pokemon and max 6 pokemon");
 		this.team = Objects.requireNonNull(team);
 		this.selectedPokemon = team.get(0); // Le premier Pokémon est celui lancé en premier
-		alive = team.size();
 		this.bot = bot;
 	}
-
+	
+	/**
+	 * Second Constructor with a teambuilder instead of a List
+	 * @param teamBuilder
+	 * @param bot
+	 */
 	public Player(TeamBuilder teamBuilder, boolean bot) {
-		this(teamBuilder.getTeam(), bot);
+		this(Objects.requireNonNull(teamBuilder).getTeam(), bot);
 	}
-
+	
+	/**
+	 * Switch the Pokemon current Pokemon
+	 * @param p - The Pokemon that we want to throw
+	 */
 	public void switchPokemon(Pokemon p) {
 		if (p.isAlive()) {
 			selectedPokemon = p;
@@ -38,28 +59,46 @@ public class Player implements Serializable {
 			throw new IllegalArgumentException("The pokemon is KO");
 		}
 	}
-
+	
+	/**
+	 * Tell if the player is a bot
+	 * @return true if the player is a bot, false else
+	 */
 	public boolean isBot() {
 		return bot;
 	}
-
+	
+	/**
+	 * Permit to tell the player the next action he will do
+	 * @param nextAction - Action that will be executed
+	 * @param which - On which parameter (Which Pokemon ? Which Item ? Which Move ? )
+	 * @param target - Which player will receive the action
+	 */
 	public void setNextAction(Action nextAction, int which, Player target) {
 		this.nextAction = nextAction;
 		this.whichAction = which;
 		whichPlayer = target;
 	}
-
+	
+	/**
+	 * Tell which Pokemon is actually sended by the Trainer
+	 * @return
+	 */
 	public Pokemon getSelectedPokemon() {
 		return selectedPokemon;
 	}
-
+	
+	/**
+	 * Tell which action wil be executed next
+	 * @return the action (can be null if no action are planned
+	 */
 	public Action getNextAction() {
 		return nextAction;
 	}
 
-	/*
-	 * On dit : 80% de chance que le bot attaque avec un attaque aléatoire 20 % il
-	 * switch sur un pokémon aléatoire
+	/**
+	 * Generate the next action of the given player
+	 * @param p - The player to generate the action
 	 */
 	public void generateNextAction(Player p) {
 		double choice = Math.random();
@@ -162,19 +201,18 @@ public class Player implements Serializable {
 		return whichAction;
 	}
 
-	public ArrayList<Pokemon> getTeam() {
+	public List<Pokemon> getTeam() {
 		return team;
 	}
 
 	public void mainPokemonKilled() {
-		alive--;
-		if (bot && alive >= 1) {
+		if (bot && getAlive() >= 1) {
 			forceSwitch();
 		}
 	}
 
 	public int getAlive() {
-		return alive;
+		return ((List<Pokemon>) team.stream().filter(p->p.isAlive()).collect(Collectors.toList())).size();
 	}
 
 	public Player getWhichPlayer() {

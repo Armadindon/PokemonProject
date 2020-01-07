@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.Optional;
 
+import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
-import application.model.appmodel.SpecialData;
 import application.model.appmodel.TeamBuilder;
 
 public class SaveUtility implements Serializable {
