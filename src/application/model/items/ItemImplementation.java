@@ -1,10 +1,5 @@
 package application.model.items;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import application.model.pokemon.Pokemon;
 
 public abstract class ItemImplementation implements Item {

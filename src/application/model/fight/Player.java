@@ -103,7 +103,7 @@ public class Player implements Serializable {
 	public void generateNextAction(Player p) {
 		double choice = Math.random();
 		Random randomChoice = new Random();
-		if (choice < 0.80) {
+		if (choice < 0.80 || getAlive() == 1) {
 			System.out.println("Le bot attaquera !");
 			setNextAction(Action.MOVE, randomChoice.nextInt(selectedPokemon.getlearnedMoves().size()), p);
 		} else {
@@ -111,19 +111,21 @@ public class Player implements Serializable {
 			int next;
 			do {
 				next = randomChoice.nextInt(team.size());
-			} while (!team.get(next).isAlive() && !team.get(next).equals(selectedPokemon));
+			} while (!team.get(next).isAlive() && team.get(next).equals(selectedPokemon));
 			setNextAction(Action.SWITCH, next, p);
 		}
-
 	}
-
+	
+	/**
+	 * Force the player to switch pokemon with a random pokemon
+	 */
 	public void forceSwitch() {
 		Random randomChoice = new Random();
 		int next;
 
 		do {
 			next = randomChoice.nextInt(team.size());
-		} while (!team.get(next).isAlive());
+		} while (!team.get(next).isAlive() && team.get(next).equals(selectedPokemon));
 
 		// setNextAction(nextAction, next, whichPlayer);
 
@@ -161,9 +163,10 @@ public class Player implements Serializable {
 		playerTwo.swapPokemon(pkmnOne, intTwo);
 	}
 
-	/*
-	 * Méthode principale : Effectue le tour du joueur
-	 * 
+	/**
+	 * Main method - the player will make his turn
+	 * @param p - The player impacted by the event
+	 * @return The result of the attack, can be null if the action is not supported yet
 	 */
 	public AttackResult turn(Player p) {
 		switch (nextAction) {
@@ -196,25 +199,44 @@ public class Player implements Serializable {
 
 		return null;
 	}
-
+	
+	/**
+	 * Get the index of the next action executed
+	 * @return the index of the next action to execute
+	 */
 	public int getWhichAction() {
 		return whichAction;
 	}
-
+	
+	/**
+	 * Get the current team
+	 * @return the team
+	 */
 	public List<Pokemon> getTeam() {
 		return team;
 	}
 
+	/**
+	 * action to execute when the current Pokemon is dead
+	 */
 	public void mainPokemonKilled() {
 		if (bot && getAlive() >= 1) {
 			forceSwitch();
 		}
 	}
-
+	
+	/**
+	 * Give the number of alive pokemon in the team
+	 * @return the number of alive pokemons
+	 */
 	public int getAlive() {
 		return ((List<Pokemon>) team.stream().filter(p->p.isAlive()).collect(Collectors.toList())).size();
 	}
-
+	
+	/**
+	 * Give 
+	 * @return
+	 */
 	public Player getWhichPlayer() {
 		return whichPlayer;
 	}
