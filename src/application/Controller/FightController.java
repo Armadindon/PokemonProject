@@ -49,8 +49,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+/**
+ * This controller manage the fights interface and the fight process
+ * 
+ * @author Armadindon, Kwaaac
+ *
+ */
 public class FightController extends AbstractController {
-	
+
 	private MediaPlayer mp;
 
 	private League currentLeague;
@@ -60,6 +66,18 @@ public class FightController extends AbstractController {
 	private Player playerUser;
 
 	private Player playerFoe;
+
+	// Menus constants
+
+	private final static int TEXTMENU = 0;
+
+	private final static int MAINMENU = 1;
+
+	private final static int FIGHTMENU = 2;
+
+	private final static int SWITCHMENU = 3;
+
+	private final static int BACKPACKMENU = 4;
 
 	// Homemade mod properties
 
@@ -74,7 +92,7 @@ public class FightController extends AbstractController {
 			throws IOException {
 		super.initTeamBuilder(teamBuilder, league, data);
 
-		tabPaneMenu.getSelectionModel().select(1);
+		openMainMenu();
 
 		if (league.isPresent()) {
 			this.playerFoe = league.get().getFightingTeam();
@@ -91,13 +109,13 @@ public class FightController extends AbstractController {
 		}
 
 		playerUser = new Player(teamBuilder, false);
-		
+
 		// Music
 		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/15 - Battle.mp3";
-        Media media = new Media(new File(path).toURI().toString());
-        mp = new MediaPlayer(media);
-        mp.setAutoPlay(true);
-        mp.setCycleCount(MediaPlayer.INDEFINITE);
+		Media media = new Media(new File(path).toURI().toString());
+		mp = new MediaPlayer(media);
+		mp.setAutoPlay(true);
+		mp.setCycleCount(MediaPlayer.INDEFINITE);
 
 		displayUpdate();
 	}
@@ -199,24 +217,112 @@ public class FightController extends AbstractController {
 	private static final String GREEN_BAR = "green-bar";
 	private static final String[] pgColorStyles = { RED_BAR, ORANGE_BAR, YELLOW_BAR, GREEN_BAR };
 
+	/**
+	 * This method make the player run the fight
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void run(ActionEvent event) throws IOException {
 		mp.stop();
 		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 
-	@FXML
-	void mainMenu(ActionEvent event) {
-		tabPaneMenu.getSelectionModel().select(1);
+	/**
+	 * Use this method when opening a menu within the code and not an event
+	 * Open the text menu
+	 */
+	private void openTextMenu() {
+		tabPaneMenu.getSelectionModel().select(TEXTMENU);
 	}
 
+	/**
+	 * Use this method when opening a menu within the code and not an event
+	 * Open the main menu
+	 */
+	private void openMainMenu() {
+		tabPaneMenu.getSelectionModel().select(MAINMENU);
+	}
+
+	/**
+	 * Use this method when opening a menu within the code and not an event
+	 * Open the fight menu
+	 */
+	private void openFightMenu() {
+		tabPaneMenu.getSelectionModel().select(FIGHTMENU);
+		moveDisplayUpdate(playerUser);
+	}
+
+	/**
+	 * Use this method when opening a menu within the code and not an event
+	 * Open the switch menu
+	 */
+	private void openSwitchMenu() {
+		tabPaneMenu.getSelectionModel().select(SWITCHMENU);
+		teamDisplayUpdate(playerUser);
+	}
+
+	/**
+	 * Use this method when opening a menu within the code and not an event
+	 * Open the backpack menu
+	 */
+	private void openBackPackMenu() {
+		tabPaneMenu.getSelectionModel().select(BACKPACKMENU);
+	}
+
+	/**
+	 * Event button, opening the main Menu
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void mainMenu(ActionEvent event) {
+		openMainMenu();
+	}
+
+	/**
+	 * Event button, opening the backPack menu
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void backPackPage(ActionEvent event) {
+		openBackPackMenu();
+	}
+
+	/**
+	 * Event button, opening the fighMenu
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void fightMenu(ActionEvent event) {
+		openFightMenu();
+	}
+
+	/**
+	 * Event button, opening the switch menu
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void switchMenu(ActionEvent event) {
+		openSwitchMenu();
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void mainMenuClick(MouseEvent event) {
 		if (msgs.size() >= 1) {
 			labelMatchNotification.setText(msgs.get(0));
 			msgs = msgs.subList(1, msgs.size());
 		} else {
-			System.out.println("Vivants j1 "+playerUser.getAlive()+ "Vivants j2 "+playerFoe.getAlive());
+			System.out.println("Vivants j1 " + playerUser.getAlive() + "Vivants j2 " + playerFoe.getAlive());
 			try {
 				if (playerUser.getAlive() <= 0) { // lose
 					mp.stop();
@@ -229,29 +335,12 @@ public class FightController extends AbstractController {
 							data);
 				} else {
 					msgs = null;
-					tabPaneMenu.getSelectionModel().select(1);
+					openMainMenu();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@FXML
-	void backPackPage(ActionEvent event) {
-	}
-
-	@FXML
-	void fightMenu(ActionEvent event) {
-		tabPaneMenu.getSelectionModel().select(2);
-		moveDisplayUpdate(playerUser);
-	}
-
-	@FXML
-	void switchMenu(ActionEvent event) {
-		tabPaneMenu.getSelectionModel().select(3);
-
-		teamDisplayUpdate(playerUser);
 	}
 
 	/*
@@ -265,7 +354,7 @@ public class FightController extends AbstractController {
 		playerUser.setNextAction(Action.SWITCH, numPokemon, playerFoe);
 		if (playerFoe.isBot())
 			playerFoe.generateNextAction(playerUser);
-		tabPaneMenu.getSelectionModel().select(1);
+		openMainMenu();
 		if (wasAlive)
 			doTurns();
 		else
@@ -293,7 +382,7 @@ public class FightController extends AbstractController {
 		playerUser.setNextAction(Action.MOVE, numMove, playerFoe);
 		if (playerFoe.isBot())
 			playerFoe.generateNextAction(playerUser);
-		tabPaneMenu.getSelectionModel().select(1);
+		openMainMenu();
 		doTurns();
 	}
 
@@ -464,7 +553,7 @@ public class FightController extends AbstractController {
 	private String[] turns(Player... players) {
 
 		String[] messages;
-		
+
 		if (currentData != null && currentData == SpecialData.HOMEMADE) {
 			messages = new String[players.length + 1];
 		} else {
@@ -537,10 +626,10 @@ public class FightController extends AbstractController {
 						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
 				} else if (!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() != 0) {
-					tabPaneMenu.getSelectionModel().select(3);
+					openSwitchMenu();
 					cancelButtonSwitch.setDisable(true);
 					return null;
-				}else if(!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() <= 0) {
+				} else if (!players[i].getWhichPlayer().isBot() && players[i].getWhichPlayer().getAlive() <= 0) {
 				}
 			}
 
@@ -554,7 +643,7 @@ public class FightController extends AbstractController {
 						messages[i] += "Vous avez Perdu - A l'acceuil !\n";
 					}
 				} else if (!players[i].isBot() && players[i].getAlive() <= 0) {
-					tabPaneMenu.getSelectionModel().select(3);
+					openSwitchMenu();
 					cancelButtonSwitch.setDisable(true);
 					return null;
 				}
@@ -603,13 +692,12 @@ public class FightController extends AbstractController {
 		} else {
 			swapTimer++;
 		}
-		
 
 		displayUpdate();
 
 		if (messages != null) {
 			msgs = Arrays.asList(messages);
-			tabPaneMenu.getSelectionModel().select(0);
+			openTextMenu();
 			mainMenuClick(null);
 		}
 

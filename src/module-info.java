@@ -9,6 +9,7 @@ module application{
 	
 	exports application;
 	exports application.Controller;
+	exports application.model.appmodel;
 	opens application to javafx.fxml;
 	opens application.Controller to javafx.fxml;
 }

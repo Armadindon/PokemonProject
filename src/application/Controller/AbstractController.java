@@ -13,6 +13,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * This abstract controller allow to factorise code used by controllers
+ * 
+ * @author Kwaaac
+ *
+ */
 public abstract class AbstractController implements InterfaceController {
 
 	protected TeamBuilder teamBuilder;
@@ -26,11 +32,11 @@ public abstract class AbstractController implements InterfaceController {
 	 * 
 	 * @param event    Event that trigger the method
 	 * @param fxmlFile The next scene
-	 * @throws IOException
+	 * @throws IOException Can throw an error if the load fails
 	 */
 	protected void changeSceneWithoutData(Event event, String fxmlFile) throws IOException {
 
-		Parent root = FXMLLoader.load(getClass().getResource("/application/view/"+fxmlFile));
+		Parent root = FXMLLoader.load(getClass().getResource("/application/view/" + fxmlFile));
 		Scene moveScene = new Scene(root);
 
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -47,13 +53,13 @@ public abstract class AbstractController implements InterfaceController {
 	 * @param fxmlFile    The next scene
 	 * @param teamBuilder Player team
 	 * @param league      Opponents team
-	 * @throws IOException
+	 * @throws IOException Can throw an error if the load fails
 	 */
 	protected void changeSceneTeamBuilder(Event event, String fxmlFile, TeamBuilder teamBuilder,
 			Optional<League> league, Optional<SpecialData> data) throws IOException {
 
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/application/view/"+fxmlFile));
+		loader.setLocation(getClass().getResource("/application/view/" + fxmlFile));
 
 		Parent root = loader.load();
 		Scene moveScene = new Scene(root);
@@ -61,8 +67,8 @@ public abstract class AbstractController implements InterfaceController {
 		// Acces to the controller of pokemove
 
 		InterfaceController controller = loader.getController();
-		
-		if(data == null) {
+
+		if (data == null) {
 			data = Optional.empty();
 		}
 
@@ -82,7 +88,7 @@ public abstract class AbstractController implements InterfaceController {
 			this.league = league;
 		} else
 			this.league = Optional.empty();
-		
+
 		if (data.isPresent()) {
 			this.data = data;
 		} else
