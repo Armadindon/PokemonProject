@@ -9,5 +9,8 @@ import java.io.Serializable;
  */
 public enum SpecialData implements Serializable{
 	HOMEMADE,
-	POKEDEXVIEW;
+	POKEDEXVIEW,
+	WIN,
+	LOOSE,
+	INTERMISSION;
 }

@@ -77,7 +77,7 @@ public class ChooseGameController extends AbstractController {
 	void randomFight(ActionEvent event) throws IOException {
 		// We generate a League with only one guy
 		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomLeague(2, 6, teamBuilder)), Optional.empty());
+				Optional.of(League.generateRandomOpponent(6)), Optional.empty());
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class ChooseGameController extends AbstractController {
 		// créer une ligue random si pas init
 
 		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomLeague(9, 6, teamBuilder)), Optional.empty());
+				Optional.of(League.generateRandomLeague(9, 6)), Optional.empty());
 
 	}
 
@@ -105,7 +105,7 @@ public class ChooseGameController extends AbstractController {
 	@FXML
 	void homeMadeGame(ActionEvent event) throws IOException {
 		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomLeague(2, 6, teamBuilder)), Optional.of(SpecialData.HOMEMADE));
+				Optional.of(League.generateRandomLeague(2, 6)), Optional.of(SpecialData.HOMEMADE));
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class ChooseGameController extends AbstractController {
 	@FXML
 	void ligueGame(ActionEvent event) throws IOException {
 		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomLeague(5, 4, teamBuilder)), Optional.empty());
+				Optional.of(League.generateRandomLeague(5, 4)), Optional.empty());
 
 	}
 

@@ -84,6 +84,6 @@ public class NewGameLoadMenuController extends AbstractController {
 
     @FXML
     void initialize() throws IOException {
-		teamBuilder = TeamBuilder.createTeamBuilder();
+		teamBuilder = TeamBuilder.getInstance();
 	}
 }

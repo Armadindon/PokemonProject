@@ -111,7 +111,7 @@ public class LeagueIntermissionController extends AbstractController {
 
 	@Override
 	public void displayUpdate() {
-		if (league.isPresent() && league.get().isOver()) {
+		if (super.data.get().equals(SpecialData.WIN)) {
 			labelText.setText("You won every fights !");
 			btnKeepGoing.setPrefWidth(426);
 			btnKeepGoing.setText("Choose an another game mode");

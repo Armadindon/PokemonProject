@@ -20,8 +20,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-
 public class TeamBuilder implements Serializable {
+
+	private static TeamBuilder teamBuilderSingleton = null;
 
 	private Pokemon pokemon;
 	private final ArrayList<Pokemon> team = new ArrayList<>(6); // max 6 pokemons
@@ -34,7 +35,11 @@ public class TeamBuilder implements Serializable {
 		this.pokeList = pokeList;
 	}
 
-	public static TeamBuilder createTeamBuilder() throws IOException {
+	public static TeamBuilder getInstance() throws IOException {
+
+		if (teamBuilderSingleton != null) {
+			return teamBuilderSingleton;
+		}
 
 		List<Map<String, List<String>>> dataPokemon = CSVReader.readCSV("scripts/pokemons.csv");
 		List<Map<String, List<String>>> dataMoves = CSVReader.readCSV("scripts/moves.csv");
@@ -74,7 +79,7 @@ public class TeamBuilder implements Serializable {
 
 					do {
 						indexMove = new Random().nextInt(pkmnMovesSizes);
-						if(randomPokemon.getAllPossiblesMoves().size() == randomPokemon.getlearnedMoves().size()) {
+						if (randomPokemon.getAllPossiblesMoves().size() == randomPokemon.getlearnedMoves().size()) {
 							break;
 						}
 					} while (randomPokemon.getlearnedMoves()
@@ -99,11 +104,10 @@ public class TeamBuilder implements Serializable {
 
 	public ArrayList<Pokemon> getTeam() {
 		ArrayList<Pokemon> copyTeam = new ArrayList<>();
-		team.forEach(p-> {
+		team.forEach(p -> {
 			try {
 				copyTeam.add((Pokemon) p.clone());
 			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -128,153 +132,19 @@ public class TeamBuilder implements Serializable {
 	public int getTeamSize() {
 		return team.size();
 	}
-
-	public void updateName(String name, Label labelChangeName) {
-		if (name.length() > 15) {
-			labelChangeName.setText("Name too long");
-
-		} else if (name.contains(":")) {
-			labelChangeName.setText("Wrong name");
-
-		} else {
-			labelChangeName.setText("Name changed !");
-			pokemon.setName(name);
-		}
-
-		FadeTransition ft = new FadeTransition(new Duration(3_000), labelChangeName);
-		ft.setFromValue(1.0);
-		ft.setToValue(0.0);
-
-		ft.play();
-	}
-
-	public boolean canAddPokemon(Label labelError) {
+	
+	public boolean canAddPokemon() {
 
 		if (pokemon.getlearnedMoves().size() == 0) {
-			labelError.setText("Your Pokémon need at least 1 Move");
-			FadeTransition ft = new FadeTransition(new Duration(5_000), labelError);
-			ft.setFromValue(1.0);
-			ft.setToValue(0.0);
-
-			ft.play();
 			return false;
 		}
 
 		return true;
 
 	}
-
-	/**
-	 * Show the pokemon's infos on the pokedex
-	 * 
-	 * @param pokemon
-	 * @param name
-	 * @param type1
-	 * @param type2
-	 * @param height
-	 * @param weigth
-	 * @param hp
-	 * @param atk
-	 * @param atkSpe
-	 * @param def
-	 * @param defSpe
-	 * @param speed
-	 * @param img
-	 * @param description
-	 */
-	public void modelPokedexUpdate(Pokemon pokemon, Label name, Label type1, Label type2, Label height, Label weight,
-			Label hp, Label atk, Label atkSpe, Label def, Label defSpe, Label speed, ImageView img,
-			TextArea description, ArrayList<VBox> teamDisplay, Button confirmButton) {
-
-		name.setText(pokemon.getName());
-		type1.setText(pokemon.getType1().name());
-		if (pokemon.getType2() == null) {
-			type2.setText("");
-		} else {
-			type2.setText(pokemon.getType2().name());
-		}
-
-		height.setText(Integer.toString(pokemon.getHeight()) + " m");
-		weight.setText(Integer.toString(pokemon.getWeight()) + " kg");
-
-		Stats pokeStats = pokemon.getBaseStats();
-
-		hp.setText(Integer.toString(pokeStats.getHp()));
-		atk.setText(Integer.toString(pokeStats.getAttack()));
-		atkSpe.setText(Integer.toString(pokeStats.getSpecialAttack()));
-		def.setText(Integer.toString(pokeStats.getDefense()));
-		defSpe.setText(Integer.toString(pokeStats.getSpecialDefense()));
-		speed.setText(Integer.toString(pokeStats.getSpeed()));
-
-		img.setImage(new Image("file:" + pokemon.getFrontSprite()));
-
-		if (0 != team.size()) {
-			confirmButton.setDisable(false);
-
-			int i;
-			for (i = 0; i < team.size(); i++) {
-				((Label) teamDisplay.get(i).getChildren().get(0)).setText(team.get(i).getName());
-				teamDisplay.get(i).setVisible(true);
-
-			}
-
-			for (i = team.size(); i < 6; i++) {
-				teamDisplay.get(i).setVisible(false);
-			}
-		} else {
-			confirmButton.setDisable(true);
-			teamDisplay.get(0).setVisible(false);
-		}
-		
-		description.setText(pokemon.getDescription());
-
-	}
-
-	public void modelMovesUpdate(Move move, Label name, Label type, Label accuracy, Label pp, Label effect,
-			TextArea description, ArrayList<VBox> moves, ArrayList<Button> delButtons, Button confirmButton) {
-
-		ArrayList<Move> learnedMoves = pokemon.getlearnedMoves();
-		name.setText(move.getName());
-		type.setText(move.getType().name());
-		accuracy.setText(Integer.toString(move.getAccuracy()));
-		pp.setText(Integer.toString(move.getMaxPP()));
-		effect.setText(move.getEffectToString());
-		description.setText(move.getDescription());
-
-		if (0 != learnedMoves.size()) {
-			confirmButton.setDisable(false);
-
-			int i;
-			for (i = 0; i < learnedMoves.size(); i++) {
-				((Label) moves.get(i).getChildren().get(0)).setText(learnedMoves.get(i).getName());
-				((Label) moves.get(i).getChildren().get(1)).setText(Integer.toString((learnedMoves.get(i).getMaxPP())));
-				moves.get(i).setVisible(true);
-				delButtons.get(i).setVisible(true);
-			}
-
-			for (i = learnedMoves.size(); i < 4; i++) {
-				moves.get(i).setVisible(false);
-				delButtons.get(i).setVisible(false);
-			}
-
-		} else {
-			// TODO retirer le com pour desactiver le boutton, retire pour des tests
-			// confirmButton.setDisable(true);
-			moves.get(0).setVisible(false);
-			delButtons.get(0).setVisible(false);
-		}
-	}
-
-	public void addMovePokedex(Move move, Label labelError) {
-		if (!pokemon.addMoveToLearnedMoves(move)) {
-			labelError.setText("Oops you cannot add this move");
-
-			FadeTransition ft = new FadeTransition(new Duration(3_000), labelError);
-			ft.setFromValue(1.0);
-			ft.setToValue(0.0);
-
-			ft.play();
-		}
+	
+	public boolean addMovePokedex(Move move) {
+		return pokemon.addMoveToLearnedMoves(move); 
 	}
 
 	public void removeMovePokedex(int moveIndex) {

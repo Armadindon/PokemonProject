@@ -230,24 +230,24 @@ public class FightController extends AbstractController {
 	}
 
 	/**
-	 * Use this method when opening a menu within the code and not an event
-	 * Open the text menu
+	 * Use this method when opening a menu within the code and not an event Open the
+	 * text menu
 	 */
 	private void openTextMenu() {
 		tabPaneMenu.getSelectionModel().select(TEXTMENU);
 	}
 
 	/**
-	 * Use this method when opening a menu within the code and not an event
-	 * Open the main menu
+	 * Use this method when opening a menu within the code and not an event Open the
+	 * main menu
 	 */
 	private void openMainMenu() {
 		tabPaneMenu.getSelectionModel().select(MAINMENU);
 	}
 
 	/**
-	 * Use this method when opening a menu within the code and not an event
-	 * Open the fight menu
+	 * Use this method when opening a menu within the code and not an event Open the
+	 * fight menu
 	 */
 	private void openFightMenu() {
 		tabPaneMenu.getSelectionModel().select(FIGHTMENU);
@@ -255,8 +255,8 @@ public class FightController extends AbstractController {
 	}
 
 	/**
-	 * Use this method when opening a menu within the code and not an event
-	 * Open the switch menu
+	 * Use this method when opening a menu within the code and not an event Open the
+	 * switch menu
 	 */
 	private void openSwitchMenu() {
 		tabPaneMenu.getSelectionModel().select(SWITCHMENU);
@@ -264,8 +264,8 @@ public class FightController extends AbstractController {
 	}
 
 	/**
-	 * Use this method when opening a menu within the code and not an event
-	 * Open the backpack menu
+	 * Use this method when opening a menu within the code and not an event Open the
+	 * backpack menu
 	 */
 	private void openBackPackMenu() {
 		tabPaneMenu.getSelectionModel().select(BACKPACKMENU);
@@ -471,11 +471,13 @@ public class FightController extends AbstractController {
 
 	public void moveDisplayUpdate(Player p) {
 		ArrayList<Move> pokeMoves = p.getSelectedPokemon().getlearnedMoves();
-		for (int i = 0; i < pokeMoves.size(); i++) {
+
+		int i;
+		for (i = 0; i < pokeMoves.size(); i++) {
 			// From the Anchor pane of moves, get the i vbox containing 2 labels. 0: move's
 			// Name, 1: move's PP
 			Move pokeMove = pokeMoves.get(i);
-
+			((VBox) movePane.getChildren().get(i)).setDisable(false);
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(0))).setText(pokeMove.getName());
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(1))).setText(pokeMove.getType().name());
 			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(2)))
@@ -483,6 +485,11 @@ public class FightController extends AbstractController {
 			if (pokeMove.getPP() <= 0)
 				movePane.getChildren().get(i).setDisable(true);
 		}
+
+		for (i = pokeMoves.size(); i < 4; i++) {
+			((VBox) movePane.getChildren().get(i)).setDisable(true);
+		}
+
 	}
 
 	public void teamDisplayUpdate(Player p) {
@@ -491,7 +498,8 @@ public class FightController extends AbstractController {
 
 		int pokeIndex = team.indexOf(p.getSelectedPokemon());
 
-		for (int i = 0; i < team.size(); i++) {
+		int i;
+		for (i = 0; i < team.size(); i++) {
 			Pokemon pokemon = team.get(i);
 
 			HBox pokemonDisplay = ((HBox) switchPane.getChildren().get(i));
@@ -506,6 +514,11 @@ public class FightController extends AbstractController {
 				pokemonDisplay.setDisable(true);
 			}
 		}
+
+		for (i = team.size(); i < 6; i++) {
+			((HBox) switchPane.getChildren().get(i)).setDisable(true);
+		}
+
 	}
 
 	private void updateProgressBarColor(ProgressBar pgHP, String colorStyle) {

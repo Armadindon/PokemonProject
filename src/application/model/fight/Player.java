@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import application.model.appmodel.TeamBuilder;
 import application.model.items.Item;
 import application.model.moves.AttackResult;
+import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 
 

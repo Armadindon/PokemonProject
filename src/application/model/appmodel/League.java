@@ -1,7 +1,9 @@
 package application.model.appmodel;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +53,18 @@ public class League implements Serializable{
 	 * @return true if the league is over, or false if not
 	 */
 	public boolean isOver() {
-		return wichPlayer >= league.size() - 1;
+		return wichPlayer > league.size() - 1;
+	}
+	
+	/**
+	 * Static method for generate a pseudo randmo opponent with a random team.
+	 * 
+	 * @param nbPokemon - numbers of Pokemon per person
+	 * @return A single opponent 
+	 * @throws IOException
+	 */
+	public static League generateRandomOpponent(int nbPokemon) throws IOException {
+		return new League(new ArrayList<Player>(Arrays.asList(new Player(TeamBuilder.getInstance().createRandomTeam(nbPokemon), true))));
 	}
 	
 	/**
@@ -60,20 +73,21 @@ public class League implements Serializable{
 	 * @param pokemonPerPerson - numbers of Pokemon per person (The League Master always have 6 pokemon)
 	 * @param tb - The teambuilder object containing all the possible pokemon and moves
 	 * @return a new random League based on the parameters given
+	 * @throws IOException 
 	 */
-	public static League generateRandomLeague(int members, int pokemonPerPerson,TeamBuilder tb) {
+	public static League generateRandomLeague(int members, int pokemonPerPerson) throws IOException {
 		
 		ArrayList<Player> league = new ArrayList<>();
 		
 		for (int i = 0; i < members-1 ; i++) {
 			
-			league.add(new Player(tb.createRandomTeam(pokemonPerPerson), true));
+			league.add(new Player(TeamBuilder.getInstance().createRandomTeam(pokemonPerPerson), true));
 			
 		}
 		
 		//For the League Master
 		
-		league.add(new Player(tb.createRandomTeam(6), true));
+		league.add(new Player(TeamBuilder.getInstance().createRandomTeam(6), true));
 		
 		return new League(league);
 	}

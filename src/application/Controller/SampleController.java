@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -31,26 +32,25 @@ import javafx.scene.layout.VBox;
 
 public class SampleController extends AbstractController {
 
+	private Pokemon selectedPokemon;
+
+	private ArrayList<Pokemon> team;
+
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data) throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+			throws IOException {
 		super.initTeamBuilder(teamBuilder, league, data);
 
-		items = FXCollections.observableArrayList(teamBuilder.getPokeList());
+		selectedPokemon = super.teamBuilder.getPokemon();
+
+		team = super.teamBuilder.getTeam();
+
+		items = FXCollections.observableArrayList(super.teamBuilder.getPokeList());
 
 		listPokemon.setItems(items);
-		listPokemon.getSelectionModel().select(teamBuilder.getPokemon().getId() - 1);
+		listPokemon.getSelectionModel().select(selectedPokemon.getId() - 1);
 
 		displayUpdate();
-	}
-
-	@Override
-	public void displayUpdate() {
-
-		teamBuilder.modelPokedexUpdate(listPokemon.getSelectionModel().getSelectedItem(), labelPokemonName, labelType1,
-				labelType2, labelHeight, labelWeight, labelHP, labelAttack, labelAttackSpe, labelDef, labelDefSpe,
-				labelSpeed, imgPokemon, textADescription,
-				new ArrayList<VBox>(Arrays.asList(VBoxTeam1, VBoxTeam2, VBoxTeam3, VBoxTeam4, VBoxTeam5, VBoxTeam6)),
-				btnConfirmTeam);
 	}
 
 	@FXML
@@ -79,7 +79,7 @@ public class SampleController extends AbstractController {
 
 	@FXML
 	private Button btnAddPokemon;
-	
+
 	@FXML
 	private Button btnReturn;
 
@@ -179,13 +179,17 @@ public class SampleController extends AbstractController {
 	}
 
 	@FXML
-	void showPoke(MouseEvent event) {
-		displayUpdate();
+	void showPoke(MouseEvent event) throws CloneNotSupportedException {
+		Pokemon pkmn;
+		if ((pkmn =listPokemon.getSelectionModel().getSelectedItem()) != null) {
+			selectedPokemon = listPokemon.getSelectionModel().getSelectedItem();
+			displayUpdate();
+		}
 	}
 
 	@FXML
 	void changeToPokeMove(ActionEvent event) throws IOException, CloneNotSupportedException {
-		if (teamBuilder.getTeamSize() == 6) {
+		if (team.size() == 6) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Warning");
 			alert.setHeaderText(null);
@@ -195,25 +199,27 @@ public class SampleController extends AbstractController {
 
 			return;
 		}
-		
-		teamBuilder.setPokemon((Pokemon) listPokemon.getSelectionModel().getSelectedItem().clone());
 
-		if(data == null) {
+		if (null == listPokemon.getSelectionModel().getSelectedItem()) {
+			return;
+		}
+
+		super.teamBuilder.setPokemon((Pokemon) listPokemon.getSelectionModel().getSelectedItem().clone());
+
+		if (data == null) {
 			data = Optional.empty();
 		}
-		
+
 		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder, Optional.empty(), data);
 	}
-	
+
 	@FXML
-	void returnToMenu(ActionEvent event) throws IOException{
+	void returnToMenu(ActionEvent event) throws IOException {
 		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 
 	@FXML
 	void searchPokemon(ActionEvent event) {
-		System.out.println(((TextField) event.getSource()).getText());
-
 		if (((TextField) event.getSource()).getText().contentEquals("")) {
 			items = FXCollections.observableArrayList(teamBuilder.getPokeList());
 			listPokemon.setItems(items);
@@ -225,11 +231,60 @@ public class SampleController extends AbstractController {
 		listPokemon.setItems(items);
 
 	}
-	
-    @FXML
-    void goToMenu(ActionEvent event) throws IOException {
-    	changeSceneTeamBuilder(event,"ChooseGame.fxml" , teamBuilder, league, data);
-    }
 
+	@FXML
+	void goToMenu(ActionEvent event) throws IOException {
+		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league, data);
+	}
+
+	@Override
+	public void displayUpdate() {
+
+		ArrayList<VBox> teamDisplay = new ArrayList<>(
+				Arrays.asList(VBoxTeam1, VBoxTeam2, VBoxTeam3, VBoxTeam4, VBoxTeam5, VBoxTeam6));
+
+		labelPokemonName.setText(selectedPokemon.getName());
+		
+		labelType1.setText(selectedPokemon.getType1().name());
+		if (selectedPokemon.getType2() == null) {
+			labelType2.setText("");
+		} else {
+			labelType2.setText(selectedPokemon.getType2().name());
+		}
+
+		labelHeight.setText(Integer.toString(selectedPokemon.getHeight()) + " m");
+		labelWeight.setText(Integer.toString(selectedPokemon.getWeight()) + " kg");
+
+		Stats pokeStats = selectedPokemon.getBaseStats();
+
+		labelHP.setText(Integer.toString(pokeStats.getHp()));
+		labelAttack.setText(Integer.toString(pokeStats.getAttack()));
+		labelAttackSpe.setText(Integer.toString(pokeStats.getSpecialAttack()));
+		labelDef.setText(Integer.toString(pokeStats.getDefense()));
+		labelDefSpe.setText(Integer.toString(pokeStats.getSpecialDefense()));
+		labelSpeed.setText(Integer.toString(pokeStats.getSpeed()));
+
+		imgPokemon.setImage(new Image("file:" + selectedPokemon.getFrontSprite()));
+
+		if (0 != team.size()) {
+			btnConfirmTeam.setDisable(false);
+
+			int i;
+			for (i = 0; i < team.size(); i++) {
+				((Label) teamDisplay.get(i).getChildren().get(0)).setText(team.get(i).getName());
+				teamDisplay.get(i).setVisible(true);
+
+			}
+
+			for (i = team.size(); i < 6; i++) {
+				teamDisplay.get(i).setVisible(false);
+			}
+		} else {
+			btnConfirmTeam.setDisable(true);
+			teamDisplay.get(0).setVisible(false);
+		}
+
+		textADescription.setText(selectedPokemon.getDescription());
+	}
 
 }

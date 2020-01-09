@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -15,16 +14,11 @@ import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
-import application.model.utils.CSVReader;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -37,14 +31,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class PokeMoveController extends AbstractController {
 
 	private Pokemon selectedPokemon;
-
-	private ArrayList<Pokemon> team;
+	
+	private Move selectedMove;
 
 	@Override
 	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
@@ -64,12 +57,7 @@ public class PokeMoveController extends AbstractController {
 
 		listMove.setItems(items);
 		listMove.getSelectionModel().select(0);
-
-		for (Pokemon p : teamBuilder.getTeam()) {
-			for (Move m : p.getlearnedMoves()) {
-				System.out.println(m);
-			}
-		}
+		selectedMove = listMove.getSelectionModel().getSelectedItem();
 
 		displayUpdate();
 	}
@@ -182,7 +170,25 @@ public class PokeMoveController extends AbstractController {
 
 	@FXML
 	void changeName(ActionEvent event) {
-		teamBuilder.updateName(textFPokemonName.getText(), labelChangeName);
+		String name = textFPokemonName.getText();
+		
+		if (name.length() > 15) {
+			labelChangeName.setText("Name too long");
+
+		} else if (name.contains(":")) {
+			labelChangeName.setText("Unauthorized character");
+		} else {
+			labelChangeName.setText("Name Changed");
+			selectedPokemon.setName(name);
+		}
+		
+		labelChangeName.setVisible(true);
+
+		FadeTransition ft = new FadeTransition(new Duration(3_000), labelChangeName);
+		ft.setFromValue(1.0);
+		ft.setToValue(0.0);
+
+		ft.play();
 	}
 
 	@FXML
@@ -193,31 +199,82 @@ public class PokeMoveController extends AbstractController {
 	@FXML
 	void changeToPokedexAddPokemon(ActionEvent event) throws IOException {
 
-		if (!teamBuilder.canAddPokemon(labelError)) {
-			return;
+		if (teamBuilder.canAddPokemon()) {
+
+			System.out.println(selectedPokemon.getName());
+			teamBuilder.addPokemonToTeam(selectedPokemon);
+			
+			super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
+
 		}
 
-		teamBuilder.addPokemonToTeam(selectedPokemon);
-
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
 	}
 
 	@FXML
 	void showMoves(MouseEvent event) {
-		displayUpdate();
+		Move move;
+		if(null != (move = listMove.getSelectionModel().getSelectedItem())) {
+			selectedMove = move;
+			displayUpdate();
+		}
 	}
 
 	@Override
 	public void displayUpdate() {
-		teamBuilder.modelMovesUpdate(listMove.getSelectionModel().getSelectedItem(), labelMoveName, labelType,
-				labelAccuracy, labelPP, labelEffect, textADescriptionMove,
-				new ArrayList<VBox>(Arrays.asList(vboxMove0, vboxMove1, vboxMove2, vboxMove3)),
-				new ArrayList<Button>(Arrays.asList(btnMove0, btnMove1, btnMove2, btnMove3)), btnConfirm);
+
+		if (null == listMove.getSelectionModel().getSelectedItem()) {
+			return;
+		}
+
+		Move selectedMove = listMove.getSelectionModel().getSelectedItem();
+
+		ArrayList<VBox> vboxList = new ArrayList<>(Arrays.asList(vboxMove0, vboxMove1, vboxMove2, vboxMove3));
+		ArrayList<Button> btnList = new ArrayList<>(Arrays.asList(btnMove0, btnMove1, btnMove2, btnMove3));
+
+		ArrayList<Move> learnedMoves = super.teamBuilder.getPokemon().getlearnedMoves();
+		labelMoveName.setText(selectedMove.getName());
+		labelType.setText(selectedMove.getType().name());
+		labelAccuracy.setText(Integer.toString(selectedMove.getAccuracy()));
+		labelPP.setText(Integer.toString(selectedMove.getMaxPP()));
+		labelEffect.setText(selectedMove.getEffectToString());
+		textADescriptionMove.setText(selectedMove.getDescription());
+
+		if (0 != learnedMoves.size()) {
+			btnConfirm.setDisable(false);
+			System.out.println(learnedMoves);
+			int i;
+			for (i = 0; i < learnedMoves.size(); i++) {
+				((Label) vboxList.get(i).getChildren().get(0)).setText(learnedMoves.get(i).getName());
+				((Label) vboxList.get(i).getChildren().get(1))
+						.setText(Integer.toString((learnedMoves.get(i).getMaxPP())));
+				vboxList.get(i).setVisible(true);
+				btnList.get(i).setVisible(true);
+			}
+
+			for (i = learnedMoves.size(); i < 4; i++) {
+				vboxList.get(i).setVisible(false);
+				btnList.get(i).setVisible(false);
+			}
+
+		} else {
+			btnConfirm.setDisable(true);
+			vboxList.get(0).setVisible(false);
+			btnList.get(0).setVisible(false);
+		}
 	}
 
 	@FXML
-	private void addMove(ActionEvent event) {
-		teamBuilder.addMovePokedex(listMove.getSelectionModel().getSelectedItem(), labelError);
+	private void addMove(ActionEvent event) throws IOException {
+		if(!super.teamBuilder.addMovePokedex(selectedMove)) {
+			labelError.setText("This move has failed to be added");
+
+			FadeTransition ft = new FadeTransition(new Duration(3_000), labelError);
+			ft.setFromValue(1.0);
+			ft.setToValue(0.0);
+
+			ft.play();
+		}
+		
 		displayUpdate();
 	}
 
