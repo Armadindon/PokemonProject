@@ -8,14 +8,24 @@ import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
 
+/**
+ * Utils Class who represent all the data to save
+ * @author Armadindon
+ */
 public class SaveUtility implements Serializable {
 	private MenuSelect whichMenu;
 	private TeamBuilder player;
 	private League league;
 	private SpecialData data;
 
+	/**
+	 * Default constructor
+	 * @param whichMenu
+	 * @param player
+	 * @param league
+	 * @param data
+	 */
 	public SaveUtility(MenuSelect whichMenu, TeamBuilder player, Optional<League> league, Optional<SpecialData> data) {
-		super();
 		this.whichMenu = whichMenu;
 		this.player = player;
 		if (league.isPresent())

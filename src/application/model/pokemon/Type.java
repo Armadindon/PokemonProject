@@ -3,6 +3,11 @@ package application.model.pokemon;
 import java.io.Serializable;
 import java.util.HashMap;
 
+/**
+ * Represent all the different types that a pokemon can have, and their resistances to other types
+ * @author Armadindon
+ *
+ */
 public enum Type implements Serializable{
 	
 	STEEL(0.5,2,0.5,1,1,0.5,2,0.5,0.5,0.5,0.5,0,0.5,0.5,2,1,1,0.5),
@@ -38,6 +43,11 @@ public enum Type implements Serializable{
 		}
 	}
 	
+	/**
+	 * Return the coefficient of resistance to another type
+	 * @param t - the type to test
+	 * @return the coefficient of resistance
+	 */
 	public double resistanceAgain(Type t) {
 		return multiplicator.get(t.name());
 	}
