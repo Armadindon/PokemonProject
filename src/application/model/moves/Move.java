@@ -289,5 +289,20 @@ public class Move implements Serializable, Cloneable {
 	public String toString() {
 		return id + " - " + name;
 	}
+	
+	/**
+	 * Restaure the move PP at the number given in parameters
+	 * 
+	 * @param nbRestaured How many points the pp will be restaured
+	 */
+	public void restaurePP(int nbRestaured) {
+		if(pp + nbRestaured >= maxPp) {
+			pp = maxPp;
+		} else {
+			pp += nbRestaured;
+		}
+		
+		
+	}
 
 }

@@ -2,8 +2,6 @@ package application.model.pokemon;
 
 import java.io.File;
 import java.io.Serializable;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +10,11 @@ import java.util.Optional;
 
 import application.model.items.Item;
 import application.model.moves.Move;
-import javafx.scene.image.Image;
 
 /**
- * Class representing a Pokemon, some functionalities are prepared but not implemented (example : items or level)
+ * Class representing a Pokemon, some functionalities are prepared but not
+ * implemented (example : items or level)
+ * 
  * @author Armadindon
  *
  */
@@ -41,6 +40,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Default Constructor used by our factories
+	 * 
 	 * @param id
 	 * @param name
 	 * @param baseExperience
@@ -60,7 +60,7 @@ public class Pokemon implements Serializable, Cloneable {
 	 */
 	private Pokemon(int id, String name, int baseExperience, int height, int weight, Item carriedItem,
 			String frontSprite, String backSprite, ArrayList<Move> allPossiblesMoves, ArrayList<Move> learnedMoves,
-			Stats baseStats, Stats currentStats, Type type1, Type type2, Status status,String description) {
+			Stats baseStats, Stats currentStats, Type type1, Type type2, Status status, String description) {
 		this.id = id;
 		this.name = name;
 		this.baseExperience = baseExperience;
@@ -98,8 +98,10 @@ public class Pokemon implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Generate a Pokemon from data issued of a CSV file (created by us), you need to generate all the moves first for passing it as an argument
-	 * @param data - data get from CSVReader
+	 * Generate a Pokemon from data issued of a CSV file (created by us), you need
+	 * to generate all the moves first for passing it as an argument
+	 * 
+	 * @param data          - data get from CSVReader
 	 * @param existingMoves - All Moves objects existing
 	 * @return a Pokemon from the data
 	 */
@@ -146,23 +148,25 @@ public class Pokemon implements Serializable, Cloneable {
 		}
 
 		Status status = null;
-		
+
 		String description = data.get("description").get(0).replace("\"", "");
 
 		return new Pokemon(id, name, baseExperience, height, weight, carriedItem, frontSprite, backSprite,
-				allPossiblesMoves, learnedMoves, baseStats, currentStats, type1, type2, status,description);
+				allPossiblesMoves, learnedMoves, baseStats, currentStats, type1, type2, status, description);
 	}
-	
+
 	/**
 	 * Get the Id of the pokemon
+	 * 
 	 * @return The id of the Pokemon
 	 */
 	public int getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Get the name of the pokemon
+	 * 
 	 * @return The name of the Pokemon
 	 */
 	public String getName() {
@@ -178,6 +182,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the height of the pokemon
+	 * 
 	 * @return The height of the Pokemon
 	 */
 	public int getHeight() {
@@ -186,6 +191,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the weight of the pokemon
+	 * 
 	 * @return The weight of the Pokemon
 	 */
 	public int getWeight() {
@@ -194,6 +200,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the base stats of the pokemon
+	 * 
 	 * @return The base stats of the Pokemon
 	 */
 	public Stats getBaseStats() {
@@ -202,6 +209,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the level of the pokemon
+	 * 
 	 * @return The level of the Pokemon
 	 */
 	public int getLevel() {
@@ -210,6 +218,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the current Stats of the pokemon
+	 * 
 	 * @return The current Stats of the Pokemon
 	 */
 	public Stats getCurrentStats() {
@@ -218,6 +227,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the relative path of the pokemon front sprite
+	 * 
 	 * @return The relative path to the front sprite
 	 */
 	public String getFrontSprite() {
@@ -225,7 +235,9 @@ public class Pokemon implements Serializable, Cloneable {
 	}
 
 	/**
-	 * get the relative path of the pokemon back sprite, if the bach sprite is null, it return the front sprite
+	 * get the relative path of the pokemon back sprite, if the bach sprite is null,
+	 * it return the front sprite
+	 * 
 	 * @return The relative path to the sprite
 	 */
 	public String getBackSprite() {
@@ -237,6 +249,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the main type of a pokemon
+	 * 
 	 * @return The main type of the pokemon
 	 */
 	public Type getType1() {
@@ -245,6 +258,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * get the second type of a pokemon, can be null
+	 * 
 	 * @return The second type of the pokemon, can be null
 	 */
 	public Type getType2() {
@@ -253,6 +267,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Get the moves that the pokemon can learn
+	 * 
 	 * @return a list of moves
 	 */
 	public ArrayList<Move> getAllPossiblesMoves() {
@@ -261,6 +276,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Get the moves that the pokemon learned
+	 * 
 	 * @return a list of moves
 	 */
 	public ArrayList<Move> getlearnedMoves() {
@@ -307,6 +323,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Make the pokemon learning a move
+	 * 
 	 * @param move - move to learn
 	 * @return true if he learned, false else
 	 */
@@ -323,6 +340,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Forget about the move with the given index
+	 * 
 	 * @param moveIndex - index of the move to forget
 	 */
 	public void removeMoveFromLearnedMoves(int moveIndex) {
@@ -331,6 +349,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Hurt the pokemon with given damages
+	 * 
 	 * @param damage - damage to give to the pokemon
 	 */
 	public void hurt(int damage) {
@@ -342,6 +361,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Tell if the pokemon is alive
+	 * 
 	 * @return true if the pokemon is alive, false else
 	 */
 	public boolean isAlive() {
@@ -350,6 +370,7 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * permit to add hp to a pokemon
+	 * 
 	 * @param hp to give
 	 */
 	public void addHp(int hp) {
@@ -362,18 +383,38 @@ public class Pokemon implements Serializable, Cloneable {
 
 	/**
 	 * Get the currents status of a pokemon
+	 * 
 	 * @return the status of the pokemon
 	 */
 	public Status getStatus() {
 		return status;
 	}
-	
+
 	/**
 	 * Get the description about a pokemon
+	 * 
 	 * @return the description of the pokemon
 	 */
 	public String getDescription() {
 		return description;
+	}
+	
+	private void resetStat() {
+		currentStats.setHp(baseStats.getHp());
+		currentStats.resetBoosts();
+	}
+
+	/**
+	 * Restaure the current stat of the pokemon and restaures all it's PP
+	 * 
+	 */
+	public void healPokemon() {
+		resetStat();
+		status = null;
+		for (Move move : learnedMoves) {
+			// It's over 9_000
+			move.restaurePP(9_001);
+		}
 	}
 
 }

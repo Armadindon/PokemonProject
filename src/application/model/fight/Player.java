@@ -55,7 +55,6 @@ public class Player implements Serializable {
 		this.bot = false;
 	}
 
-
 	/**
 	 * Switch the Pokemon current Pokemon
 	 * 
@@ -326,11 +325,53 @@ public class Player implements Serializable {
 		team.add(pokemon);
 	}
 
+	/**
+	 * Add a move to the selected Pokemon
+	 * 
+	 * @param move the move that will be added
+	 * @return True if the move managed to be added, False otherwise
+	 */
 	public boolean addMovePokedex(Move move) {
 		return selectedPokemon.addMoveToLearnedMoves(move);
 	}
 
+	/**
+	 * Remove the move at the specified index
+	 * 
+	 * @param moveIndex index of the move
+	 */
 	public void removeMovePokedex(int moveIndex) {
 		selectedPokemon.removeMoveFromLearnedMoves(moveIndex);
+	}
+
+	/**
+	 * Get the player ready for the battle by putting his first pokemon ready to
+	 * battle. If the pokemon is K.O, then the following one will be chosen until a
+	 * pokemon is picked.
+	 * 
+	 * @throws IllegalStateException If the whole team is K.O
+	 * 
+	 */
+	public void getReadyForBattle() {
+		for (int i = 0; i < team.size(); i++) {
+			if (team.get(i).isAlive()) {
+				selectedPokemon = team.get(i);
+				return;
+			}
+		}
+
+		throw new IllegalStateException(
+				"It seems like you try to fight with a team with no pokemon available for battle");
+	}
+
+	/**
+	 * Heal the player's whole team (HP, stats, status, PPs)
+	 * 
+	 */
+	public void healTeam() {
+		for (Pokemon pokemon : team) {
+			pokemon.healPokemon();
+		}
+
 	}
 }

@@ -2,12 +2,10 @@ package application.Controller;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +24,6 @@ import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 import application.model.utils.MenuSelect;
 import application.model.utils.SaveUtility;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -34,7 +31,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -88,8 +84,7 @@ public class FightController extends AbstractController {
 	private int swapNbPkmn = 3;
 
 	@Override
-	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data)
-			throws IOException {
+	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data) throws IOException {
 		super.initTeamBuilder(player, league, data);
 
 		openMainMenu();
@@ -109,6 +104,7 @@ public class FightController extends AbstractController {
 		}
 
 		playerUser = super.player;
+		playerUser.getReadyForBattle();
 
 		// Music
 		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/15 - Battle.mp3";
@@ -344,8 +340,7 @@ public class FightController extends AbstractController {
 						data = Optional.of(SpecialData.INTERMISSION);
 					}
 
-					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", player, Optional.of(currentLeague),
-							data);
+					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", player, Optional.of(currentLeague), data);
 				} else {
 					msgs = null;
 					openMainMenu();
@@ -826,7 +821,7 @@ public class FightController extends AbstractController {
 	 * Takes every player in pairs and switch theirs pokemon between them
 	 * 
 	 * 
-	 * @param players every Players in the fight 
+	 * @param players every Players in the fight
 	 */
 	private void homadeSwitch(Player... players) {
 		Collections.shuffle(Arrays.asList(players));
@@ -840,10 +835,12 @@ public class FightController extends AbstractController {
 				continue;
 			}
 
-			intOne = getPokemonAliveIndex(players[i].getTeam());
-			intTwo = getPokemonAliveIndex(players[i + 1].getTeam());
+			for (int j = 0; j < swapNbPkmn; j++) {
+				intOne = getPokemonAliveIndex(players[i].getTeam());
+				intTwo = getPokemonAliveIndex(players[i + 1].getTeam());
 
-			players[i].swapTeam(players[i + 1], intOne, intTwo);
+				players[i].swapTeam(players[i + 1], intOne, intTwo);
+			}
 		}
 	}
 }

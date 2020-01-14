@@ -43,6 +43,8 @@ public class LeagueIntermissionController extends AbstractController {
 	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data)
 			throws IOException {
 		super.initTeamBuilder(player, league, data);
+		
+		super.player.healTeam();
 
 		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/16 - Victory.mp3";
 		Media media = new Media(new File(path).toURI().toString());
