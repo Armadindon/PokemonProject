@@ -13,9 +13,9 @@ import application.model.moves.AttackResult;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 
-
 /**
  * Class representing a trainer, this class is mostly used inf the fights
+ * 
  * @author Armadindon, Kwaaac
  *
  */
@@ -27,30 +27,34 @@ public class Player implements Serializable {
 	private int whichAction;
 	private Player whichPlayer;
 	private ArrayList<Item> backPack = new ArrayList<>();
-	
+
 	/**
 	 * Default Constructor
+	 * 
 	 * @param team - List containing max 6 pokemons
-	 * @param bot - if the player is a bot
+	 * @param bot  - if the player is a bot
 	 */
 	public Player(List<Pokemon> team, boolean bot) {
-		if(team.size() > 6 || team.size() == 0) throw new IllegalArgumentException("The team need at least 1 pokemon and max 6 pokemon");
+		if (team.size() > 6 || team.size() == 0)
+			throw new IllegalArgumentException("The team need at least 1 pokemon and max 6 pokemon");
 		this.team = Objects.requireNonNull(team);
 		this.selectedPokemon = team.get(0); // Le premier Pokémon est celui lancé en premier
 		this.bot = bot;
 	}
-	
+
 	/**
 	 * Second Constructor with a teambuilder instead of a List
+	 * 
 	 * @param teamBuilder
 	 * @param bot
 	 */
 	public Player(TeamBuilder teamBuilder, boolean bot) {
 		this(Objects.requireNonNull(teamBuilder).getTeam(), bot);
 	}
-	
+
 	/**
 	 * Switch the Pokemon current Pokemon
+	 * 
 	 * @param p - The Pokemon that we want to throw
 	 */
 	public void switchPokemon(Pokemon p) {
@@ -60,37 +64,42 @@ public class Player implements Serializable {
 			throw new IllegalArgumentException("The pokemon is KO");
 		}
 	}
-	
+
 	/**
 	 * Tell if the player is a bot
+	 * 
 	 * @return true if the player is a bot, false else
 	 */
 	public boolean isBot() {
 		return bot;
 	}
-	
+
 	/**
 	 * Permit to tell the player the next action he will do
+	 * 
 	 * @param nextAction - Action that will be executed
-	 * @param which - On which parameter (Which Pokemon ? Which Item ? Which Move ? )
-	 * @param target - Which player will receive the action
+	 * @param which      - On which parameter (Which Pokemon ? Which Item ? Which
+	 *                   Move ? )
+	 * @param target     - Which player will receive the action
 	 */
 	public void setNextAction(Action nextAction, int which, Player target) {
 		this.nextAction = nextAction;
 		this.whichAction = which;
 		whichPlayer = target;
 	}
-	
+
 	/**
 	 * Tell which Pokemon is actually sended by the Trainer
+	 * 
 	 * @return
 	 */
 	public Pokemon getSelectedPokemon() {
 		return selectedPokemon;
 	}
-	
+
 	/**
 	 * Tell which action wil be executed next
+	 * 
 	 * @return the action (can be null if no action are planned
 	 */
 	public Action getNextAction() {
@@ -99,6 +108,7 @@ public class Player implements Serializable {
 
 	/**
 	 * Generate the next action of the given player
+	 * 
 	 * @param p - The player to generate the action
 	 */
 	public void generateNextAction(Player p) {
@@ -116,7 +126,7 @@ public class Player implements Serializable {
 			setNextAction(Action.SWITCH, next, p);
 		}
 	}
-	
+
 	/**
 	 * Force the player to switch pokemon with a random pokemon
 	 */
@@ -126,8 +136,9 @@ public class Player implements Serializable {
 
 		do {
 			next = randomChoice.nextInt(team.size());
-		} while (!team.get(next).isAlive() && team.get(next).equals(selectedPokemon));
+		} while (!team.get(next).isAlive() || team.get(next).equals(selectedPokemon));
 
+		System.out.println("next pokemon is alive ?: " + team.get(next).isAlive());
 		// setNextAction(nextAction, next, whichPlayer);
 
 		switchPokemon(team.get(next));
@@ -141,7 +152,7 @@ public class Player implements Serializable {
 	 */
 	private void swapPokemon(Pokemon newPkmn, int pokemonNumber) {
 		Pokemon removedP = team.remove(pokemonNumber);
-		if(removedP.equals(selectedPokemon)) {
+		if (removedP.equals(selectedPokemon)) {
 			selectedPokemon = newPkmn;
 		}
 		team.add(pokemonNumber, newPkmn);
@@ -159,15 +170,17 @@ public class Player implements Serializable {
 	public void swapTeam(Player playerTwo, int intOne, int intTwo) {
 		Pokemon pkmnOne = team.get(intOne);
 		Pokemon pkmnTwo = playerTwo.getTeam().get(intTwo);
-		
+
 		this.swapPokemon(pkmnTwo, intOne);
 		playerTwo.swapPokemon(pkmnOne, intTwo);
 	}
 
 	/**
 	 * Main method - the player will make his turn
+	 * 
 	 * @param p - The player impacted by the event
-	 * @return The result of the attack, can be null if the action is not supported yet
+	 * @return The result of the attack, can be null if the action is not supported
+	 *         yet
 	 */
 	public AttackResult turn(Player p) {
 		switch (nextAction) {
@@ -189,10 +202,18 @@ public class Player implements Serializable {
 			}
 			return selectedPokemon.getlearnedMoves().get(whichAction).use(selectedPokemon, p.selectedPokemon);
 		case SWITCH:
+			Pokemon switchPokemon;
+			
 			selectedPokemon.getCurrentStats().resetBoosts();
-			switchPokemon(team.get(whichAction));
-			if (team.get(whichAction).getStatus() != null) {
-				team.get(whichAction).getStatus().getWhenReceived().use(team.get(whichAction));
+			if (!team.get(whichAction).isAlive()) {
+				switchPokemon = selectedPokemon;
+			} else {
+				switchPokemon = team.get(whichAction);
+			}
+			switchPokemon(switchPokemon);
+			
+			if (switchPokemon.getStatus() != null) {
+				switchPokemon.getStatus().getWhenReceived().use(switchPokemon);
 			}
 		default:
 			break;
@@ -200,17 +221,19 @@ public class Player implements Serializable {
 
 		return null;
 	}
-	
+
 	/**
 	 * Get the index of the next action executed
+	 * 
 	 * @return the index of the next action to execute
 	 */
 	public int getWhichAction() {
 		return whichAction;
 	}
-	
+
 	/**
 	 * Get the current team
+	 * 
 	 * @return the team
 	 */
 	public List<Pokemon> getTeam() {
@@ -225,17 +248,19 @@ public class Player implements Serializable {
 			forceSwitch();
 		}
 	}
-	
+
 	/**
 	 * Give the number of alive pokemon in the team
+	 * 
 	 * @return the number of alive pokemons
 	 */
 	public int getAlive() {
-		return ((List<Pokemon>) team.stream().filter(p->p.isAlive()).collect(Collectors.toList())).size();
+		return ((List<Pokemon>) team.stream().filter(p -> p.isAlive()).collect(Collectors.toList())).size();
 	}
-	
+
 	/**
-	 * Give 
+	 * Give
+	 * 
 	 * @return
 	 */
 	public Player getWhichPlayer() {

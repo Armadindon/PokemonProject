@@ -33,10 +33,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
+/**
+ * This class is designed to be used with the view file : "PokeMove.fxml"
+ * 
+ * This class allow the player to add moves to a pokemon or the view moves that
+ * a pokemon can learn
+ * 
+ * @author kwaaac
+ *
+ */
 public class PokeMoveController extends AbstractController {
 
 	private Pokemon selectedPokemon;
-	
+
 	private Move selectedMove;
 
 	@Override
@@ -46,7 +55,7 @@ public class PokeMoveController extends AbstractController {
 
 		selectedPokemon = teamBuilder.getPokemon();
 
-		// changement des labels et infos de la page
+		// Labels and view infos
 		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 24));
 		textFPokemonName.setText(selectedPokemon.getName());
 		imgPokemon.setImage(new Image("file:" + selectedPokemon.getFrontSprite()));
@@ -168,20 +177,26 @@ public class PokeMoveController extends AbstractController {
 	@FXML
 	private TextField textFSearch;
 
+	/**
+	 * This method allow to change the name of the pokemon, it trigger a message to
+	 * the user
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void changeName(ActionEvent event) {
 		String name = textFPokemonName.getText();
-		
+
 		if (name.length() > 15) {
 			labelChangeName.setText("Name too long");
 
-		} else if (name.contains(":")) {
+		} else if (name.contains(":")) { // TODO Ajouter du regex pour eviter tout caractère non voulue
 			labelChangeName.setText("Unauthorized character");
 		} else {
 			labelChangeName.setText("Name Changed");
 			selectedPokemon.setName(name);
 		}
-		
+
 		labelChangeName.setVisible(true);
 
 		FadeTransition ft = new FadeTransition(new Duration(3_000), labelChangeName);
@@ -191,11 +206,23 @@ public class PokeMoveController extends AbstractController {
 		ft.play();
 	}
 
+	/**
+	 * Cancel and don't add the pokemon to the team, go back to the pokedex
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void changeToPokedexCancel(ActionEvent event) throws IOException {
 		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
 	}
 
+	/**
+	 * Go back to the pokedex while adding the pokemon to the team
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void changeToPokedexAddPokemon(ActionEvent event) throws IOException {
 
@@ -203,22 +230,31 @@ public class PokeMoveController extends AbstractController {
 
 			System.out.println(selectedPokemon.getName());
 			teamBuilder.addPokemonToTeam(selectedPokemon);
-			
+
 			super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
 
 		}
 
 	}
 
+	/**
+	 * Update the move each time the the user click on the listView
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void showMoves(MouseEvent event) {
 		Move move;
-		if(null != (move = listMove.getSelectionModel().getSelectedItem())) {
+		if (null != (move = listMove.getSelectionModel().getSelectedItem())) {
 			selectedMove = move;
 			displayUpdate();
 		}
 	}
-
+	
+	/**
+	 * Update the whole interface, depending on the selected moves
+	 * 
+	 */
 	@Override
 	public void displayUpdate() {
 
@@ -263,9 +299,15 @@ public class PokeMoveController extends AbstractController {
 		}
 	}
 
+	/**
+	 * Add a chosen move to the available slots 
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void addMove(ActionEvent event) throws IOException {
-		if(!super.teamBuilder.addMovePokedex(selectedMove)) {
+		if (!super.teamBuilder.addMovePokedex(selectedMove)) {
 			labelError.setText("This move has failed to be added");
 
 			FadeTransition ft = new FadeTransition(new Duration(3_000), labelError);
@@ -274,10 +316,15 @@ public class PokeMoveController extends AbstractController {
 
 			ft.play();
 		}
-		
+
 		displayUpdate();
 	}
 
+	/**
+	 * Remove the move associated with the button
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void removeMove(ActionEvent event) {
 		Button button = (Button) event.getSource();
@@ -285,6 +332,11 @@ public class PokeMoveController extends AbstractController {
 		displayUpdate();
 	}
 
+	/**
+	 * Use the search bar to find corresponding moves
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void searchMove(ActionEvent event) {
 		System.out.println(((TextField) event.getSource()).getText());

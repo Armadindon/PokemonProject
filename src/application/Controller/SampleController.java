@@ -30,6 +30,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * This class is designed to be used with the view file : "BuildTeam.fxml"
+ * 
+ * This allow the player to build a team while being on the pokedex futhermore,
+ * this class can be used to handle the pokedex
+ * 
+ * @author kwaaac
+ *
+ */
 public class SampleController extends AbstractController {
 
 	private Pokemon selectedPokemon;
@@ -171,6 +180,11 @@ public class SampleController extends AbstractController {
 	@FXML
 	private TextField textFSearch;
 
+	/**
+	 * remove a pokemon from the starting list
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void deletePokemon(ActionEvent event) {
 		Button button = (Button) event.getSource();
@@ -178,15 +192,29 @@ public class SampleController extends AbstractController {
 		displayUpdate();
 	}
 
+	/**
+	 * Update the pokemon when the user clicks on the ListView
+	 * 
+	 * @param event
+	 * @throws CloneNotSupportedException
+	 */
 	@FXML
 	void showPoke(MouseEvent event) throws CloneNotSupportedException {
 		Pokemon pkmn;
-		if ((pkmn =listPokemon.getSelectionModel().getSelectedItem()) != null) {
+		if ((pkmn = listPokemon.getSelectionModel().getSelectedItem()) != null) {
 			selectedPokemon = listPokemon.getSelectionModel().getSelectedItem();
 			displayUpdate();
 		}
 	}
 
+	/**
+	 * Go to the pokeMove class where the player can choose moves for the selected
+	 * pokemon
+	 * 
+	 * @param event
+	 * @throws IOException
+	 * @throws CloneNotSupportedException
+	 */
 	@FXML
 	void changeToPokeMove(ActionEvent event) throws IOException, CloneNotSupportedException {
 		if (team.size() == 6) {
@@ -213,11 +241,22 @@ public class SampleController extends AbstractController {
 		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder, Optional.empty(), data);
 	}
 
+	/**
+	 * Change the scene to the main menu
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void returnToMenu(ActionEvent event) throws IOException {
 		super.changeSceneWithoutData(event, "NewGameLoadMenu.fxml");
 	}
 
+	/**
+	 * Use the search bar to find a pokemon inside the listView
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void searchPokemon(ActionEvent event) {
 		if (((TextField) event.getSource()).getText().contentEquals("")) {
@@ -232,11 +271,18 @@ public class SampleController extends AbstractController {
 
 	}
 
+	/**
+	 * When the team is ready to user can continue to the next step
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void goToMenu(ActionEvent event) throws IOException {
 		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league, data);
 	}
 
+	
 	@Override
 	public void displayUpdate() {
 
@@ -244,7 +290,7 @@ public class SampleController extends AbstractController {
 				Arrays.asList(VBoxTeam1, VBoxTeam2, VBoxTeam3, VBoxTeam4, VBoxTeam5, VBoxTeam6));
 
 		labelPokemonName.setText(selectedPokemon.getName());
-		
+
 		labelType1.setText(selectedPokemon.getType1().name());
 		if (selectedPokemon.getType2() == null) {
 			labelType2.setText("");

@@ -3,7 +3,7 @@ package application.Controller.Utils;
 import java.io.Serializable;
 
 /**
- * Permit to give additional infos when changing infos between Controllers
+ * Allow to give additional infos when changing infos between Controllers
  * @author Kwaaac
  *
  */

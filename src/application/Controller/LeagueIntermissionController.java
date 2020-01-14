@@ -24,23 +24,30 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+/**
+ * 
+ * This class is designed to be used with the view file :
+ * "LeagueIntermission.fxml"
+ * 
+ * This class is used to tell to player if he won, loose of can keep going on
+ * the league
+ * 
+ * @author kwaaac
+ */
 public class LeagueIntermissionController extends AbstractController {
-	
+
 	private MediaPlayer mp;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data) throws IOException {
+	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+			throws IOException {
 		super.initTeamBuilder(teamBuilder, league, data);
 
-		if (this.league.isPresent()) {
-			this.league.get().nextFightingTeam();
-		}
-		
 		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/16 - Victory.mp3";
-        Media media = new Media(new File(path).toURI().toString());
-        mp = new MediaPlayer(media);
-        mp.setAutoPlay(true);
-        mp.setCycleCount(MediaPlayer.INDEFINITE);
+		Media media = new Media(new File(path).toURI().toString());
+		mp = new MediaPlayer(media);
+		mp.setAutoPlay(true);
+		mp.setCycleCount(MediaPlayer.INDEFINITE);
 
 		displayUpdate();
 	}
@@ -60,24 +67,48 @@ public class LeagueIntermissionController extends AbstractController {
 	@FXML
 	private Button btnQuit;
 
+	/**
+	 * Go the next fight in case the player is fighting a league
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void nextLeagueFight(ActionEvent event) throws IOException {
+		mp.stop();
 		changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, league, data);
 
 	}
 
+	/**
+	 * In case the player win or loose, he goes to the choose game menu
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void goBackToMenu(ActionEvent event) throws IOException {
 		mp.stop();
 		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league, data);
 	}
 
+	/**
+	 * Qui the game without saving
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void quit(ActionEvent event) {
 		Platform.exit();
 
 	}
 
+	/**
+	 * Save the current game
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void save(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
@@ -91,7 +122,7 @@ public class LeagueIntermissionController extends AbstractController {
 
 		Optional<SpecialData> saveData;
 
-		if(data != null) {
+		if (data != null) {
 			saveData = data;
 		} else {
 			saveData = Optional.empty();
@@ -111,12 +142,18 @@ public class LeagueIntermissionController extends AbstractController {
 
 	@Override
 	public void displayUpdate() {
-		if (super.data.get().equals(SpecialData.WIN)) {
-			labelText.setText("You won every fights !");
+		// If the player won or loose, there is a different interface
+		if (super.data.get().equals(SpecialData.WIN) || super.data.get().equals(SpecialData.LOOSE)) {
+			if (super.data.get().equals(SpecialData.LOOSE)) {
+				labelText.setText("You loosed, And toc !");
+			} else {
+				labelText.setText("You won every fights !");
+			}
+
 			btnKeepGoing.setPrefWidth(426);
 			btnKeepGoing.setText("Choose an another game mode");
 
-			// Change the action
+			// Change the action with the interface
 			btnKeepGoing.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {

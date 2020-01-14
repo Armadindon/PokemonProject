@@ -117,6 +117,8 @@ public class FightController extends AbstractController {
 		mp.setAutoPlay(true);
 		mp.setCycleCount(MediaPlayer.INDEFINITE);
 
+		mp.stop(); // Retirer pour eviter de vous rendre fou lors de la correction
+
 		displayUpdate();
 	}
 
@@ -312,7 +314,8 @@ public class FightController extends AbstractController {
 	}
 
 	/**
-	 * 
+	 * Handle the text events after the turn. If there is no text anymore, it check
+	 * the win/loose condition
 	 * 
 	 * @param event
 	 */
@@ -327,10 +330,20 @@ public class FightController extends AbstractController {
 				if (playerUser.getAlive() <= 0) { // lose
 					mp.stop();
 					System.out.println("Le joueur a perdu, on le redirige");
-					changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, Optional.empty(), Optional.empty());
+					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.empty(),
+							Optional.of(SpecialData.LOOSE));
 				} else if (playerFoe.getAlive() <= 0) { // win
 					mp.stop();
 					System.out.println("Le joueur a gagné, on le redirige");
+
+					currentLeague.nextFightingTeam();
+
+					if (currentLeague.isOver()) {
+						data = Optional.of(SpecialData.WIN);
+					} else {
+						data = Optional.of(SpecialData.INTERMISSION);
+					}
+
 					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague),
 							data);
 				} else {
@@ -343,9 +356,12 @@ public class FightController extends AbstractController {
 		}
 	}
 
-	/*
-	 * Pour les deux méthodes ci dessous, il faudrait changer l'affichage pour
-	 * afficher un message en fonction de player.turn()
+	/**
+	 * This methods allow to switch a pokemon during a fight. If the player has to
+	 * change a pokemon because of it's death it won't count as a turn and the
+	 * player will still play
+	 * 
+	 * @param event
 	 */
 	@FXML
 	void switchPokemon(MouseEvent event) {
@@ -358,13 +374,12 @@ public class FightController extends AbstractController {
 		if (wasAlive)
 			doTurns();
 		else
-
 			switchPokemons();
 	}
 
-	/*
-	 * Permet de faire son tour seulement si on switch (utile dans le cas ou on
-	 * switch car le pokémon est mort)
+	/**
+	 * If the switch occurred because of the death of the pokemon then the turn is
+	 * not used
 	 */
 	private void switchPokemons() {
 		if (playerUser.getNextAction() == Action.SWITCH) {
@@ -376,6 +391,11 @@ public class FightController extends AbstractController {
 		displayUpdate();
 	}
 
+	/**
+	 * This method allow a player to use a move depending on wich case he clicked on
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void useMove(MouseEvent event) {
 		int numMove = Integer.parseInt((((VBox) event.getSource()).getId()).replace("vBoxMove", ""));
@@ -386,16 +406,45 @@ public class FightController extends AbstractController {
 		doTurns();
 	}
 
+	/**
+	 * Open the menu, where you can save, load, quit and more if added
+	 * 
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void openMenu(ActionEvent event) {
 		anchorPaneMenu.setVisible(true);
 	}
 
+	/**
+	 * Leave the menu
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void back(ActionEvent event) {
+		anchorPaneMenu.setVisible(false);
+	}
+
+	/**
+	 * This event handler will be used to check the pokedex during a fight. Not
+	 * implemented yet
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void pokedex(ActionEvent event) {
 
 	}
 
+	/**
+	 * This method will save the game. As it is during a figth, the fight will me
+	 * saved
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void save(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
@@ -427,6 +476,13 @@ public class FightController extends AbstractController {
 
 	}
 
+	/**
+	 * This method will load a save
+	 * 
+	 * @param event
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	@FXML
 	void load(ActionEvent event) throws IOException, ClassNotFoundException {
 		FileChooser fileChooser = new FileChooser();
@@ -446,18 +502,17 @@ public class FightController extends AbstractController {
 		changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague(), data);
 	}
 
+	/**
+	 * Leave the fight an go back to the titleScreen
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void backToMenu(ActionEvent event) throws IOException {
 		super.changeSceneWithoutData(event, "TitleScreen.fxml");
 	}
 
-	@FXML
-	void back(ActionEvent event) {
-		anchorPaneMenu.setVisible(false);
-	}
-
-	// Il faudrait gérer ca dans cette méthode ici (on évite de déléguer au modèle
-	// l'affichage)
 	@Override
 	public void displayUpdate() {
 		// generate the moves of the player in the interface
@@ -469,6 +524,11 @@ public class FightController extends AbstractController {
 				labelFoePokeStatus, progressBarFoePokeHP);
 	}
 
+	/**
+	 * Update the moves interface depending on the player given
+	 * 
+	 * @param p The player you want to update the interface
+	 */
 	public void moveDisplayUpdate(Player p) {
 		ArrayList<Move> pokeMoves = p.getSelectedPokemon().getlearnedMoves();
 
@@ -488,10 +548,18 @@ public class FightController extends AbstractController {
 
 		for (i = pokeMoves.size(); i < 4; i++) {
 			((VBox) movePane.getChildren().get(i)).setDisable(true);
+			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(0))).setText("");
+			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(1))).setText("");
+			(((Label) ((VBox) movePane.getChildren().get(i)).getChildren().get(2))).setText("");
 		}
 
 	}
 
+	/**
+	 * Update the team interface depending on the player given
+	 * 
+	 * @param p The player you want to update the interface
+	 */
 	public void teamDisplayUpdate(Player p) {
 
 		List<Pokemon> team = p.getTeam();
@@ -521,11 +589,28 @@ public class FightController extends AbstractController {
 
 	}
 
+	/**
+	 * Update the HP bar
+	 * 
+	 * @param pgHP       ProgressBar of HP
+	 * @param colorStyle String of the color you want to change
+	 */
 	private void updateProgressBarColor(ProgressBar pgHP, String colorStyle) {
 		pgHP.getStyleClass().removeAll(pgColorStyles);
 		pgHP.getStyleClass().add(colorStyle);
 	}
 
+	/**
+	 * Update the main interface of the two pokemon fighting
+	 * 
+	 * @param p          the Player you want his interface updated
+	 * @param imgV       The image of the pokemon
+	 * @param pokeName   The label for the pokemon's name
+	 * @param pokeLvl    The label for the pokemon's lvl
+	 * @param pokeHP     The label for the pokemon's hp
+	 * @param PokeStatus The label for the pokemon's status
+	 * @param pgHP       The progress for the pokemon's hp
+	 */
 	public void mainScreenUpdate(Player p, ImageView imgV, Label pokeName, Label pokeLvl, Label pokeHP,
 			Label PokeStatus, ProgressBar pgHP) {
 		Pokemon selectedPokemon = p.getSelectedPokemon();
@@ -563,6 +648,12 @@ public class FightController extends AbstractController {
 		}
 	}
 
+	/**
+	 * this method will manage the turns of each player
+	 * 
+	 * @param players Every players that are in the fight
+	 * @return An array of String designed to update the text info of the game
+	 */
 	private String[] turns(Player... players) {
 
 		String[] messages;
@@ -669,8 +760,8 @@ public class FightController extends AbstractController {
 		return messages;
 	}
 
-	/*
-	 * Permet d'aiguiller la priorité
+	/**
+	 * Handle the prority of turns
 	 */
 	public void doTurns() {
 		String[] messages = new String[3];
@@ -716,6 +807,12 @@ public class FightController extends AbstractController {
 
 	}
 
+	/**
+	 * Get the index of an alive pokemon in the list given
+	 * 
+	 * @param list Team of a player
+	 * @return The index of a random alive pokemon
+	 */
 	private int getPokemonAliveIndex(List<Pokemon> list) {
 		int res;
 		do {
@@ -725,6 +822,12 @@ public class FightController extends AbstractController {
 		return res;
 	}
 
+	/**
+	 * Takes every player in pairs and switch theirs pokemon between them
+	 * 
+	 * 
+	 * @param players every Players in the fight 
+	 */
 	private void homadeSwitch(Player... players) {
 		Collections.shuffle(Arrays.asList(players));
 

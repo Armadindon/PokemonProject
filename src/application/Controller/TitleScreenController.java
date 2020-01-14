@@ -30,6 +30,15 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * This class is designed to be used with the view file:
+ * "TitleScreen.fxml"
+ * 
+ * This page is a titleScreen with animation to welcome the user
+ * 
+ * @author kwaaac
+ *
+ */
 public class TitleScreenController extends AbstractController {
 	
 	private MediaPlayer mp;
@@ -121,6 +130,11 @@ public class TitleScreenController extends AbstractController {
 
 	}
 
+	/**
+	 * Play the music and start the animation after 3 seconds
+	 * 
+	 * @throws IOException
+	 */
 	@FXML
 	void initialize() throws IOException {
 		

@@ -24,6 +24,15 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+/**
+ *  This class is designed to be used with the view file :
+ * "NewGameLoadMenu.fxml"
+ * 
+ * This class is used to allow the player to select a new game, load a game of quit the game
+ * 
+ * @author kwaaac
+ *
+ */
 public class NewGameLoadMenuController extends AbstractController {
 
 	private TeamBuilder teamBuilder;
@@ -49,6 +58,13 @@ public class NewGameLoadMenuController extends AbstractController {
 	@FXML
 	private AnchorPane root;
 
+	/**
+	 * Load a game
+	 * 
+	 * @param event
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	@FXML
 	void load(ActionEvent event) throws IOException, ClassNotFoundException {
 		FileChooser fileChooser = new FileChooser();
@@ -67,11 +83,22 @@ public class NewGameLoadMenuController extends AbstractController {
 	    changeSceneTeamBuilder(event, save.getWhichMenu().getFile(), save.getPlayer(), save.getLeague(), save.getSpecialData());
 	}
 
+	/**
+	 * The handler start a new game by building the player's team
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void newGame(ActionEvent event) throws IOException {
 		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), Optional.empty());
 	}
 
+	/**
+	 * The handler quit the game without saving
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void quit(ActionEvent event) {
 		Platform.exit();
@@ -82,6 +109,11 @@ public class NewGameLoadMenuController extends AbstractController {
 		// No new display
 	}
 
+	/**
+	 * Initialize the class, by gettinf the TeamBuilder instance
+	 * 
+	 * @throws IOException
+	 */
     @FXML
     void initialize() throws IOException {
 		teamBuilder = TeamBuilder.getInstance();
