@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.model.appmodel.TeamBuilder;
+import application.model.fight.Player;
+import application.model.pokemon.Pokemon;
 import application.model.utils.MenuSelect;
 import application.model.utils.SaveUtility;
 import javafx.application.Platform;
@@ -35,7 +37,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
  */
 public class NewGameLoadMenuController extends AbstractController {
 
-	private TeamBuilder teamBuilder;
+	private Player player;
 
 	@FXML
 	private ResourceBundle resources;
@@ -91,7 +93,7 @@ public class NewGameLoadMenuController extends AbstractController {
 	 */
 	@FXML
 	void newGame(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), Optional.empty());
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", player, Optional.empty(), Optional.empty());
 	}
 
 	/**
@@ -110,12 +112,12 @@ public class NewGameLoadMenuController extends AbstractController {
 	}
 
 	/**
-	 * Initialize the class, by gettinf the TeamBuilder instance
+	 * Initialize the class, by getting the TeamBuilder instance
 	 * 
 	 * @throws IOException
 	 */
     @FXML
     void initialize() throws IOException {
-		teamBuilder = TeamBuilder.getInstance();
+		player = new Player();
 	}
 }

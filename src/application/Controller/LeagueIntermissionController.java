@@ -9,6 +9,7 @@ import java.util.Optional;
 import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
+import application.model.fight.Player;
 import application.model.utils.MenuSelect;
 import application.model.utils.SaveUtility;
 import javafx.application.Platform;
@@ -39,9 +40,9 @@ public class LeagueIntermissionController extends AbstractController {
 	private MediaPlayer mp;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data)
 			throws IOException {
-		super.initTeamBuilder(teamBuilder, league, data);
+		super.initTeamBuilder(player, league, data);
 
 		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/16 - Victory.mp3";
 		Media media = new Media(new File(path).toURI().toString());
@@ -76,7 +77,7 @@ public class LeagueIntermissionController extends AbstractController {
 	@FXML
 	void nextLeagueFight(ActionEvent event) throws IOException {
 		mp.stop();
-		changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder, league, data);
+		changeSceneTeamBuilder(event, "Fight.fxml", player, league, data);
 
 	}
 
@@ -89,7 +90,7 @@ public class LeagueIntermissionController extends AbstractController {
 	@FXML
 	void goBackToMenu(ActionEvent event) throws IOException {
 		mp.stop();
-		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league, data);
+		changeSceneTeamBuilder(event, "ChooseGame.fxml", player, league, data);
 	}
 
 	/**
@@ -129,9 +130,9 @@ public class LeagueIntermissionController extends AbstractController {
 		}
 
 		if (league != null)
-			save = new SaveUtility(MenuSelect.INTERLEAGUE, teamBuilder, league, saveData);
+			save = new SaveUtility(MenuSelect.INTERLEAGUE, player, league, saveData);
 		else
-			save = new SaveUtility(MenuSelect.INTERLEAGUE, teamBuilder, Optional.empty(), saveData);
+			save = new SaveUtility(MenuSelect.INTERLEAGUE, player, Optional.empty(), saveData);
 
 		FileOutputStream file = new FileOutputStream(f);
 		ObjectOutputStream oos = new ObjectOutputStream(file);

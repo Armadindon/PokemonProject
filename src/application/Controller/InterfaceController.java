@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
-import application.model.appmodel.TeamBuilder;
+import application.model.fight.Player;
 
 /**
  * This interface is used to regroup every Controller
@@ -29,6 +29,6 @@ public interface InterfaceController {
 	 * @param data 		  Optional special datas for special events
 	 * @throws IOException
 	 */
-	void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+	void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data)
 			throws IOException;
 }

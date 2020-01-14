@@ -35,7 +35,7 @@ public class Player implements Serializable {
 	 * @param bot  - if the player is a bot
 	 */
 	public Player(List<Pokemon> team, boolean bot) {
-		if (team.size() > 6 || team.size() == 0)
+		if ((team.size() > 6 || team.size() == 0))
 			throw new IllegalArgumentException("The team need at least 1 pokemon and max 6 pokemon");
 		this.team = Objects.requireNonNull(team);
 		this.selectedPokemon = team.get(0); // Le premier Pokémon est celui lancé en premier
@@ -43,14 +43,18 @@ public class Player implements Serializable {
 	}
 
 	/**
-	 * Second Constructor with a teambuilder instead of a List
+	 * User Player constructor
 	 * 
-	 * @param teamBuilder
-	 * @param bot
+	 * Create an empty player in the case that the user build a new team and with it
+	 * a new player
+	 * 
 	 */
-	public Player(TeamBuilder teamBuilder, boolean bot) {
-		this(Objects.requireNonNull(teamBuilder).getTeam(), bot);
+	public Player() {
+		this.team = new ArrayList<Pokemon>();
+		this.selectedPokemon = null;
+		this.bot = false;
 	}
+
 
 	/**
 	 * Switch the Pokemon current Pokemon
@@ -203,7 +207,7 @@ public class Player implements Serializable {
 			return selectedPokemon.getlearnedMoves().get(whichAction).use(selectedPokemon, p.selectedPokemon);
 		case SWITCH:
 			Pokemon switchPokemon;
-			
+
 			selectedPokemon.getCurrentStats().resetBoosts();
 			if (!team.get(whichAction).isAlive()) {
 				switchPokemon = selectedPokemon;
@@ -211,7 +215,7 @@ public class Player implements Serializable {
 				switchPokemon = team.get(whichAction);
 			}
 			switchPokemon(switchPokemon);
-			
+
 			if (switchPokemon.getStatus() != null) {
 				switchPokemon.getStatus().getWhenReceived().use(switchPokemon);
 			}
@@ -259,11 +263,74 @@ public class Player implements Serializable {
 	}
 
 	/**
-	 * Give
+	 * Give the ennemy player
 	 * 
-	 * @return
+	 * @return the ennemy player
 	 */
 	public Player getWhichPlayer() {
 		return whichPlayer;
+	}
+
+	/**
+	 * Get the first pokemon of the team or the pokemon that is fighting
+	 * 
+	 * @return Pokemon - the main pokemon of the player
+	 */
+	public Pokemon getPokemon() {
+		return selectedPokemon;
+	}
+
+	/**
+	 * Remove a pokemon from the player's team with the index of the pokemon
+	 * 
+	 * @param pokemonIndex int - index of the pokemon
+	 */
+	public void removePokemon(int pokemonIndex) {
+		team.remove(pokemonIndex);
+	}
+
+	/**
+	 * Set a selectedPokemon of the player
+	 * 
+	 * @param pokemon Pokemon to put
+	 */
+	public void setPokemon(Pokemon pokemon) {
+		this.selectedPokemon = pokemon;
+	}
+
+	/**
+	 * Can this pokemon join the team based on his available moves
+	 * 
+	 * @return True if it can, false otherwise
+	 */
+	public boolean canAddPokemon() {
+
+		if (selectedPokemon.getlearnedMoves().size() == 0) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Add the pokemon in parameter to the player's team
+	 * 
+	 * @param pokemon The pokemon that will be added to the team
+	 * @throws IllegalArgumentException if the given pokemon is null
+	 */
+	public void addPokemonToTeam(Pokemon pokemon) {
+		if (pokemon == null)
+			throw new IllegalArgumentException("Pokemon cannot be null");
+
+		team.add(pokemon);
+	}
+
+	public boolean addMovePokedex(Move move) {
+		return selectedPokemon.addMoveToLearnedMoves(move);
+	}
+
+	public void removeMovePokedex(int moveIndex) {
+		selectedPokemon.removeMoveFromLearnedMoves(moveIndex);
 	}
 }

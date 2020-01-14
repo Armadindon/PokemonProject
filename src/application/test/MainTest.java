@@ -17,7 +17,6 @@ public class MainTest {
 			final FileInputStream file = new FileInputStream("save.ser");
 			 ois = new ObjectInputStream(file);
 			TeamBuilder t = (TeamBuilder) ois.readObject();
-			System.out.println(t.getTeamSize());
 			System.out.println(t.getPokeList());
 			System.out.println(t.getPokeList().get(0).getAllPossiblesMoves());
 		}catch (Exception e) {

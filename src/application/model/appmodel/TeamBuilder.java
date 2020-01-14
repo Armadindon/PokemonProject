@@ -24,18 +24,15 @@ public class TeamBuilder implements Serializable {
 
 	private static TeamBuilder teamBuilderSingleton = null;
 
-	private Pokemon pokemon;
-	private final ArrayList<Pokemon> team = new ArrayList<>(6); // max 6 pokemons
 	private final ArrayList<Move> existingMoves;
 	private final ArrayList<Pokemon> pokeList;
 
 	private TeamBuilder(ArrayList<Move> existingMoves, ArrayList<Pokemon> pokeList) {
-		this.pokemon = pokeList.get(0);
 		this.existingMoves = existingMoves;
 		this.pokeList = pokeList;
 	}
 
-	public static TeamBuilder getInstance() throws IOException {
+	public static synchronized TeamBuilder getInstance() throws IOException {
 
 		if (teamBuilderSingleton != null) {
 			return teamBuilderSingleton;
@@ -94,60 +91,8 @@ public class TeamBuilder implements Serializable {
 		return randomTeam;
 	}
 
-	public Pokemon getPokemon() {
-		return pokemon;
-	}
-
-	public void setPokemon(Pokemon pokemon) {
-		this.pokemon = pokemon;
-	}
-
-	public ArrayList<Pokemon> getTeam() {
-		ArrayList<Pokemon> copyTeam = new ArrayList<>();
-		team.forEach(p -> {
-			try {
-				copyTeam.add((Pokemon) p.clone());
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
-		});
-		return copyTeam;
-	}
-
 	public ArrayList<Pokemon> getPokeList() {
 		return pokeList;
 	}
 
-	public void addPokemonToTeam(Pokemon pokemon) {
-		if (pokemon == null)
-			throw new IllegalArgumentException("Pokemon cannot be null");
-
-		team.add(pokemon);
-	}
-
-	public void removePokemon(int pokemonIndex) {
-		team.remove(pokemonIndex);
-	}
-
-	public int getTeamSize() {
-		return team.size();
-	}
-	
-	public boolean canAddPokemon() {
-
-		if (pokemon.getlearnedMoves().size() == 0) {
-			return false;
-		}
-
-		return true;
-
-	}
-	
-	public boolean addMovePokedex(Move move) {
-		return pokemon.addMoveToLearnedMoves(move); 
-	}
-
-	public void removeMovePokedex(int moveIndex) {
-		pokemon.removeMoveFromLearnedMoves(moveIndex);
-	}
 }

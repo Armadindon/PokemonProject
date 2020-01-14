@@ -30,7 +30,8 @@ import javafx.util.Duration;
 
 /**
  * This controller allow the player to choose a game mode between multiple
- * gamemodes, saves and quit. The view affected to this class is "ChooseGame.fxml"
+ * gamemodes, saves and quit. The view affected to this class is
+ * "ChooseGame.fxml"
  * 
  * @author Armadindon, kwaaac
  *
@@ -76,8 +77,8 @@ public class ChooseGameController extends AbstractController {
 	@FXML
 	void randomFight(ActionEvent event) throws IOException {
 		// We generate a League with only one guy
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomOpponent(6)), Optional.empty());
+		super.changeSceneTeamBuilder(event, "Fight.fxml", player, Optional.of(League.generateRandomOpponent(6)),
+				Optional.empty());
 	}
 
 	/**
@@ -90,8 +91,8 @@ public class ChooseGameController extends AbstractController {
 	void LigueDUT2Game(ActionEvent event) throws IOException {
 		// créer une ligue random si pas init
 
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomLeague(9, 6)), Optional.empty());
+		super.changeSceneTeamBuilder(event, "Fight.fxml", player, Optional.of(League.generateRandomLeague(9, 6)),
+				Optional.empty());
 
 	}
 
@@ -104,8 +105,8 @@ public class ChooseGameController extends AbstractController {
 	 */
 	@FXML
 	void homeMadeGame(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomLeague(2, 6)), Optional.of(SpecialData.HOMEMADE));
+		super.changeSceneTeamBuilder(event, "Fight.fxml", player, Optional.of(League.generateRandomLeague(2, 6)),
+				Optional.of(SpecialData.HOMEMADE));
 	}
 
 	/**
@@ -116,8 +117,8 @@ public class ChooseGameController extends AbstractController {
 	 */
 	@FXML
 	void ligueGame(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "Fight.fxml", teamBuilder,
-				Optional.of(League.generateRandomLeague(5, 4)), Optional.empty());
+		super.changeSceneTeamBuilder(event, "Fight.fxml", player, Optional.of(League.generateRandomLeague(5, 4)),
+				Optional.empty());
 
 	}
 
@@ -136,7 +137,7 @@ public class ChooseGameController extends AbstractController {
 
 		File f = fileChooser.showSaveDialog((Stage) root.getScene().getWindow());
 
-		SaveUtility save = new SaveUtility(MenuSelect.MAINMENU, teamBuilder, league, data);
+		SaveUtility save = new SaveUtility(MenuSelect.MAINMENU, player, league, data);
 
 		FileOutputStream file = new FileOutputStream(f);
 		ObjectOutputStream oos = new ObjectOutputStream(file);
@@ -157,7 +158,6 @@ public class ChooseGameController extends AbstractController {
 	void quit(ActionEvent event) {
 		Platform.exit();
 	}
-
 
 	@Override
 	public void displayUpdate() {

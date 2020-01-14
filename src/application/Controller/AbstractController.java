@@ -6,6 +6,7 @@ import java.util.Optional;
 import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
+import application.model.fight.Player;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,7 +22,7 @@ import javafx.stage.Stage;
  */
 public abstract class AbstractController implements InterfaceController {
 
-	protected TeamBuilder teamBuilder;
+	protected Player player;
 
 	protected Optional<League> league = Optional.empty();
 
@@ -55,7 +56,7 @@ public abstract class AbstractController implements InterfaceController {
 	 * @param league      Opponents team
 	 * @throws IOException Can throw an error if the load fails
 	 */
-	protected void changeSceneTeamBuilder(Event event, String fxmlFile, TeamBuilder teamBuilder,
+	protected void changeSceneTeamBuilder(Event event, String fxmlFile, Player player,
 			Optional<League> league, Optional<SpecialData> data) throws IOException {
 
 		FXMLLoader loader = new FXMLLoader();
@@ -72,7 +73,7 @@ public abstract class AbstractController implements InterfaceController {
 			data = Optional.empty();
 		}
 
-		controller.initTeamBuilder(teamBuilder, league, data);
+		controller.initTeamBuilder(player, league, data);
 
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -82,7 +83,7 @@ public abstract class AbstractController implements InterfaceController {
 	}
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data)
 			throws IOException {
 		if (league.isPresent()) {
 			this.league = league;
@@ -94,7 +95,7 @@ public abstract class AbstractController implements InterfaceController {
 		} else
 			this.data = Optional.empty();
 
-		this.teamBuilder = teamBuilder;
+		this.player = player;
 	}
 
 }

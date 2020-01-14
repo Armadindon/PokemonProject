@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
+import application.model.fight.Player;
 import application.model.pokemon.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,17 +47,21 @@ public class SampleController extends AbstractController {
 	private ArrayList<Pokemon> team;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
-			throws IOException {
-		super.initTeamBuilder(teamBuilder, league, data);
+	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data) throws IOException {
+		super.initTeamBuilder(player, league, data);
 
-		selectedPokemon = super.teamBuilder.getPokemon();
+		selectedPokemon = super.player.getPokemon();
 
-		team = super.teamBuilder.getTeam();
+		team = (ArrayList<Pokemon>) super.player.getTeam();
 
-		items = FXCollections.observableArrayList(super.teamBuilder.getPokeList());
+		items = FXCollections.observableArrayList(TeamBuilder.getInstance().getPokeList());
+
+		if (selectedPokemon == null) {
+			selectedPokemon = items.get(0);
+		}
 
 		listPokemon.setItems(items);
+
 		listPokemon.getSelectionModel().select(selectedPokemon.getId() - 1);
 
 		displayUpdate();
@@ -188,7 +193,7 @@ public class SampleController extends AbstractController {
 	@FXML
 	void deletePokemon(ActionEvent event) {
 		Button button = (Button) event.getSource();
-		teamBuilder.removePokemon(Integer.parseInt(button.getId().replace("btnDelTeam", "")) - 1);
+		player.removePokemon(Integer.parseInt(button.getId().replace("btnDelTeam", "")) - 1);
 		displayUpdate();
 	}
 
@@ -232,13 +237,13 @@ public class SampleController extends AbstractController {
 			return;
 		}
 
-		super.teamBuilder.setPokemon((Pokemon) listPokemon.getSelectionModel().getSelectedItem().clone());
+		super.player.setPokemon((Pokemon) listPokemon.getSelectionModel().getSelectedItem().clone());
 
 		if (data == null) {
 			data = Optional.empty();
 		}
 
-		super.changeSceneTeamBuilder(event, "pokeMove.fxml", teamBuilder, Optional.empty(), data);
+		super.changeSceneTeamBuilder(event, "pokeMove.fxml", player, Optional.empty(), data);
 	}
 
 	/**
@@ -256,15 +261,16 @@ public class SampleController extends AbstractController {
 	 * Use the search bar to find a pokemon inside the listView
 	 * 
 	 * @param event
+	 * @throws IOException
 	 */
 	@FXML
-	void searchPokemon(ActionEvent event) {
+	void searchPokemon(ActionEvent event) throws IOException {
 		if (((TextField) event.getSource()).getText().contentEquals("")) {
-			items = FXCollections.observableArrayList(teamBuilder.getPokeList());
+			items = FXCollections.observableArrayList(TeamBuilder.getInstance().getPokeList());
 			listPokemon.setItems(items);
 			return;
 		}
-		items = FXCollections.observableArrayList((List<Pokemon>) teamBuilder.getPokeList().stream()
+		items = FXCollections.observableArrayList((List<Pokemon>) TeamBuilder.getInstance().getPokeList().stream()
 				.filter(p -> p.toString().contains(((TextField) event.getSource()).getText()))
 				.collect(Collectors.toList()));
 		listPokemon.setItems(items);
@@ -279,10 +285,9 @@ public class SampleController extends AbstractController {
 	 */
 	@FXML
 	void goToMenu(ActionEvent event) throws IOException {
-		changeSceneTeamBuilder(event, "ChooseGame.fxml", teamBuilder, league, data);
+		changeSceneTeamBuilder(event, "ChooseGame.fxml", player, league, data);
 	}
 
-	
 	@Override
 	public void displayUpdate() {
 

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
+import application.model.fight.Player;
 import application.model.moves.Move;
 import application.model.pokemon.Pokemon;
 import javafx.animation.FadeTransition;
@@ -49,11 +50,11 @@ public class PokeMoveController extends AbstractController {
 	private Move selectedMove;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data)
 			throws IOException {
-		super.initTeamBuilder(teamBuilder, league, data);
+		super.initTeamBuilder(player, league, data);
 
-		selectedPokemon = teamBuilder.getPokemon();
+		selectedPokemon = player.getPokemon();
 
 		// Labels and view infos
 		textFPokemonName.setFont(Font.font("System", FontWeight.NORMAL, 24));
@@ -214,7 +215,7 @@ public class PokeMoveController extends AbstractController {
 	 */
 	@FXML
 	void changeToPokedexCancel(ActionEvent event) throws IOException {
-		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
+		super.changeSceneTeamBuilder(event, "BuildTeam.fxml", player, Optional.empty(), data);
 	}
 
 	/**
@@ -226,12 +227,12 @@ public class PokeMoveController extends AbstractController {
 	@FXML
 	void changeToPokedexAddPokemon(ActionEvent event) throws IOException {
 
-		if (teamBuilder.canAddPokemon()) {
+		if (player.canAddPokemon()) {
 
 			System.out.println(selectedPokemon.getName());
-			teamBuilder.addPokemonToTeam(selectedPokemon);
+			player.addPokemonToTeam(selectedPokemon);
 
-			super.changeSceneTeamBuilder(event, "BuildTeam.fxml", teamBuilder, Optional.empty(), data);
+			super.changeSceneTeamBuilder(event, "BuildTeam.fxml", player, Optional.empty(), data);
 
 		}
 
@@ -267,7 +268,7 @@ public class PokeMoveController extends AbstractController {
 		ArrayList<VBox> vboxList = new ArrayList<>(Arrays.asList(vboxMove0, vboxMove1, vboxMove2, vboxMove3));
 		ArrayList<Button> btnList = new ArrayList<>(Arrays.asList(btnMove0, btnMove1, btnMove2, btnMove3));
 
-		ArrayList<Move> learnedMoves = super.teamBuilder.getPokemon().getlearnedMoves();
+		ArrayList<Move> learnedMoves = super.player.getPokemon().getlearnedMoves();
 		labelMoveName.setText(selectedMove.getName());
 		labelType.setText(selectedMove.getType().name());
 		labelAccuracy.setText(Integer.toString(selectedMove.getAccuracy()));
@@ -307,7 +308,7 @@ public class PokeMoveController extends AbstractController {
 	 */
 	@FXML
 	private void addMove(ActionEvent event) throws IOException {
-		if (!super.teamBuilder.addMovePokedex(selectedMove)) {
+		if (!super.player.addMovePokedex(selectedMove)) {
 			labelError.setText("This move has failed to be added");
 
 			FadeTransition ft = new FadeTransition(new Duration(3_000), labelError);
@@ -328,7 +329,7 @@ public class PokeMoveController extends AbstractController {
 	@FXML
 	private void removeMove(ActionEvent event) {
 		Button button = (Button) event.getSource();
-		teamBuilder.removeMovePokedex(Integer.parseInt(button.getId().replace("btnMove", "")));
+		player.removeMovePokedex(Integer.parseInt(button.getId().replace("btnMove", "")));
 		displayUpdate();
 	}
 
@@ -342,7 +343,7 @@ public class PokeMoveController extends AbstractController {
 		System.out.println(((TextField) event.getSource()).getText());
 
 		if (((TextField) event.getSource()).getText().contentEquals("")) {
-			items = FXCollections.observableArrayList(teamBuilder.getPokemon().getAllPossiblesMoves());
+			items = FXCollections.observableArrayList(player.getPokemon().getAllPossiblesMoves());
 			listMove.setItems(items);
 			return;
 		}

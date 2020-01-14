@@ -7,6 +7,7 @@ import java.util.Optional;
 import application.Controller.Utils.SpecialData;
 import application.model.appmodel.League;
 import application.model.appmodel.TeamBuilder;
+import application.model.fight.Player;
 
 /**
  * Utils Class who represent all the data to save
@@ -14,7 +15,7 @@ import application.model.appmodel.TeamBuilder;
  */
 public class SaveUtility implements Serializable {
 	private MenuSelect whichMenu;
-	private TeamBuilder player;
+	private Player player;
 	private League league;
 	private SpecialData data;
 
@@ -25,7 +26,7 @@ public class SaveUtility implements Serializable {
 	 * @param league
 	 * @param data
 	 */
-	public SaveUtility(MenuSelect whichMenu, TeamBuilder player, Optional<League> league, Optional<SpecialData> data) {
+	public SaveUtility(MenuSelect whichMenu, Player player, Optional<League> league, Optional<SpecialData> data) {
 		this.whichMenu = whichMenu;
 		this.player = player;
 		if (league.isPresent())
@@ -45,7 +46,7 @@ public class SaveUtility implements Serializable {
 		return whichMenu;
 	}
 
-	public TeamBuilder getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 

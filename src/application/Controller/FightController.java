@@ -88,9 +88,9 @@ public class FightController extends AbstractController {
 	private int swapNbPkmn = 3;
 
 	@Override
-	public void initTeamBuilder(TeamBuilder teamBuilder, Optional<League> league, Optional<SpecialData> data)
+	public void initTeamBuilder(Player player, Optional<League> league, Optional<SpecialData> data)
 			throws IOException {
-		super.initTeamBuilder(teamBuilder, league, data);
+		super.initTeamBuilder(player, league, data);
 
 		openMainMenu();
 
@@ -98,7 +98,7 @@ public class FightController extends AbstractController {
 			this.playerFoe = league.get().getFightingTeam();
 			this.currentLeague = league.get();
 		} else {
-			playerFoe = new Player(teamBuilder.createRandomTeam(6), true);
+			playerFoe = new Player(TeamBuilder.getInstance().createRandomTeam(6), true);
 			this.currentLeague = null;
 		}
 
@@ -108,7 +108,7 @@ public class FightController extends AbstractController {
 			this.currentData = null;
 		}
 
-		playerUser = new Player(teamBuilder, false);
+		playerUser = super.player;
 
 		// Music
 		String path = System.getProperty("user.dir") + "/Misc/Music/Pokemon_Red_&_Blue_OST/15 - Battle.mp3";
@@ -330,7 +330,7 @@ public class FightController extends AbstractController {
 				if (playerUser.getAlive() <= 0) { // lose
 					mp.stop();
 					System.out.println("Le joueur a perdu, on le redirige");
-					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.empty(),
+					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", player, Optional.empty(),
 							Optional.of(SpecialData.LOOSE));
 				} else if (playerFoe.getAlive() <= 0) { // win
 					mp.stop();
@@ -344,7 +344,7 @@ public class FightController extends AbstractController {
 						data = Optional.of(SpecialData.INTERMISSION);
 					}
 
-					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", teamBuilder, Optional.of(currentLeague),
+					changeSceneTeamBuilder(event, "LeagueIntermission.fxml", player, Optional.of(currentLeague),
 							data);
 				} else {
 					msgs = null;
@@ -464,9 +464,9 @@ public class FightController extends AbstractController {
 			saveData = Optional.empty();
 		}
 		if (currentLeague != null)
-			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.of(currentLeague), saveData);
+			save = new SaveUtility(MenuSelect.FIGHT, player, Optional.of(currentLeague), saveData);
 		else
-			save = new SaveUtility(MenuSelect.FIGHT, teamBuilder, Optional.empty(), saveData);
+			save = new SaveUtility(MenuSelect.FIGHT, player, Optional.empty(), saveData);
 
 		FileOutputStream file = new FileOutputStream(f);
 		ObjectOutputStream oos = new ObjectOutputStream(file);
