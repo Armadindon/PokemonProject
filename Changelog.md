@@ -1,7 +1,7 @@
 Suite à notre soutenance, nous avons retenue plusieurs points:
 
 
-## Les remarques de la soutenance et bugs trouver entre temps
+### Les remarques de la soutenance et bugs trouver entre temps
 
 1. Notre classe TeamBuilder est transmise partout mais son utilisation est mal intégré, on l'utilise en même temps en tant que "pokedex" (dans la mesure ou il contient tous les pokemons et leurs mouvements) et en tant que créateur d'équipe pour le joueur principal et on l'utilisait comme tel pour les sauvegarde
 
@@ -15,7 +15,7 @@ Suite à notre soutenance, nous avons retenue plusieurs points:
  
 5. Lors d'un load de sauvegarde depuis un combat, toute l'équipe était reset en terme de stat, ce qui ajoutait la feature de ne jamais pouvoir perdre
 
-## Ce que nous avons réaliser depuis la soutenance
+### Ce que nous avons réaliser depuis la soutenance
 
 1. Notre classe teamBuilder à été correctement séparé entre la création de l'équipe et son rôle d'information sur les pokemons. Cette classe est maintenant, selon les recommandations de M. Duris, un singleton. Maintenant, pour construire une équipe, nous utilisons directement une instance de la classe Player, ce qui à régler le bug numéro 5 puisque maintenant on sauvegarde le joueur principal au lieu du teamBuilder de son équipe.
 
